@@ -1,9 +1,9 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <div style="background-color: #ffedc3">
+<!--  <div style="background-color: #fff8e7">-->
+    <navi/>
+    <router-view/>
   </div>
-  <router-view/>
 </template>
 
 <style>
@@ -28,3 +28,9 @@
   color: #42b983;
 }
 </style>
+<script>
+import Navi from "@/navi/navi";
+export default {
+  components: {Navi}
+}
+</script>
