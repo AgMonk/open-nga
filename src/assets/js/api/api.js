@@ -3,6 +3,8 @@ import {request} from "@/assets/js/api/nga-request";
 export const thread = (fid, page = 1) => {
     return request.get("thread.php", {
         params: {fid, page}
+    }).then(res=>{
+        return res.data
     })
 }
 

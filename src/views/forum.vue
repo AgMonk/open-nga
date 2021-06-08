@@ -68,7 +68,6 @@ export default {
   },
   mounted() {
     console.log(getCookieMap())
-    console.log(this.$route)
   },
 }
 

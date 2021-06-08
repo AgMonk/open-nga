@@ -22,7 +22,9 @@ export default {
   methods: {
   },
   mounted() {
-    thread(this.$route.params.fid,this.$route.params.page).then(res=>{
+    let fid = this.$route.params.fid;
+    let page = this.$route.params.page;
+    this.$store.dispatch("thread/getThreads",{fid,page}).then(res=>{
       console.log(res)
     })
   },

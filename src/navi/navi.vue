@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     handleSelect(e) {
-      console.log(e)
+      // console.log(e)
       if (e === '/account') {
         this.$router.push('/account/' + getCookie("ngaPassportUid"))
       } else if (e.startsWith('/thread')) {
