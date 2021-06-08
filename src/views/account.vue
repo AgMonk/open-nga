@@ -45,6 +45,11 @@ export default {
     }
   },
   methods: {
+    refreshNavi() {
+      this.$store.commit("navi/updatePath")
+      this.$store.commit("navi/setShow")
+      this.$nextTick(() => this.$store.commit("navi/setShow"))
+    },
     getUid() {
       return getCookie("ngaPassportUid");
     },
@@ -53,6 +58,13 @@ export default {
       this.$store.dispatch("account/loginWithCookie", cookie).then(res => {
         this.$router.push("/account/" + this.getUid());
         this.$store.dispatch("forum/getFavForum")
+
+      //  更新导航栏
+        this.$store.commit("navi/setParams",{
+          key:"account",
+          params:[getCookie("ngaPassportUid")]
+        })
+        this.refreshNavi();
       })
       this.selected = undefined
     },

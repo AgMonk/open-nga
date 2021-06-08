@@ -4,8 +4,6 @@ import {thread} from "@/assets/js/api/api";
 export default {
     namespaced: true,
     state: {
-        fid: 0,
-        page: 0,
         threads: {},
     },
     mutations: {

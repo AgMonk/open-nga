@@ -46,7 +46,6 @@ export default {
   methods: {
     clickForum(row, column, cell, event) {
       if (column.property === 'name') {
-        this.$store.commit("thread/setForum",{fid:row.fid,page:1})
         this.$router.push("/thread/" + row.fid + "/1")
       }
     },
