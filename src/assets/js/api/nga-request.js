@@ -3,7 +3,7 @@ import {ElMessage} from 'element-plus';
 
 export const request = axios.create({
     baseURL: "/api/",
-    timeout: 3000,
+    timeout: 5000,
     headers: {
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
         "Cache-Control": "max-age=0",

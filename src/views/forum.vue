@@ -4,15 +4,16 @@
     <!--  <el-container direction="horizontal">-->
     <el-header>
       <el-button type="primary" @click="visible.search=true">搜索版面</el-button>
+      <el-button type="primary" @click="refreshFavForum">刷新</el-button>
 
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-      <el-table :data="favForums" @cell-click="clickForum">
+      <el-table :data="$store.state.forum.forums" @cell-click="clickForum">
         <el-table-column label="版面" prop="name"/>
         <el-table-column label="移除" width="100px">
           <template #default="s">
-            <el-button type="danger" @click="rmFavForum(s)">移除</el-button>
+            <el-button type="danger" @click="delFavForum(s)">移除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -26,8 +27,9 @@
 </template>
 
 <script>
-import {getCache, putCache} from "@/assets/js/storageUtils";
+import {putCache} from "@/assets/js/storageUtils";
 import SearchForum from "@/components/search-forum";
+import {getCookieMap} from "@/assets/js/cookieUtils";
 
 export default {
   name: "forum",
@@ -35,9 +37,7 @@ export default {
   data() {
     return {
       namespace: "favForums",
-      favForums: [
-        {fid: -547859, name: '测试版面'}
-      ],
+      favForums: [],
       visible: {
         search: false,
       }
@@ -46,26 +46,26 @@ export default {
   methods: {
     clickForum(row, column, cell, event) {
       if (column.property === 'name') {
-        this.$router.push("/thread/" + row.fid)
+        putCache("currentForum", {fid: row.fid, page: 1})
+        this.$router.push("/thread/" + row.fid + "/1")
       }
     },
-    addFavForum({fid, name}) {
-      this.visible.search = false;
-      this.favForums.push({fid, name});
-      putCache(this.namespace, this.favForums);
+    addFavForum(fid) {
+      this.$store.dispatch("forum/addFavForum", fid).then(() => {
+        this.visible.search = false
+      })
     },
-    rmFavForum(e) {
-      let index = e.$index;
-      let name = e.row.name;
-      if (confirm("移除收藏版面 " + name)) {
-        this.favForums.splice(index,1);
-        putCache(this.namespace, this.favForums);
+    delFavForum(e) {
+      if (confirm("移除收藏版面 " + e.row.name)) {
+        this.$store.dispatch("forum/delFavForum", e.row.fid)
       }
     },
+    refreshFavForum() {
+      this.$store.dispatch("forum/getFavForum")
+    }
   },
   mounted() {
-    let forums = getCache(this.namespace);
-    this.favForums = forums ? forums : [];
+    console.log(getCookieMap())
   },
 }
 

@@ -31,7 +31,7 @@ export default {
   methods: {
     clickForum(row, column, event){
       if (confirm("确认收藏版面 " + row.name)) {
-        this.$emit("add-fav", {fid:row.fid,name:row.name})
+        this.$emit("add-fav", row.fid)
       }
     },
     search(){

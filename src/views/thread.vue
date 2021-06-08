@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import {thread} from "@/assets/js/api/api";
+
 export default {
   name: "thread",
   data() {
@@ -20,6 +22,9 @@ export default {
   methods: {
   },
   mounted() {
+    thread(this.$route.params.fid,this.$route.params.page).then(res=>{
+      console.log(res)
+    })
   },
 }
 
