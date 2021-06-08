@@ -1,13 +1,13 @@
 <template>
   <el-menu
-      :default-active="activeIndex"
+      :default-active="$route.path"
       class="el-menu-demo"
       mode="horizontal"
       @select="handleSelect"
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b">
-    <el-menu-item v-for="(item,i) in navi" :key="i" :index="''+i">{{ item.title }}</el-menu-item>
+    <el-menu-item v-for="(item,i) in navi" :key="i" :index="item.path">{{ item.title }}</el-menu-item>
 
   </el-menu>
 </template>
@@ -30,14 +30,15 @@ export default {
   },
   methods: {
     handleSelect(e) {
-      let navi = this.navi[e];
-      if (navi.path === '/account') {
+      console.log(e)
+      if (e === '/account') {
         this.$router.push('/account/' + getCookie("ngaPassportUid"))
-      } else if (navi.path === '/thread') {
-        let forum = getCache("currentForum");
-        this.$router.push(navi.path + "/" + forum.fid + "/" + forum.page)
+      } else if (e.startsWith('/thread')) {
+        let fid = this.$store.state.thread.fid;
+        let page = this.$store.state.thread.page;
+        this.$router.push(e + "/" + fid + "/" + page)
       } else {
-        this.$router.push(navi.path)
+        this.$router.push(e)
       }
     }
   },

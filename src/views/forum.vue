@@ -46,7 +46,7 @@ export default {
   methods: {
     clickForum(row, column, cell, event) {
       if (column.property === 'name') {
-        putCache("currentForum", {fid: row.fid, page: 1})
+        this.$store.commit("thread/setForum",{fid:row.fid,page:1})
         this.$router.push("/thread/" + row.fid + "/1")
       }
     },
@@ -61,11 +61,14 @@ export default {
       }
     },
     refreshFavForum() {
-      this.$store.dispatch("forum/getFavForum")
+      this.$store.dispatch("forum/getFavForum").then(()=>{
+        this.$message.success("刷新成功")
+      })
     }
   },
   mounted() {
     console.log(getCookieMap())
+    console.log(this.$route)
   },
 }
 

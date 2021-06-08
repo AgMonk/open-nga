@@ -2,14 +2,16 @@
 export default {
     namespaced: true,
     state: {
-        fid: undefined,
-        page: undefined,
+        fid: 0,
+        page: 1,
         threads: {},
     },
     mutations: {
         setForum(state, {fid, page}) {
             state.fid = fid
             state.page = page
+            console.log(state)
+            console.log(state)
         },
     },
     actions: {

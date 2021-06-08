@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import account from "./account"
 import forum from "./forum"
+import thread from "./thread"
 
 export default createStore({
   state: {
@@ -10,6 +11,6 @@ export default createStore({
   actions: {
   },
   modules: {
-    account,forum
+    account,forum,thread
   }
 })
