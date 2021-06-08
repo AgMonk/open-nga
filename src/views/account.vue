@@ -30,6 +30,7 @@ import {getCookie, setCookies} from "@/assets/js/cookieUtils";
 import Money from "@/components/money";
 import UserInfo from "@/components/user-info";
 import {getCacheByPrefix} from "@/assets/js/storageUtils";
+import {searchForum} from "@/assets/js/api/forum";
 
 export default {
   name: "account",
@@ -44,7 +45,7 @@ export default {
     }
   },
   methods: {
-    getUid(){
+    getUid() {
       return getCookie("ngaPassportUid");
     },
     changeAccount(key) {
@@ -63,13 +64,8 @@ export default {
   },
   watch: {},
   mounted() {
-    // let s = "taihe_bi_sdk_uid=8570c3b82533bcbc955b64b85e5cc1b0; taihe=6175cb462f95c5ed0a4e7770d35c0369; UM_distinctid=178dd48b6092a9-021e09eb9856e9-c3f3568-1fa400-178dd48b60a2ad; UM_distinctid=1797d6bd7483ab-0a9cdb77e565ee-2363163-1fa400-1797d6bd74a331; ngacn0comUserInfo=%D7%F3%C7%A3%BB%C6%D3%D2%C7%DC%B2%D4\t%E5%B7%A6%E7%89%B5%E9%BB%84%E5%8F%B3%E6%93%92%E8%8B%8D\t39\t39\t\t14\t13948\t4\t0\t0\t61_1,102_90; ngaPassportUid=39841854; ngaPassportUrlencodedUname=%D7%F3%C7%A3%BB%C6%D3%D2%C7%DC%B2%D4; ngaPassportCid=X8piu7qso541t2vm5t6opbf5llghfob9qj581dh3; ngacn0comUserInfoCheck=aa596d150005585282f4e6ebe7bad1ab; ngacn0comInfoCheckTime=1623053612; lastvisit=1623054487; lastpath=/read.php?tid=25968165; bbsmisccookies={\"uisetting\":{0:1048576,1:1625965798},\"pv_count_for_insad\":{0:-187,1:1623085215},\"insad_views\":{0:2,1:1623085215}}; CNZZDATA30043604=cnzz_eid=675084397-1594717559-https%3A%2F%2Fbbs.nga.cn%2F&ntime=1623053898; _cnzz_CV30043604=forum|fid-547859|0"
-    // this.$store.dispatch("account/loginWithCookie", s).then(() => {
-    //
-    //
-    //   thread(-547859)
-    // })
     this.accounts = getCacheByPrefix("account");
+
   },
 }
 

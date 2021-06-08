@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
 
 const routes = [
-  {
-    path: "/account/:uid",name:"account",component:()=>import("../views/account")
-  }
+  {path: "/",redirect:"/forum"},
+  {path: "/forum",name:"forum",component:()=>import("../views/forum"),},
+  {path: "/thread/:fid",name:"thread",component:()=>import("../views/thread"),},
+  {path: "/account/:uid",name:"account",component:()=>import("../views/account"),},
 ]
 
 const router = createRouter({

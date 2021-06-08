@@ -21,13 +21,15 @@ export default {
     return {
       activeIndex:"0",
       navi:[
+        {path:"/forum",title:'版面'},
         {path:"/account",params:this.uid,title:'用户中心'},
       ],
     }
   },
   methods:{
     handleSelect(e){
-      let r = this.navi[e].path+"/"+this.navi[e].params;
+      let param = this.navi[e].params?("/"+this.navi[e].params):"";
+      let r = this.navi[e].path+param;
       this.$router.push(r)
     }
   },

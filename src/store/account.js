@@ -15,15 +15,6 @@ export default {
             // 注册日期
             info.regDate = new Date(info.regdate * 1000).format("yyyy-MM-dd hh:mm:ss");
 
-            // 货币
-            let d = info.money;
-            let copper = d % 100;
-            d = (d - copper) / 100;
-            let silver = d % 100;
-            d = (d - silver) / 100;
-            let gold = d;
-            info.moneyString = gold + "金" + silver + "银" + copper + "铜";
-
             // 总赞数
             if (info.more_info) {
                 info.totalApproval = parseInt(info.more_info[0].data);
@@ -33,14 +24,24 @@ export default {
             }
             if (info.money===0) {
                 delete info.money;
+            }else{
+                // 货币
+                let d = info.money;
+                let copper = d % 100;
+                d = (d - copper) / 100;
+                let silver = d % 100;
+                d = (d - silver) / 100;
+                let gold = d;
+                info.moneyString = gold + "金" + silver + "银" + copper + "铜";
             }
             if (info.posts===0) {
                 delete info.posts;
             }
 
+            let userInfo = Object.assign({}, state.users[info.uid], info);
+            state.users[info.uid] = userInfo;
 
-
-            state.users[info.uid] = Object.assign({}, state.users[info.uid], info);
+            console.log(userInfo)
         },
     },
     actions: {
