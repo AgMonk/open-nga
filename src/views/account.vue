@@ -52,6 +52,7 @@ export default {
       let cookie = this.accounts[key];
       this.$store.dispatch("account/loginWithCookie", cookie).then(res => {
         this.$router.push("/account/" + this.getUid());
+        this.$store.dispatch("forum/getFavForum")
       })
       this.selected = undefined
     },
