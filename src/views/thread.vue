@@ -23,27 +23,22 @@
         </el-table-column>
         <el-table-column label="回复" prop="replies" width="60px">
           <template #default="s">
-            <span v-if="!s.row['topic_misc_var']||!s.row['topic_misc_var']['1']">{{s.row.replies}}</span>
-            <span v-if="s.row['topic_misc_var']&&s.row['topic_misc_var']['1']" size="mini" type="danger" @click="unFollow(s.row.tid)">
-              <i class="el-icon-close" />
+            <span v-if="!s.row['topic_misc_var']||!s.row['topic_misc_var']['1']">{{ s.row.replies }}</span>
+            <span v-if="s.row['topic_misc_var']&&s.row['topic_misc_var']['1']" size="mini" type="danger"
+                  @click="unFollow(s.row.tid)">
+              <i class="el-icon-close"/>
             </span>
           </template>
         </el-table-column>
         <el-table-column label="主题">
           <template #default="s">
-            <thread-link :data="s.row" />
+            <thread-link :data="s.row"/>
           </template>
         </el-table-column>
         <el-table-column label="作者/发布时间" width="170px">
           <template #default="s">
-            <span v-if="s.row.author.startsWith('#anony_')">匿名用户</span>
             <div>
-              <el-link
-                  :href="'https://bbs.nga.cn/nuke.php?func=ucp&uid='+s.row.authorid" target="_blank"
-                  v-if="!s.row.author.startsWith('#anony_')"
-              >
-                {{ s.row.author.length < 20 ? s.row.author : "[用户名异常]" }}
-              </el-link>
+              <user-link :id="s.row.authorid" :username="s.row.author"/>
             </div>
             <datetime :data="s.row.postdate"/>
           </template>
@@ -51,12 +46,9 @@
         <el-table-column label="最后回复" width="160px">
           <template #default="s">
             <div>
-              <el-link :href="'https://bbs.nga.cn/read.php?page=e&tid='+s.row.tid" target="_blank"> {{
-                  s.row.lastposter
-                }}
-              </el-link>
+              <datetime :data="s.row.lastpost"/>
             </div>
-            <datetime :data="s.row.lastpost"/>
+            {{ s.row.lastposter }}
           </template>
         </el-table-column>
 
@@ -80,10 +72,11 @@
 import {thread, unFollow} from "@/assets/js/api/api";
 import Datetime from "@/components/datetime";
 import ThreadLink from "@/components/thread-link";
+import UserLink from "@/components/user-link";
 
 export default {
   name: "thread",
-  components: {ThreadLink, Datetime},
+  components: {UserLink, ThreadLink, Datetime},
   data() {
     return {
       pagination: {
@@ -95,22 +88,22 @@ export default {
     }
   },
   methods: {
-    unFollow(id){
+    unFollow(id) {
       if (!confirm("取消关注？")) {
         return
       }
-      unFollow(id).then(res=>{
+      unFollow(id).then(res => {
         if (res.data) {
           this.$message(res.data[0])
           this.updateThreads()
         }
       })
     },
-    updateThreads(){
+    updateThreads() {
       let fid = this.$route.params.fid;
       let page = this.$route.params.page;
       let stid = this.$route.params.stid;
-      this.$store.dispatch("thread/updateThreads", {fid, page,stid}).then(res => {
+      this.$store.dispatch("thread/updateThreads", {fid, page, stid}).then(res => {
         this.handlePageData(res)
       })
     },
@@ -118,17 +111,33 @@ export default {
       this.$route.params.page = e;
       this.$router.push(this.$route)
     },
+    //处理分页数据
     handlePageData(data) {
+      // 分页参数
       // noinspection JSCheckFunctionSignatures
       this.pagination.page = parseInt(this.$route.params.page)
       this.pagination.total = data["__ROWS"]
       this.pagination.size = data["__T__ROWS_PAGE"]
 
+      //主题列表
       this.threads = []
       let d = data["__T"];
       Object.keys(d).forEach(key => {
         this.threads.push(d[key])
       })
+
+      //更新 uid 到 username 映射
+      this.threads.map(thread => {
+        return {
+          uid: thread.authorid,
+          username: thread.author
+        }
+      }).forEach(user => {
+        if (!this.$store.state.account.users[user.uid]||!this.$store.state.account.users[user.uid].username) {
+          this.$store.commit("account/saveUser", user)
+        }
+      })
+
       console.log(data)
     },
     refreshNavi() {
@@ -136,17 +145,18 @@ export default {
       this.$store.commit("navi/setShow")
       this.$nextTick(() => this.$store.commit("navi/setShow"))
     },
+    //强制更新主题列表
     updateParams() {
       let fid = this.$route.params.fid;
       let page = this.$route.params.page;
       let stid = this.$route.params.stid;
       this.$store.commit("navi/setParams", {
         key: "thread",
-        params: [fid, page,stid],
+        params: [fid, page, stid],
       })
       this.refreshNavi();
-      console.log({fid, page,stid})
-      this.$store.dispatch("thread/getThreads", {fid, page,stid}).then(res => {
+      console.log({fid, page, stid})
+      this.$store.dispatch("thread/getThreads", {fid, page, stid}).then(res => {
         this.handlePageData(res)
       })
     }

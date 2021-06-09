@@ -1,6 +1,6 @@
 // noinspection SpellCheckingInspection
 
-import { createRouter, createWebHistory } from 'vue-router'
+import {createRouter, createWebHistory} from 'vue-router'
 
 const routes = [
   {path: "/",redirect:"/forum"},
@@ -8,7 +8,7 @@ const routes = [
   {path: "/thread/:fid/:page/:stid",name:"stid",component:()=>import("../views/thread"),},
   {path: "/thread/:fid/:page",name:"thread",component:()=>import("../views/thread"),},
   {path: "/account/:uid",name:"account",component:()=>import("../views/account"),},
-  {path: "/read/:tid/:page",name:"account",component:()=>import("../views/read"),},
+  {path: "/read/:tid/:page",name:"read",component:()=>import("../views/read"),},
 ]
 
 const router = createRouter({

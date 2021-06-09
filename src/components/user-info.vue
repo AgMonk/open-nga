@@ -18,6 +18,7 @@
 
 <script>
 import Money from "@/components/money";
+
 export default {
   name: "user-info",
   components: {Money},
@@ -33,9 +34,10 @@ export default {
       // this.myData = this.$store
       let data = this.$store.state.account.users[uid]
       // console.log(data)
-      if (!data) {
+      if (!data || !data.group) {
         this.$store.dispatch("account/userInfo", uid).then(res => {
-          this.myData = res;
+          console.log(res)
+          this.myData = this.$store.state.account.users[uid];
           this.show = true;
         })
       }else{

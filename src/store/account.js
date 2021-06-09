@@ -13,35 +13,46 @@ export default {
     mutations: {
         saveUser(state, info) {
             // 注册日期
-            info.regDate = new Date(info.regdate * 1000).format("yyyy-MM-dd hh:mm:ss");
+            if (info.regdate) {
+                info.regDate = new Date(info.regdate * 1000).format("yyyy-MM-dd hh:mm:ss");
+            }
 
             // 总赞数
             if (info.more_info) {
                 info.totalApproval = parseInt(info.more_info[0].data);
             }
-            if (info.username.startsWith("UID")) {
+            if (info.username && info.username.startsWith("UID")) {
                 delete info.username;
             }
-            if (info.money===0) {
-                delete info.money;
-            }else{
-                // 货币
-                let d = info.money;
-                let copper = d % 100;
-                d = (d - copper) / 100;
-                let silver = d % 100;
-                d = (d - silver) / 100;
-                let gold = d;
-                info.moneyString = gold + "金" + silver + "银" + copper + "铜";
+            if (info.money) {
+                if (info.money === 0) {
+                    delete info.money;
+                } else {
+                    // 货币
+                    let d = info.money;
+                    let copper = d % 100;
+                    d = (d - copper) / 100;
+                    let silver = d % 100;
+                    d = (d - silver) / 100;
+                    let gold = d;
+                    info.moneyString = gold + "金" + silver + "银" + copper + "铜";
+                }
             }
-            if (info.posts===0) {
+            if (info.posts === 0) {
                 delete info.posts;
             }
 
-            let userInfo = Object.assign({}, state.users[info.uid], info);
-            state.users[info.uid] = userInfo;
+            if (!state.users[info.uid]) {
+                state.users[info.uid] = {}
+            }
+            Object.keys(info).forEach(key=>{
+                // console.log("更新 uid = "+info.uid+" 字段 "+key+" = "+ info[key])
+                state.users[info.uid][key] = info[key];
+            })
+            // let userInfo = Object.assign({}, state.users[info.uid], info);
+            // state.users[info.uid] = userInfo;
 
-            console.log(userInfo)
+            // console.log(state.users[info.uid])
         },
     },
     actions: {
@@ -53,7 +64,7 @@ export default {
             console.log(getCookieMap());
             return dispatch("getLoginStatus").then(res => {
                 ElMessage.success("[" + res.username + "] 登陆成功")
-                putCache("account "+res.username,cookie)
+                putCache("account " + res.username, cookie)
                 return res;
             })
         },
