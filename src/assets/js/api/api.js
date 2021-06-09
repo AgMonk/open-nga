@@ -2,9 +2,10 @@
 
 import {request} from "@/assets/js/api/nga-request";
 
-export const thread = (fid, page = 1,stid) => {
+export const thread = ({fid, page = 1, stid}) => {
+    let params = stid?{page,stid}:{fid, page};
     return request.get("thread.php", {
-        params: {fid, page,stid}
+        params
     }).then(res=>{
         return res.data
     })
@@ -49,5 +50,24 @@ export const delFavForum = (fid) =>{
             action:"del",
             fid
         }
+    })
+}
+
+//关注 合集或子版面
+export const follow = (id) =>{
+    return request.post("nuke.php",{
+        __lib:"user_option",
+        __act:"set",
+        raw:3,
+        del:id,
+    })
+}
+//取消关注 合集或子版面
+export const unFollow = (id) =>{
+    return request.post("nuke.php",{
+        __lib:"user_option",
+        __act:"set",
+        raw:3,
+        add:id,
     })
 }

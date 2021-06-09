@@ -121,13 +121,14 @@ export default {
     updateParams() {
       let fid = this.$route.params.fid;
       let page = this.$route.params.page;
+      let stid = this.$route.params.stid;
       this.$store.commit("navi/setParams", {
         key: "thread",
-        params: [fid, page],
+        params: [fid, page,stid],
       })
       this.refreshNavi();
-
-      this.$store.dispatch("thread/getThreads", {fid, page}).then(res => {
+      console.log({fid, page,stid})
+      this.$store.dispatch("thread/getThreads", {fid, page,stid}).then(res => {
         this.handlePageData(res)
       })
     }

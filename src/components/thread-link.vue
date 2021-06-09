@@ -1,12 +1,14 @@
 <template>
   <el-row>
     <el-col :span="data.parent?19:24">
-      <el-link
-          :style="threadColor(data.titlefont||data.topic_misc)"
-          :href="getUrl()" target="_blank"
-      >
-        {{ data.subject }}
-      </el-link>
+      <router-link :to="getUrl()" style="text-decoration: none">
+        <el-link
+            :style="threadColor(data.titlefont||data.topic_misc)"
+            :href="getUrl()"
+        >
+          {{ data.subject }}
+        </el-link>
+      </router-link>
       <el-pagination v-if="data.replies>=20"
                      :current-page="currentPage"
                      layout="pager"
@@ -19,7 +21,7 @@
 
     <el-col v-if="data.parent" :span="data.parent?5:0">
       <el-tag v-if="data.parent['2']==='版面镜像'">版面镜像</el-tag>
-      <router-link v-if="data.parent['2']!==`版面镜像`" :to="'/thread/'+data.parent['0']+'/1'">[{{ data.parent['2'] }}]</router-link>
+      <span v-if="data.parent['2']!==`版面镜像`">[{{ data.parent['2'] }}]</span>
     </el-col>
 
   </el-row>
@@ -28,6 +30,7 @@
 <script>
 import {copyObj} from "@/assets/js/utils";
 import {titleStyle} from "@/assets/js/colorMap";
+import {getRoute} from "@/assets/js/api/routerUtils";
 
 export default {
   name: "thread-link",
@@ -48,13 +51,16 @@ export default {
       this.myData = obj ? copyObj(obj) : [];
     },
     getUrl() {
-      let tid = 'https://bbs.nga.cn/read.php?tid=';
-      let fid = 'https://bbs.nga.cn/thread.php?fid=';
       let parent = this.data.parent;
       if (parent && parent["2"] === '版面镜像') {
-        return fid + this.data["topic_misc_var"]["3"]
+        return getRoute(["thread",this.data["topic_misc_var"]["3"],1])
       }
-      return tid + this.data.tid;
+      let stid = this.data["topic_misc_var"]
+      if (stid && stid["1"]) {
+        //  合集
+        return getRoute(["thread",this.$route.params.fid,1,this.data.tid])
+      }
+      return getRoute(["read",this.data.tid,1])
     }
   },
   mounted() {
