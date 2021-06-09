@@ -17,7 +17,12 @@
       </el-pagination>
     </el-header>
     <!--suppress HtmlUnknownTag -->
-    <el-main></el-main>
+    <el-main>
+      <el-table :data="replies">
+        <el-table-column prop="content"></el-table-column>
+      </el-table>
+
+    </el-main>
     <el-footer>
       <el-pagination
           :current-page.sync="pagination.page"
@@ -46,6 +51,7 @@ export default {
         total: 20,
       },
       breadcrumbs:[],
+      replies:[],
     }
   },
   methods: {
@@ -100,6 +106,8 @@ export default {
        Object.keys(res.__U).filter(key=>!isNaN(key)).forEach(uid=>{
           this.$store.commit("account/saveUser",res.__U[uid])
        })
+
+       this.replies = res.__R;
      })
     },
   },
