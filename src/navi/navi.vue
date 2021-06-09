@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import {getCookie} from "@/assets/js/cookieUtils";
+import {getCookie, getCookieMap} from "@/assets/js/cookieUtils";
 import {getCache} from "@/assets/js/storageUtils";
 
 export default {
@@ -36,6 +36,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("forum/getFavForum")
+    console.log(getCookieMap())
   }
 }
 

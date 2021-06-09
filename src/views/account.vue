@@ -3,9 +3,13 @@
     <!--  <el-container direction="horizontal">-->
     <el-header>
       <el-button v-if="uid" type="primary" @click="uid=undefined">添加账号</el-button>
-      <el-select v-if="uid" placeholder="切换账号" v-model="selected" type="primary" @change="changeAccount">
+      <el-select  placeholder="切换账号" v-model="selected" type="primary" @change="changeAccount">
         <el-option v-for="(value,key) in accounts" :value="key" :label="key"/>
       </el-select>
+      <el-select  placeholder="移除账号" v-model="selected" type="primary" @change="delAccount">
+        <el-option v-for="(value,key) in accounts" :value="key" :label="key"/>
+      </el-select>
+
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
@@ -29,7 +33,7 @@
 import {getCookie, setCookies} from "@/assets/js/cookieUtils";
 import Money from "@/components/money";
 import UserInfo from "@/components/user-info";
-import {getCacheByPrefix} from "@/assets/js/storageUtils";
+import {delCache, getCacheByPrefix} from "@/assets/js/storageUtils";
 import {searchForum} from "@/assets/js/api/forum";
 
 export default {
@@ -52,6 +56,12 @@ export default {
     },
     getUid() {
       return getCookie("ngaPassportUid");
+    },
+    delAccount(key){
+      let cookie = this.accounts[key];
+      let accountKey = "account "+cookie.username
+      delCache(accountKey)
+      this.selected = undefined
     },
     changeAccount(key) {
       let cookie = this.accounts[key];

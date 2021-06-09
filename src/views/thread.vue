@@ -1,31 +1,44 @@
 <template>
   <el-container direction="vertical">
     <!--  <el-container direction="horizontal">-->
-    <el-header></el-header>
+    <el-header>
+      <div>
+        <el-button type="primary" @click="updateThreads">刷新</el-button>
+      </div>
+      <el-pagination
+          :current-page.sync="pagination.page"
+          :page-size.sync="pagination.size"
+          :total="pagination.total"
+          layout="prev, pager, next, jumper"
+          @current-change="page">
+      </el-pagination>
+    </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
       <el-table :data="threads">
         <el-table-column label="#" width="40px">
           <template #default="s">
-            {{s.$index+1}}
+            {{ s.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="回复" width="60px" prop="replies" />
+        <el-table-column label="回复" width="60px" prop="replies"/>
         <el-table-column label="主题">
           <template #default="s">
-            <el-link :href="'https://bbs.nga.cn/read.php?tid='+s.row.tid" target="_blank"> {{ s.row.subject }}</el-link>
+            <thread-link :data="s.row" />
           </template>
         </el-table-column>
         <el-table-column label="作者/发布时间" width="170px">
           <template #default="s">
             <span v-if="s.row.author.startsWith('#anony_')">匿名用户</span>
             <div>
-              <el-link :href="'https://bbs.nga.cn/nuke.php?func=ucp&uid='+s.row.authorid" target="_blank"
-                       v-if="!s.row.author.startsWith('#anony_')">
-                {{ s.row.author.length < 25 ? s.row.author : "[用户名异常]" }}
+              <el-link
+                  :href="'https://bbs.nga.cn/nuke.php?func=ucp&uid='+s.row.authorid" target="_blank"
+                  v-if="!s.row.author.startsWith('#anony_')"
+              >
+                {{ s.row.author.length < 20 ? s.row.author : "[用户名异常]" }}
               </el-link>
             </div>
-            <datetime :data="s.row.postdate" />
+            <datetime :data="s.row.postdate"/>
           </template>
         </el-table-column>
         <el-table-column label="最后回复" width="160px">
@@ -36,7 +49,7 @@
                 }}
               </el-link>
             </div>
-            <datetime :data="s.row.lastpost" />
+            <datetime :data="s.row.lastpost"/>
           </template>
         </el-table-column>
 
@@ -59,10 +72,12 @@
 <script>
 import {thread} from "@/assets/js/api/api";
 import Datetime from "@/components/datetime";
+import {titleStyle} from "@/assets/js/colorMap";
+import ThreadLink from "@/components/thread-link";
 
 export default {
   name: "thread",
-  components: {Datetime},
+  components: {ThreadLink, Datetime},
   data() {
     return {
       pagination: {
@@ -74,6 +89,13 @@ export default {
     }
   },
   methods: {
+    updateThreads(){
+      let fid = this.$route.params.fid;
+      let page = this.$route.params.page;
+      this.$store.dispatch("thread/updateThreads", {fid, page}).then(res => {
+        this.handlePageData(res)
+      })
+    },
     page(e) {
       this.$route.params.page = e;
       this.$router.push(this.$route)

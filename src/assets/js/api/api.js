@@ -1,8 +1,10 @@
+// noinspection SpellCheckingInspection
+
 import {request} from "@/assets/js/api/nga-request";
 
-export const thread = (fid, page = 1) => {
+export const thread = (fid, page = 1,stid) => {
     return request.get("thread.php", {
-        params: {fid, page}
+        params: {fid, page,stid}
     }).then(res=>{
         return res.data
     })

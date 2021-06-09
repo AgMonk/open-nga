@@ -9,7 +9,9 @@ export const request = axios.create({
         "Cache-Control": "max-age=0",
     },
     params: {
-        __output: 11
+        __output: 11,
+        __inchst: "UTF8",
+
     }
 })
 
