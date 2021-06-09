@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="data.parent?19:24">
+    <el-col :span="['topic_misc_var']?19:24">
       <router-link :to="getUrl()" style="text-decoration: none">
         <el-link
             :style="threadColor(data.titlefont||data.topic_misc)"
@@ -19,9 +19,13 @@
       />
     </el-col>
 
-    <el-col v-if="data.parent" :span="data.parent?5:0">
-      <el-tag v-if="data.parent['2']==='版面镜像'">版面镜像</el-tag>
-      <span v-if="data.parent['2']!==`版面镜像`">[{{ data.parent['2'] }}]</span>
+    <el-col v-if="data.parent || data['topic_misc_var']" :span="(data.parent || data['topic_misc_var'])?5:0">
+<!--     版面镜像入口-->
+      <el-tag v-if="data['topic_misc_var']&&data['topic_misc_var']['1']===32">版面镜像</el-tag>
+<!--      镜像版面主题标记-->
+      <span v-if="data.parent&&data.parent['2']!==`版面镜像`">[{{ data.parent['2'] }}]</span>
+<!--      合集入口-->
+      <el-tag v-if="data['topic_misc_var']&&data['topic_misc_var']['1']===33">版面合集</el-tag>
     </el-col>
 
   </el-row>

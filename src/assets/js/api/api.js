@@ -1,12 +1,13 @@
 // noinspection SpellCheckingInspection
 
 import {request} from "@/assets/js/api/nga-request";
+import axios from "axios";
 
 export const thread = ({fid, page = 1, stid}) => {
-    let params = stid?{page,stid}:{fid, page};
+    let params = stid ? {page, stid} : {fid, page};
     return request.get("thread.php", {
         params
-    }).then(res=>{
+    }).then(res => {
         return res.data
     })
 }
@@ -21,53 +22,60 @@ export const userInfo = (uid) => {
     })
 }
 //查询收藏版面列表
-export const getFavForum = () =>{
-    return request.get("nuke.php",{
-        params:{
-            __lib:"forum_favor2",
-            __act:"forum_favor",
-            action:"get",
+export const getFavForum = () => {
+    return request.get("nuke.php", {
+        params: {
+            __lib: "forum_favor2",
+            __act: "forum_favor",
+            action: "get",
         }
     })
 }
 //添加收藏版面
-export const addFavForum = (fid) =>{
-    return request.get("nuke.php",{
-        params:{
-            __lib:"forum_favor2",
-            __act:"forum_favor",
-            action:"add",
+export const addFavForum = (fid) => {
+    return request.get("nuke.php", {
+        params: {
+            __lib: "forum_favor2",
+            __act: "forum_favor",
+            action: "add",
             fid
         }
     })
 }
 //添加收藏版面
-export const delFavForum = (fid) =>{
-    return request.get("nuke.php",{
-        params:{
-            __lib:"forum_favor2",
-            __act:"forum_favor",
-            action:"del",
+export const delFavForum = (fid) => {
+    return request.get("nuke.php", {
+        params: {
+            __lib: "forum_favor2",
+            __act: "forum_favor",
+            action: "del",
             fid
         }
     })
 }
 
 //关注 合集或子版面
-export const follow = (id) =>{
-    return request.post("nuke.php",{
-        __lib:"user_option",
-        __act:"set",
-        raw:3,
-        del:id,
+export const follow = (id) => {
+    return request.get("nuke.php", {
+        params: {
+            __lib: "user_option",
+            __act: "set",
+            raw: 3,
+            del: id,
+        }
     })
 }
 //取消关注 合集或子版面
-export const unFollow = (id) =>{
-    return request.post("nuke.php",{
-        __lib:"user_option",
-        __act:"set",
-        raw:3,
-        add:id,
+export const unFollow = (id) => {
+    return axios({
+        url:"/api/nuke.php",
+        method: "POST",
+        params: {
+            __output:11,
+            __lib: "user_option",
+            __act: "set",
+            raw: 3,
+            add: id,
+        }
     })
 }

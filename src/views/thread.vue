@@ -21,7 +21,14 @@
             {{ s.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column label="回复" width="60px" prop="replies"/>
+        <el-table-column label="回复" prop="replies" width="60px">
+          <template #default="s">
+            <span v-if="!s.row['topic_misc_var']||!s.row['topic_misc_var']['1']">{{s.row.replies}}</span>
+            <span v-if="s.row['topic_misc_var']&&s.row['topic_misc_var']['1']" size="mini" type="danger" @click="unFollow(s.row.tid)">
+              <i class="el-icon-close" />
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column label="主题">
           <template #default="s">
             <thread-link :data="s.row" />
@@ -70,9 +77,8 @@
 </template>
 
 <script>
-import {thread} from "@/assets/js/api/api";
+import {thread, unFollow} from "@/assets/js/api/api";
 import Datetime from "@/components/datetime";
-import {titleStyle} from "@/assets/js/colorMap";
 import ThreadLink from "@/components/thread-link";
 
 export default {
@@ -89,10 +95,22 @@ export default {
     }
   },
   methods: {
+    unFollow(id){
+      if (!confirm("取消关注？")) {
+        return
+      }
+      unFollow(id).then(res=>{
+        if (res.data) {
+          this.$message(res.data[0])
+          this.updateThreads()
+        }
+      })
+    },
     updateThreads(){
       let fid = this.$route.params.fid;
       let page = this.$route.params.page;
-      this.$store.dispatch("thread/updateThreads", {fid, page}).then(res => {
+      let stid = this.$route.params.stid;
+      this.$store.dispatch("thread/updateThreads", {fid, page,stid}).then(res => {
         this.handlePageData(res)
       })
     },
