@@ -12,6 +12,14 @@ export const thread = ({fid, page = 1, stid}) => {
     })
 }
 
+export const read = (tid,page = 1) =>{
+    return request.get("read.php", {
+        params:{tid,page}
+    }).then(res => {
+        return res.data
+    })
+}
+
 export const userInfo = (uid) => {
     return request.get("nuke.php", {
         params: {

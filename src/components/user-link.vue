@@ -1,16 +1,16 @@
 <template>
  <span v-if="username">
    <span v-if="username.startsWith('#anony_')">匿名用户</span>
-   <router-link v-if="!username.startsWith('#anony_')" :to="'/account/'+id" style="text-decoration: none">
-     <el-link :href="'/account/'+id">{{$store.state.account.users[id].username}}</el-link>
-<!--     <el-link :href="'/account/'+id">{{username}}</el-link>-->
-   </router-link>
+   <my-router-link :params="[id]" :text="$store.state.account.users[id].username" router="account" />
  </span>
 </template>
 
 <script>
+import MyRouterLink from "@/components/my-router-link";
+
 export default {
   name: "user-link",
+  components: {MyRouterLink},
   data() {
     return {
       myData: {}

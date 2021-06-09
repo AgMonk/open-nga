@@ -9,11 +9,6 @@ export default {
         threads: {},
     },
     mutations: {
-        setForum(state, {fid, page,stid}) {
-            state.fid = fid
-            state.page = page
-            state.stid = stid
-        },
     },
     actions: {
         method({dispatch, commit, state}) {

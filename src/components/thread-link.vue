@@ -1,14 +1,7 @@
 <template>
   <el-row>
     <el-col :span="['topic_misc_var']?19:24">
-      <router-link :to="getUrl()" style="text-decoration: none">
-        <el-link
-            :style="threadColor(data.titlefont||data.topic_misc)"
-            :href="getUrl()"
-        >
-          {{ data.subject }}
-        </el-link>
-      </router-link>
+      <my-router-link :link-style="threadColor(data.titlefont||data.topic_misc)" :text="data.subject" :url="getUrl()" />
       <el-pagination v-if="data.replies>=20"
                      :current-page="currentPage"
                      layout="pager"
@@ -35,9 +28,11 @@
 import {copyObj} from "@/assets/js/utils";
 import {titleStyle} from "@/assets/js/colorMap";
 import {getRoute} from "@/assets/js/api/routerUtils";
+import MyRouterLink from "@/components/my-router-link";
 
 export default {
   name: "thread-link",
+  components: {MyRouterLink},
   data() {
     return {
       currentPage: 1,
@@ -64,7 +59,10 @@ export default {
         //  合集
         return getRoute(["thread",this.$route.params.fid,1,this.data.tid])
       }
-      return getRoute(["read",this.data.tid,1])
+      if (this.data.tid) {
+        return getRoute(["read", this.data.tid, 1])
+      }
+      return  ""
     }
   },
   mounted() {

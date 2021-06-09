@@ -145,7 +145,7 @@ export default {
       this.$store.commit("navi/setShow")
       this.$nextTick(() => this.$store.commit("navi/setShow"))
     },
-    //强制更新主题列表
+    //更新主题列表
     updateParams() {
       let fid = this.$route.params.fid;
       let page = this.$route.params.page;
@@ -155,7 +155,6 @@ export default {
         params: [fid, page, stid],
       })
       this.refreshNavi();
-      console.log({fid, page, stid})
       this.$store.dispatch("thread/getThreads", {fid, page, stid}).then(res => {
         this.handlePageData(res)
       })
