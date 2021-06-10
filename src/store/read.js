@@ -44,7 +44,7 @@ export default {
                 }
                 res.__R.forEach(reply => {
 
-                //  复制声望数据
+                    //  复制声望数据
                     let uid = reply.authorid;
                     let info = {uid}
                     reply.userInfo = info
@@ -65,6 +65,14 @@ export default {
                         reply.authorid = username;
                         info.uid = username;
                     }
+
+                    // 最后编辑
+                    let alterinfo = reply.alterinfo
+                    if (alterinfo && alterinfo.length > 0) {
+                        alterinfo = alterinfo.split(" ")[0].substring(2)
+                        reply.lastEdit = new Date(alterinfo * 1000).format("yyyy-MM-dd hh:mm:ss")
+                    }
+                    reply.postdate = new Date(reply.postdatetimestamp * 1000).format("yyyy-MM-dd hh:mm:ss")
                 })
 
 

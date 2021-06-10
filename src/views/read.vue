@@ -1,13 +1,13 @@
 <template>
   <el-container direction="vertical">
     <!--  <el-container direction="horizontal">-->
-    <el-header height="90px">
+    <el-header height="100px">
       <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 10px">
         <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i">
           <my-router-link :params="item.params" :router="item.router" :text="item.text"/>
         </el-breadcrumb-item>
       </el-breadcrumb>
-      <el-button type="primary" @click="updateDetails">刷新</el-button>
+      <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新</el-button>
       <el-pagination
           :current-page.sync="pagination.page"
           :page-size.sync="pagination.size"
@@ -19,26 +19,34 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-      <el-table :data="replies">
-        <el-table-column width="250px">
-          <template #header>
-            用户
-          </template>
-          <template #default="s">
-            <reply-user-card :data="s.row.userInfo" />
-          </template>
-        </el-table-column>
-        <el-table-column>
-          <template #header>
-            正文
-          </template>
-          <template #default="s">
-            {{ s.row.content }}
-          </template>
-        </el-table-column>
+<!--      <el-table :data="replies">-->
+<!--        <el-table-column width="250px">-->
+<!--          <template #header>-->
+<!--            用户-->
+<!--          </template>-->
+<!--          <template #default="s">-->
+<!--            <reply-user-card :data="s.row.userInfo" />-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+<!--        <el-table-column>-->
+<!--          <template #header>-->
+<!--            正文-->
+<!--          </template>-->
+<!--          <template #default="s">-->
+<!--            <reply-content-card :data="s.row" />-->
+<!--          </template>-->
+<!--        </el-table-column>-->
 
-      </el-table>
+<!--      </el-table>-->
+    <el-row v-for="(row,i) in replies" :key="i">
+      <el-col :span="6">
+        <reply-user-card :data="row.userInfo" />
+      </el-col>
+      <el-col :span="18">
+        <reply-content-card :data="row" />
+      </el-col>
 
+    </el-row>
     </el-main>
     <el-footer>
       <el-pagination
@@ -57,10 +65,11 @@
 <script>
 import MyRouterLink from "@/components/my-router-link";
 import ReplyUserCard from "@/components/reply-user-card";
+import ReplyContentCard from "@/components/reply-content-card";
 
 export default {
   name: "read",
-  components: {ReplyUserCard, MyRouterLink},
+  components: {ReplyContentCard, ReplyUserCard, MyRouterLink},
   data() {
     return {
       pagination: {
