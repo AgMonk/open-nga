@@ -3,9 +3,7 @@
     <template #header>
       <user-link :id="myData.uid" :username="myData.username" />
     </template>
-    <div v-for="o in 4" :key="o" class="text item">
-      {{'列表内容 ' + o }}
-    </div>
+    <el-tag v-if="$store.state.account.users[myData.uid]">{{$store.state.account.users[myData.uid].totalApproval}}赞</el-tag>
   </el-card>
 </template>
 
