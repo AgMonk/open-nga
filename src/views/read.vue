@@ -25,7 +25,7 @@
             用户
           </template>
           <template #default="s">
-{{s.row.userInfo}}
+            <reply-user-card :data="s.row.userInfo" />
           </template>
         </el-table-column>
         <el-table-column>
@@ -56,10 +56,11 @@
 
 <script>
 import MyRouterLink from "@/components/my-router-link";
+import ReplyUserCard from "@/components/reply-user-card";
 
 export default {
   name: "read",
-  components: {MyRouterLink},
+  components: {ReplyUserCard, MyRouterLink},
   data() {
     return {
       pagination: {
