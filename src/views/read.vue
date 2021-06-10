@@ -1,12 +1,13 @@
 <template>
   <el-container direction="vertical">
     <!--  <el-container direction="horizontal">-->
-    <el-header>
+    <el-header height="90px">
       <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 10px">
-        <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i" >
-          <my-router-link :params="item.params" :router="item.router" :text="item.text" />
+        <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i">
+          <my-router-link :params="item.params" :router="item.router" :text="item.text"/>
         </el-breadcrumb-item>
       </el-breadcrumb>
+      <el-button type="primary" @click="updateDetails">刷新</el-button>
       <el-pagination
           :current-page.sync="pagination.page"
           :page-size.sync="pagination.size"
@@ -50,8 +51,8 @@ export default {
         size: 20,
         total: 20,
       },
-      breadcrumbs:[],
-      replies:[],
+      breadcrumbs: [],
+      replies: [],
     }
   },
   methods: {
@@ -64,6 +65,50 @@ export default {
       this.$store.commit("navi/setShow")
       this.$nextTick(() => this.$store.commit("navi/setShow"))
     },
+    updateDetails() {
+      let tid = this.$route.params.tid;
+      let page = this.$route.params.page;
+      this.$store.dispatch("read/updateDetail", {tid, page}).then(res => {
+        this.handlePageData(res)
+        this.$message.success("刷新成功")
+      })
+    },
+    handlePageData(res) {
+      this.breadcrumbs = [];
+      //版面
+      this.breadcrumbs.push({
+        router: "thread",
+        text: res.__F.name,
+        params: [res.__T.fid, 1]
+      })
+      //主题
+      this.breadcrumbs.push({
+        router: "read",
+        text: res.__T.subject,
+        params: [res.__T.tid, 1]
+      })
+      //主题
+      this.breadcrumbs.push({
+        router: "read",
+        text: "当前第{page}页".format({page: this.$route.params.page}),
+        params: [res.__T.tid, this.$route.params.page]
+      })
+
+      //分页参数
+      this.pagination.total = res.__ROWS;
+      this.pagination.page = res.__PAGE;
+      this.pagination.size = res.__R__ROWS_PAGE;
+
+      //  用户信息
+      Object.keys(res.__U).filter(key => !isNaN(key)).forEach(uid => {
+        this.$store.commit("account/saveUser", res.__U[uid])
+        //查询赞数信息
+        this.$store.dispatch("account/userInfo", uid)
+      })
+
+      this.replies = res.__R;
+
+    },
     //更新主题详情
     updateParams() {
       let tid = this.$route.params.tid;
@@ -74,41 +119,11 @@ export default {
       })
       this.refreshNavi();
 
-    //  请求详情数据
-     this.$store.dispatch("read/getDetail",{tid,page}).then(res=>{
-       console.log(res)
-       this.breadcrumbs = [];
-       //版面
-       this.breadcrumbs.push({
-         router:"thread",
-         text:res.__F.name,
-         params:[res.__T.fid,1]
-       })
-       //主题
-       this.breadcrumbs.push({
-         router:"read",
-         text:res.__T.subject,
-         params:[res.__T.tid,1]
-       })
-      //主题
-       this.breadcrumbs.push({
-         router:"read",
-         text:"当前第{page}页".format({page:this.$route.params.page}),
-         params:[res.__T.tid,this.$route.params.page]
-       })
-
-       //分页参数
-       this.pagination.total = res.__ROWS;
-       this.pagination.page = res.__PAGE;
-       this.pagination.size = res.__R__ROWS_PAGE;
-
-     //  用户信息
-       Object.keys(res.__U).filter(key=>!isNaN(key)).forEach(uid=>{
-          this.$store.commit("account/saveUser",res.__U[uid])
-       })
-
-       this.replies = res.__R;
-     })
+      //  请求详情数据
+      this.$store.dispatch("read/getDetail", {tid, page}).then(res => {
+        console.log(res)
+        this.handlePageData(res)
+      })
     },
   },
   watch: {

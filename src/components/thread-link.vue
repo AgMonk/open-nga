@@ -6,7 +6,7 @@
                      :current-page="currentPage"
                      layout="pager"
                      :pager-count="5"
-                     :total="data.replies"
+                     :total="data.replies+1"
                      :page-size="20"
                      @current-change="currentChange"
       />
@@ -41,9 +41,7 @@ export default {
   },
   methods: {
     currentChange(e) {
-      let tid = 'https://bbs.nga.cn/read.php?tid=';
-      let url = tid + this.data.tid + "&page=" + e;
-      window.open(url)
+      this.$router.push(getRoute(["read",this.data.tid,e]))
     },
     threadColor: titleStyle,
     copy(obj) {

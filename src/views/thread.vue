@@ -105,6 +105,7 @@ export default {
       let stid = this.$route.params.stid;
       this.$store.dispatch("thread/updateThreads", {fid, page, stid}).then(res => {
         this.handlePageData(res)
+        this.$message.success("刷新成功")
       })
     },
     page(e) {

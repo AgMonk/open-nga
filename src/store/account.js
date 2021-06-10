@@ -45,7 +45,7 @@ export default {
             if (!state.users[info.uid]) {
                 state.users[info.uid] = {}
             }
-            Object.keys(info).forEach(key=>{
+            Object.keys(info).forEach(key => {
                 // console.log("更新 uid = "+info.uid+" 字段 "+key+" = "+ info[key])
                 if (info[key]) {
                     state.users[info.uid][key] = info[key];
@@ -71,6 +71,11 @@ export default {
             })
         },
         userInfo({dispatch, commit, state}, uid) {
+            if (state.users[uid] && state.users[uid].totalApproval) {
+                return new Promise(resolve => {
+                    resolve(state.users[uid])
+                })
+            }
             return userInfo(uid).then(res => {
                 let info = res.data[0];
                 commit("saveUser", info)

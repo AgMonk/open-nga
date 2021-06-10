@@ -1,7 +1,8 @@
 <template>
  <span v-if="username">
    <span v-if="username.startsWith('#anony_')">匿名用户</span>
-   <my-router-link :params="[id]" :text="$store.state.account.users[id].username" router="account" />
+   <my-router-link v-if="!username.startsWith('#anony_')"
+                   :params="[id]" :text="$store.state.account.users[id].username" router="account" />
  </span>
 </template>
 

@@ -1,14 +1,16 @@
 <template>
 
-  <el-form :model="myData" label-width="80px"  v-if="show">
+  <el-form v-if="show" :model="myData" label-width="80px">
     <el-form-item label="用户名">{{ myData.username }}</el-form-item>
     <el-form-item label="用户ID">{{ myData.uid }}</el-form-item>
-    <el-form-item label="威望">{{ myData.rvrc/10 }}</el-form-item>
+    <el-form-item label="威望">{{ myData.rvrc / 10 }}</el-form-item>
     <el-form-item label="注册时间">{{ myData.regDate }}</el-form-item>
     <el-form-item label="用户组">{{ myData.group }}({{ myData.gid }})</el-form-item>
-    <el-form-item label="金钱"><money :data="myData.money" /> </el-form-item>
-<!--    <el-form-item label="金钱">{{myData.moneyString}}</el-form-item>-->
-    <el-form-item label="总赞数">{{ myData.totalApproval}}</el-form-item>
+    <el-form-item label="金钱">
+      <money :data="myData.money"/>
+    </el-form-item>
+    <!--    <el-form-item label="金钱">{{myData.moneyString}}</el-form-item>-->
+    <el-form-item label="总赞数">{{ myData.totalApproval }}</el-form-item>
     <el-form-item label="邮箱" v-if="myData.email">{{ myData.email }}</el-form-item>
     <el-form-item label="电话" v-if="myData.phone">{{ myData.phone }}</el-form-item>
     <el-form-item label="发帖数" v-if="myData.posts">{{ myData.posts }}</el-form-item>
@@ -24,7 +26,7 @@ export default {
   components: {Money},
   data() {
     return {
-      show:false,
+      show: false,
       myData: {}
     }
   },
@@ -32,18 +34,12 @@ export default {
     getUserInfo(uid) {
       this.show = false;
       // this.myData = this.$store
-      let data = this.$store.state.account.users[uid]
       // console.log(data)
-      if (!data || !data.group) {
-        this.$store.dispatch("account/userInfo", uid).then(res => {
-          console.log(res)
-          this.myData = this.$store.state.account.users[uid];
-          this.show = true;
-        })
-      }else{
-        this.myData = data;
+      this.$store.dispatch("account/userInfo", uid).then(res => {
+        console.log(res)
+        this.myData = this.$store.state.account.users[uid];
         this.show = true;
-      }
+      })
     }
   },
   mounted() {
