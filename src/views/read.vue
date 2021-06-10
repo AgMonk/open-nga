@@ -20,7 +20,23 @@
     <!--suppress HtmlUnknownTag -->
     <el-main>
       <el-table :data="replies">
-        <el-table-column prop="content"></el-table-column>
+        <el-table-column width="250px">
+          <template #header>
+            用户
+          </template>
+          <template #default="s">
+{{s.row.userInfo}}
+          </template>
+        </el-table-column>
+        <el-table-column>
+          <template #header>
+            正文
+          </template>
+          <template #default="s">
+            {{ s.row.content }}
+          </template>
+        </el-table-column>
+
       </el-table>
 
     </el-main>
@@ -101,9 +117,11 @@ export default {
 
       //  用户信息
       Object.keys(res.__U).filter(key => !isNaN(key)).forEach(uid => {
-        this.$store.commit("account/saveUser", res.__U[uid])
-        //查询赞数信息
-        this.$store.dispatch("account/userInfo", uid)
+        if (uid > 0) {
+          this.$store.commit("account/saveUser", res.__U[uid])
+          //查询赞数信息
+          this.$store.dispatch("account/userInfo", uid)
+        }
       })
 
       this.replies = res.__R;

@@ -51,6 +51,7 @@ export default {
                     state.users[info.uid][key] = info[key];
                 }
             })
+            // console.log(state.users[info.uid])
             // let userInfo = Object.assign({}, state.users[info.uid], info);
             // state.users[info.uid] = userInfo;
 
@@ -76,8 +77,19 @@ export default {
                     resolve(state.users[uid])
                 })
             }
+            if (isNaN(uid)){
+                let u = {
+                    uid,
+                    username:uid,
+                }
+                commit("saveUser",u)
+                return new Promise(resolve => {
+                    resolve(u)
+                })
+            }
             return userInfo(uid).then(res => {
                 let info = res.data[0];
+                delete  info.rvrc
                 commit("saveUser", info)
                 return info
             })
