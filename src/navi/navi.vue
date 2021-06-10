@@ -15,7 +15,6 @@
 
 <script>
 import {getCookie, getCookieMap} from "@/assets/js/cookieUtils";
-import {getCache} from "@/assets/js/storageUtils";
 
 export default {
   name: "navi",
@@ -37,6 +36,13 @@ export default {
   mounted() {
     this.$store.dispatch("forum/getFavForum")
     console.log(getCookieMap())
+
+    this.$store.commit("navi/setParams",{
+      key:"account",
+      params:[getCookie("ngaPassportUid")]
+    })
+    this.refreshNavi()
+
   }
 }
 

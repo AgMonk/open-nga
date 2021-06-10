@@ -1,5 +1,4 @@
 // 导航栏
-import {getCookie} from "@/assets/js/cookieUtils";
 
 export default {
     namespaced: true,
@@ -9,7 +8,7 @@ export default {
             "forum": {path: "/forum", title: "收藏版面"},
             "thread": {path: "/thread", title: "主题列表"},
             "read": {path: "/read", title: "主题详情"},
-            "account": {path: "/account/"+getCookie("ngaPassportUid"), title: "用户中心"},
+            "account": {path: "/account", title: "用户中心"},
         },
         params: {
             "thread": [],
