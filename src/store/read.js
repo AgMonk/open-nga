@@ -44,6 +44,8 @@ export default {
                 }
                 Object.keys(res.__R).forEach(key => {
                     let reply = res.__R[key];
+                    // 发布时间格式化
+                    reply.postdate = new Date(reply.postdatetimestamp * 1000).format("yyyy-MM-dd hh:mm:ss")
                     //  复制声望数据
                     let uid = reply.authorid;
                     let info = {uid}
@@ -66,13 +68,48 @@ export default {
                         info.uid = username;
                     }
 
-                    // 最后编辑
-                    let alterinfo = reply.alterinfo
-                    if (alterinfo && alterinfo.length > 0) {
-                        alterinfo = alterinfo.split(" ")[0].substring(2)
-                        reply.lastEdit = new Date(alterinfo * 1000).format("yyyy-MM-dd hh:mm:ss")
+                    // 修改记录
+                    if (reply.alterinfo.length > 0) {
+                        reply.alterinfo.split("]")
+                            .filter(s => s !== '')
+                            .map(s => s.replace("[", ""))
+                            .map(s => {
+                                return {
+                                    type: s[0],
+                                    data: s.substring(1).split(" ")
+                                }
+                            })
+                            .forEach(log => {
+                                if (log.type === "E") {
+                                    // 编辑记录
+                                    reply.lastEdit = new Date(log.data[0] * 1000).format("yyyy-MM-dd hh:mm:ss")
+                                }
+                                if (log.type === "L") {
+                                    // 禁言
+                                    reply.operationLog = reply.operationLog ? reply.operationLog : [];
+                                    reply.operationLog.push({
+                                        //L6 0 0 300 20 引战/转进/AOE
+                                        type: "禁言",
+                                        days: log.data[0],
+                                        reputation: log.data[3],
+                                        rvrc: log.data[4] / 10,
+                                        reason: log.data[5],
+                                    })
+                                }
+                                if (log.type === "U") {
+                                    // 取消操作
+                                    reply.operationLog = reply.operationLog ? reply.operationLog : [];
+                                    reply.operationLog.push({
+                                        // [U0 0 0 UB105]
+                                        type: "取消操作",
+                                        days: log.data[0],
+                                        reputation: log.data[1],
+                                        rvrc: log.data[2] / 10,
+                                    })
+                                }
+                            })
                     }
-                    reply.postdate = new Date(reply.postdatetimestamp * 1000).format("yyyy-MM-dd hh:mm:ss")
+
                 })
 
 
