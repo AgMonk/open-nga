@@ -9,6 +9,8 @@ const routes = [
   {path: "/thread/:fid/:page",name:"thread",component:()=>import("../views/thread"),},
   {path: "/account/:uid",name:"account",component:()=>import("../views/account"),},
   {path: "/read/:tid/:page",name:"read",component:()=>import("../views/read"),},
+  {path: "/read/:tid/:page/:authorid",name:"readOnly",component:()=>import("../views/read"),},
+  {path: "/read/:pid",name:"readReply",component:()=>import("../views/read"),},
 ]
 
 const router = createRouter({

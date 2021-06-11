@@ -12,9 +12,10 @@ export const thread = ({fid, page = 1, stid}) => {
     })
 }
 
-export const read = (tid,page = 1) =>{
+export const read = ({tid, page = 1,authorid, pid}) =>{
+    let params = pid ? {pid}:{tid,page,authorid}
     return request8.get("read.php", {
-        params:{tid,page}
+        params
     }).then(res => {
         return res.data
     })

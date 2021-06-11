@@ -24,8 +24,7 @@
         <el-table-column label="回复" prop="replies" width="60px">
           <template #default="s">
             <span v-if="!s.row['topic_misc_var']||!s.row['topic_misc_var']['1']">{{ s.row.replies }}</span>
-            <span v-if="s.row['topic_misc_var']&&s.row['topic_misc_var']['1']" size="mini" type="danger"
-                  @click="unFollow(s.row.tid)">
+            <span v-if="s.row['topic_misc_var']&&s.row['topic_misc_var']['1']" @click="unFollow(s.row.tid)">
               <i class="el-icon-close"/>
             </span>
           </template>
@@ -134,7 +133,7 @@ export default {
           username: thread.author
         }
       }).forEach(user => {
-        if (!this.$store.state.account.users[user.uid]||!this.$store.state.account.users[user.uid].username) {
+        if (!this.$store.state.account.users[user.uid] || !this.$store.state.account.users[user.uid].username) {
           this.$store.commit("account/saveUser", user)
         }
       })

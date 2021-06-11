@@ -5,6 +5,7 @@
       <el-row>
         <el-tag class="miniTag" size="mini">#{{ myData.lou }}</el-tag>
         <el-tag class="miniTag" size="mini">{{ myData.postdate }}</el-tag>
+        <el-tag class="miniTag" size="mini" @click="readOnly">只看</el-tag>
         <el-tag v-if="myData.lastEdit" class="miniTag" size="mini">E:{{ myData.lastEdit }}</el-tag>
       </el-row>
     </el-header>
@@ -19,6 +20,7 @@
 
 <script>
 import {copyObj} from "@/assets/js/utils";
+import {getRoute} from "@/assets/js/api/routerUtils";
 
 export default {
   name: "reply-content-card",
@@ -28,6 +30,11 @@ export default {
     }
   },
   methods: {
+    readOnly(){
+      let tid = this.$route.params.tid;
+      let authorid = this.myData.authorid;
+      this.$router.push(getRoute(["read",tid,1,authorid]))
+    },
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
     }

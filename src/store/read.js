@@ -13,17 +13,19 @@ export default {
         method({dispatch, commit, state}) {
 
         },
-        getDetail({dispatch, commit, state}, {tid, page}) {
-            let t = state.details[JSON.stringify({tid, page})];
+        getDetail({dispatch, commit, state}, {tid, page,authorid, pid}) {
+            let params = pid ? {pid}:{tid,page,authorid}
+            let t = state.details[JSON.stringify(params)];
             if (t) {
                 return new Promise((resolve) => {
                     resolve(t)
                 })
             }
-            return dispatch("updateDetail", {tid, page})
+            return dispatch("updateDetail", params)
         },
-        updateDetail({dispatch, commit, state}, {tid, page}) {
-            return read(tid, page).then(res => {
+        updateDetail({dispatch, commit, state},{tid, page,authorid, pid}) {
+            let params = pid ? {pid}:{tid,page,authorid}
+            return read(params).then(res => {
 
                 // 声望等级
                 let levelString = res.__F.custom_level;
@@ -113,7 +115,7 @@ export default {
                 })
 
 
-                state.details[JSON.stringify({tid, page})] = res;
+                state.details[JSON.stringify(params)] = res;
                 return res;
             })
         },

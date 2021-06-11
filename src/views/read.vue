@@ -141,14 +141,16 @@ export default {
     updateParams() {
       let tid = this.$route.params.tid;
       let page = this.$route.params.page;
+      let authorid = this.$route.params.authorid;
+      let pid = this.$route.params.pid;
       this.$store.commit("navi/setParams", {
         key: "read",
-        params: [tid, page],
+        params: pid?[pid]:(authorid?[tid,page,authorid]:[tid,page]),
       })
       this.refreshNavi();
 
       //  请求详情数据
-      this.$store.dispatch("read/getDetail", {tid, page}).then(res => {
+      this.$store.dispatch("read/getDetail", {tid, page,authorid,pid}).then(res => {
         console.log(res)
         this.handlePageData(res)
       })
