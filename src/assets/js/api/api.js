@@ -1,19 +1,19 @@
 // noinspection SpellCheckingInspection
 
-import {request} from "@/assets/js/api/nga-request";
+import {request, request8} from "@/assets/js/api/nga-request";
 import axios from "axios";
 
 export const thread = ({fid, page = 1, stid}) => {
     let params = stid ? {page, stid} : {fid, page};
-    return request.get("thread.php", {
-        params
+    return request8.get("thread.php", {
+        params,
     }).then(res => {
         return res.data
     })
 }
 
 export const read = (tid,page = 1) =>{
-    return request.get("read.php", {
+    return request8.get("read.php", {
         params:{tid,page}
     }).then(res => {
         return res.data
@@ -86,4 +86,9 @@ export const unFollow = (id) => {
             add: id,
         }
     })
+}
+export const searchForum = (keyword) => {
+    return request8("forum.php", {params: {key: keyword}}).then(res => {
+        return res.data
+    });
 }

@@ -34,7 +34,6 @@ import {getCookie, setCookies} from "@/assets/js/cookieUtils";
 import Money from "@/components/money";
 import UserInfo from "@/components/user-info";
 import {delCache, getCacheByPrefix} from "@/assets/js/storageUtils";
-import {searchForum} from "@/assets/js/api/forum";
 
 export default {
   name: "account",

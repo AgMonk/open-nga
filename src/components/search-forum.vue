@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import {searchForum} from "@/assets/js/api/forum";
+import {searchForum} from "@/assets/js/api/api";
 
 export default {
   name: "search-forum",
@@ -37,8 +37,8 @@ export default {
     search(){
       searchForum(this.keyword).then(res=>{
         this.forums = []
-        Object.keys(res.data).forEach(key=>{
-          this.forums.push(res.data[key])
+        Object.keys(res).forEach(key=>{
+          this.forums.push(res[key])
         })
         console.log(this.forums)
       })

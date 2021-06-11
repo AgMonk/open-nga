@@ -21,7 +21,7 @@ export default {
             if (info.more_info) {
                 info.totalApproval = parseInt(info.more_info[0].data);
             }
-            if (info.username && info.username.startsWith("UID")) {
+            if (info.username && info.username.toString().startsWith("UID")) {
                 delete info.username;
             }
             if (info.money) {

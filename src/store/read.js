@@ -1,5 +1,5 @@
 // 版面主题
-// noinspection SpellCheckingInspection
+// noinspection SpellCheckingInspection,JSUnresolvedVariable
 
 import {read} from "@/assets/js/api/api";
 
@@ -42,8 +42,8 @@ export default {
                         }
                     }
                 }
-                res.__R.forEach(reply => {
-
+                Object.keys(res.__R).forEach(key => {
+                    let reply = res.__R[key];
                     //  复制声望数据
                     let uid = reply.authorid;
                     let info = {uid}

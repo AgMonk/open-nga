@@ -3,8 +3,10 @@
     <template #header>
       <user-link :id="myData.uid" :username="myData.username"/>
       <div v-if="$store.state.account.users[myData.uid]">
-        <el-avatar :size="150" :src="$store.state.account.users[myData.uid].avatar" fit="scale-down"
-                   shape="square"
+        <el-avatar
+            v-if="$store.state.account.users[myData.uid].avatar && $store.state.account.users[myData.uid].avatar.length>0"
+            :error="avatarError" :size="150" :src="$store.state.account.users[myData.uid].avatar"
+                   fit="scale-down" shape="square"
         />
       </div>
     </template>
@@ -39,6 +41,9 @@ export default {
     }
   },
   methods: {
+    avatarError(e){
+      console.log(e)
+    },
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
     }
