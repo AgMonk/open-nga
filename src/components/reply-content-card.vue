@@ -7,17 +7,32 @@
                 v-clipboard:success="onCopy"
                 class="miniTag click-able"
                 size="mini"
-        >#{{ myData.lou }}</el-tag>
+        >#{{ myData.lou }}
+        </el-tag>
+        <el-tag class="miniTag" size="mini">
+          <i class="el-icon-success click-able" @click="topicRecommend(myData.tid,myData.pid,1)"/>
+          {{ myData.score }}
+          <i class="el-icon-error click-able" @click="topicRecommend(myData.tid,myData.pid,-1)"/>
+        </el-tag>
         <el-tag class="miniTag" size="mini">{{ myData.postdate }}</el-tag>
         <el-tag v-if="myData.lastEdit" class="miniTag" size="mini">E:{{ myData.lastEdit }}</el-tag>
         <el-tag class="miniTag click-able" size="mini" @click="readOnly">只看</el-tag>
+        <el-tag class="miniTag click-able" size="mini" @click="threadOnly(0)">本版主题</el-tag>
+        <el-tag class="miniTag click-able" size="mini" @click="threadOnly(1)">本版回复</el-tag>
       </el-row>
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 10px">
       {{ myData.content }}
     </el-main>
-    <el-footer style="padding: 0 10px"></el-footer>
+    <el-footer style="padding: 0 10px">
+      <div v-if="myData.operationLog">
+        <el-tag v-for="(item,i) in myData.operationLog" :key="i" :type="item.type==='禁言'?'danger':'primary'">
+          {{ item.type }}{{ item.type === '禁言' ? item.days + '天' : '' }} 声望{{ item.reputation }} 威望{{ item.rvrc }}
+          {{ item.reason }}
+        </el-tag>
+      </div>
+    </el-footer>
   </el-container>
 
 </template>
@@ -25,6 +40,7 @@
 <script>
 import {copyObj} from "@/assets/js/utils";
 import {getRoute} from "@/assets/js/api/routerUtils";
+import {topicRecommend} from "@/assets/js/api/api";
 
 export default {
   name: "reply-content-card",
@@ -34,17 +50,26 @@ export default {
     }
   },
   methods: {
-    onCopy(e){
+    threadOnly(v){
+      this.$router.push(getRoute(["thread",this.myData.fid,1,this.myData.authorid,v]))
+    },
+    topicRecommend(tid,pid,value){
+      topicRecommend(tid,pid,value).then(res=>{
+        this.$message.success(res.message)
+        this.myData.score +=res.value
+      })
+    },
+    onCopy(e) {
       this.$message.success("已复制回复地址")
     },
-    onError(e){
+    onError(e) {
       this.$message.error("复制失败")
       console.log(e)
     },
-    readOnly(){
+    readOnly() {
       let tid = this.$route.params.tid;
       let authorid = this.myData.authorid;
-      this.$router.push(getRoute(["read",tid,1,authorid]))
+      this.$router.push(getRoute(["read", tid, 1, authorid]))
     },
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
@@ -66,10 +91,11 @@ export default {
 </script>
 
 <style scoped>
-.miniTag{
+.miniTag {
   margin-left: 3px;
 }
-.click-able{
+
+.click-able {
   cursor: pointer;
 }
 </style>

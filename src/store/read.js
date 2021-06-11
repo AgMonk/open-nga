@@ -93,8 +93,8 @@ export default {
                                         //L6 0 0 300 20 引战/转进/AOE
                                         type: "禁言",
                                         days: log.data[0],
-                                        reputation: log.data[3],
-                                        rvrc: log.data[4] / 10,
+                                        reputation: log.data[3]*(-1),
+                                        rvrc: log.data[4] / 10*(-1),
                                         reason: log.data[5],
                                     })
                                 }

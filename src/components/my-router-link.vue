@@ -1,6 +1,8 @@
 <template>
   <router-link :to="url?url:getUrl()" style="text-decoration: none">
-    <el-link :href="url?url:getUrl()" :style="linkStyle">{{ text }}</el-link>
+    <el-link :href="url?url:getUrl()" :style="linkStyle">
+      <span >{{ text }}</span>
+    </el-link>
   </router-link>
 </template>
 

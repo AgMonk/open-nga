@@ -14,16 +14,14 @@ export default {
         method({dispatch, commit, state}) {
 
         },
-        getThreads({dispatch, commit, state}, {fid, page,stid}) {
-            let params = stid?{page,stid}:{fid, page};
+        getThreads({dispatch, commit, state}, params) {
             let t = state.threads[JSON.stringify(params)];
             if (t) {
                 return new Promise((resolve) => {resolve(t)})
             }
             return dispatch("updateThreads",params)
         },
-        updateThreads({dispatch, commit, state}, {fid, page,stid}) {
-            let params = stid?{page,stid}:{fid, page};
+        updateThreads({dispatch, commit, state}, params) {
             return thread(params).then(res=>{
                 state.threads[JSON.stringify(params)] = res;
                 return res;

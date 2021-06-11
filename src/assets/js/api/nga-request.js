@@ -1,7 +1,7 @@
 import axios from "axios";
 import {ElMessage} from 'element-plus';
 
-let onRejected = (error) => {
+function onRejected(error) {
     // 对响应错误做点什么
     let data = error.response.data;
     console.log(data)
@@ -35,6 +35,7 @@ request.interceptors.request.use(function (config) {
 
 
 request.interceptors.response.use(function (response) {
+
     return response.data
 }, onRejected);
 

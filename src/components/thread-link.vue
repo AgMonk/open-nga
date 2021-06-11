@@ -1,8 +1,8 @@
 <template>
   <el-row>
     <el-col :span="['topic_misc_var']?19:24">
-      <my-router-link :link-style="threadColor(data.titlefont||data.topic_misc)" :text="data.subject" :url="getUrl()" />
-      <el-pagination v-if="data.replies>=20"
+      <my-router-link :link-style="threadColor(data.titlefont||data.topic_misc)" :text="data.subject" :url="getUrl()"/>
+      <el-pagination v-if="data.replies>=20 && !data.__P"
                      :current-page="currentPage"
                      layout="pager"
                      :pager-count="5"
@@ -10,14 +10,26 @@
                      :page-size="20"
                      @current-change="currentChange"
       />
+      <div v-if="data.__P">
+        <!--        指定用户回复-->
+        <el-tag size="mini">
+          <my-router-link :url="getRoute([`read`,data.__P.pid])" text="在主题中的回复"/>
+        </el-tag>
+        <datetime :data="data.__P.postdate"/>
+        <br/>
+        <br/>
+        <div>
+          {{data.__P.content}}
+        </div>
+      </div>
     </el-col>
 
     <el-col v-if="data.parent || data['topic_misc_var']" :span="(data.parent || data['topic_misc_var'])?5:0">
-<!--     版面镜像入口-->
+      <!--     版面镜像入口-->
       <el-tag v-if="data['topic_misc_var']&&data['topic_misc_var']['1']===32">版面镜像</el-tag>
-<!--      镜像版面主题标记-->
+      <!--      镜像版面主题标记-->
       <span v-if="data.parent&&data.parent['2']!==`版面镜像`">[{{ data.parent['2'] }}]</span>
-<!--      合集入口-->
+      <!--      合集入口-->
       <el-tag v-if="data['topic_misc_var']&&data['topic_misc_var']['1']===33">版面合集</el-tag>
     </el-col>
 
@@ -29,10 +41,11 @@ import {copyObj} from "@/assets/js/utils";
 import {titleStyle} from "@/assets/js/colorMap";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import MyRouterLink from "@/components/my-router-link";
+import Datetime from "@/components/datetime";
 
 export default {
   name: "thread-link",
-  components: {MyRouterLink},
+  components: {Datetime, MyRouterLink},
   data() {
     return {
       currentPage: 1,
@@ -40,8 +53,9 @@ export default {
     }
   },
   methods: {
+    getRoute,
     currentChange(e) {
-      this.$router.push(getRoute(["read",this.data.tid,e]))
+      this.$router.push(getRoute(["read", this.data.tid, e]))
     },
     threadColor: titleStyle,
     copy(obj) {
@@ -50,17 +64,17 @@ export default {
     getUrl() {
       let parent = this.data.parent;
       if (parent && parent["2"] === '版面镜像') {
-        return getRoute(["thread",this.data["topic_misc_var"]["3"],1])
+        return getRoute(["thread", this.data["topic_misc_var"]["3"], 1])
       }
       let stid = this.data["topic_misc_var"]
       if (stid && stid["1"]) {
         //  合集
-        return getRoute(["thread",this.$route.params.fid,1,this.data.tid])
+        return getRoute(["thread", this.$route.params.fid, 1, this.data.tid])
       }
       if (this.data.tid) {
         return getRoute(["read", this.data.tid, 1])
       }
-      return  ""
+      return ""
     }
   },
   mounted() {

@@ -1,7 +1,7 @@
 <template>
   <el-container direction="vertical">
     <!--  <el-container direction="horizontal">-->
-    <el-header height="100px">
+    <el-header class="black0" height="130px">
       <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 10px">
         <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i">
           <my-router-link :params="item.params" :router="item.router" :text="item.text"/>
@@ -18,37 +18,37 @@
       </el-pagination>
     </el-header>
     <!--suppress HtmlUnknownTag -->
-    <el-main>
-<!--      <el-table :data="replies">-->
-<!--        <el-table-column width="250px">-->
-<!--          <template #header>-->
-<!--            用户-->
-<!--          </template>-->
-<!--          <template #default="s">-->
-<!--            <reply-user-card :data="s.row.userInfo" />-->
-<!--          </template>-->
-<!--        </el-table-column>-->
-<!--        <el-table-column>-->
-<!--          <template #header>-->
-<!--            正文-->
-<!--          </template>-->
-<!--          <template #default="s">-->
-<!--            <reply-content-card :data="s.row" />-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+    <el-main style="padding: 0">
+      <!--      <el-table :data="replies">-->
+      <!--        <el-table-column width="250px">-->
+      <!--          <template #header>-->
+      <!--            用户-->
+      <!--          </template>-->
+      <!--          <template #default="s">-->
+      <!--            <reply-user-card :data="s.row.userInfo" />-->
+      <!--          </template>-->
+      <!--        </el-table-column>-->
+      <!--        <el-table-column>-->
+      <!--          <template #header>-->
+      <!--            正文-->
+      <!--          </template>-->
+      <!--          <template #default="s">-->
+      <!--            <reply-content-card :data="s.row" />-->
+      <!--          </template>-->
+      <!--        </el-table-column>-->
 
-<!--      </el-table>-->
-    <el-row v-for="(row,i) in replies" :key="i">
-      <el-col :span="6">
-        <reply-user-card :data="row.userInfo" />
-      </el-col>
-      <el-col :span="18">
-        <reply-content-card :data="row" />
-      </el-col>
+      <!--      </el-table>-->
+      <el-row v-for="(row,i) in replies" :key="i" :class="'black'+i%2">
+        <el-col :span="6" >
+          <reply-user-card :data="row.userInfo" :index="i"/>
+        </el-col>
+        <el-col :span="18" >
+          <reply-content-card :data="row"/>
+        </el-col>
 
-    </el-row>
+      </el-row>
     </el-main>
-    <el-footer>
+    <el-footer class="black0">
       <el-pagination
           :current-page.sync="pagination.page"
           :page-size.sync="pagination.size"
@@ -66,6 +66,7 @@
 import MyRouterLink from "@/components/my-router-link";
 import ReplyUserCard from "@/components/reply-user-card";
 import ReplyContentCard from "@/components/reply-content-card";
+import "../assets/css/ui-color.css"
 
 export default {
   name: "read",
@@ -145,12 +146,12 @@ export default {
       let pid = this.$route.params.pid;
       this.$store.commit("navi/setParams", {
         key: "read",
-        params: pid?[pid]:(authorid?[tid,page,authorid]:[tid,page]),
+        params: pid ? [pid] : (authorid ? [tid, page, authorid] : [tid, page]),
       })
       this.refreshNavi();
 
       //  请求详情数据
-      this.$store.dispatch("read/getDetail", {tid, page,authorid,pid}).then(res => {
+      this.$store.dispatch("read/getDetail", {tid, page, authorid, pid}).then(res => {
         console.log(res)
         this.handlePageData(res)
       })

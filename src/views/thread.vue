@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import {thread, unFollow} from "@/assets/js/api/api";
+import {unFollow} from "@/assets/js/api/api";
 import Datetime from "@/components/datetime";
 import ThreadLink from "@/components/thread-link";
 import UserLink from "@/components/user-link";
@@ -98,17 +98,30 @@ export default {
         }
       })
     },
-    updateThreads() {
+    getParams(){
       let fid = this.$route.params.fid;
       let page = this.$route.params.page;
       let stid = this.$route.params.stid;
-      this.$store.dispatch("thread/updateThreads", {fid, page, stid}).then(res => {
+      // noinspection SpellCheckingInspection
+      let searchpost = this.$route.params.searchpost==="1"?1:undefined;
+      let authorid = this.$route.params.authorid;
+
+          // 搜索 指定用户在指定版面的发言 、 主题
+      // noinspection SpellCheckingInspection
+      return authorid?{fid,page,authorid,searchpost}
+              // 搜索 合集主题 或 版面主题
+              :(stid?{fid,page,stid}:{fid, page})
+      ;
+    },
+    updateThreads() {
+
+      this.$store.dispatch("thread/updateThreads", this.getParams()).then(res => {
         this.handlePageData(res)
         this.$message.success("刷新成功")
       })
     },
     page(e) {
-      this.$route.params.page = e;
+      this.$route.params.page = e?e:1;
       this.$router.push(this.$route)
     },
     //处理分页数据
@@ -116,7 +129,7 @@ export default {
       // 分页参数
       // noinspection JSCheckFunctionSignatures
       this.pagination.page = parseInt(this.$route.params.page)
-      this.pagination.total = data["__ROWS"]
+      this.pagination.total = data["__ROWS"]!==''?data["__ROWS"]:9999999;
       this.pagination.size = data["__T__ROWS_PAGE"]
 
       //主题列表
@@ -138,24 +151,22 @@ export default {
         }
       })
 
-      console.log(data)
+      // console.log(data)
     },
     refreshNavi() {
+      let params =this.$route.path.split("/")
+      this.$store.commit("navi/setParams", {
+        key: params[1],
+        params:params.splice(2,params.length-2),
+      })
       this.$store.commit("navi/updatePath")
       this.$store.commit("navi/setShow")
       this.$nextTick(() => this.$store.commit("navi/setShow"))
     },
     //更新主题列表
     updateParams() {
-      let fid = this.$route.params.fid;
-      let page = this.$route.params.page;
-      let stid = this.$route.params.stid;
-      this.$store.commit("navi/setParams", {
-        key: "thread",
-        params: [fid, page, stid],
-      })
       this.refreshNavi();
-      this.$store.dispatch("thread/getThreads", {fid, page, stid}).then(res => {
+      this.$store.dispatch("thread/getThreads", this.getParams()).then(res => {
         this.handlePageData(res)
       })
     }

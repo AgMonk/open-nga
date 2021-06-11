@@ -2,18 +2,22 @@
 
 import {request, request8} from "@/assets/js/api/nga-request";
 import axios from "axios";
+import {ElMessage} from "element-plus";
 
-export const thread = ({fid, page = 1, stid}) => {
-    let params = stid ? {page, stid} : {fid, page};
+export const thread = (params) => {
     return request8.get("thread.php", {
         params,
     }).then(res => {
+        // noinspection JSUnresolvedVariable
+        if (res.error) {
+            ElMessage.error(res.error[0])
+            throw res.error
+        }
         return res.data
     })
 }
 
-export const read = ({tid, page = 1,authorid, pid}) =>{
-    let params = pid ? {pid}:{tid,page,authorid}
+export const read = (params) => {
     return request8.get("read.php", {
         params
     }).then(res => {
@@ -77,10 +81,10 @@ export const follow = (id) => {
 //取消关注 合集或子版面
 export const unFollow = (id) => {
     return axios({
-        url:"/api/nuke.php",
+        url: "/api/nuke.php",
         method: "POST",
         params: {
-            __output:11,
+            __output: 11,
             __lib: "user_option",
             __act: "set",
             raw: 3,
@@ -92,4 +96,37 @@ export const searchForum = (keyword) => {
     return request8("forum.php", {params: {key: keyword}}).then(res => {
         return res.data
     });
+}
+//点赞 或 撤赞 value = 1 赞  value = -1 踩
+export const topicRecommend = (tid, pid, value = 1) => {
+    return request({
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        transformRequest: [
+            function (data) {
+                let ret = ''
+                for (let it in data) {
+                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                }
+                ret = ret.substring(0, ret.lastIndexOf('&'));
+                return ret
+            }
+        ],
+        url:"nuke.php",
+        method:"post",
+        data:{
+            __lib: "topic_recommend",
+            __act: "add",
+            tid,
+            pid,
+            value,
+            raw: 3,
+        }
+    }).then(res=>{
+        return {
+            message:res.data[0],
+            value:res.data[1],
+        }
+    })
 }
