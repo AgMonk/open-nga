@@ -3,10 +3,14 @@
     <!--  <el-container direction="horizontal">-->
     <el-header height="30px" style="padding: 0 10px">
       <el-row>
-        <el-tag class="miniTag" size="mini">#{{ myData.lou }}</el-tag>
+        <el-tag v-clipboard:copy="'https://bbs.nga.cn/read.php?pid='+myData.pid" v-clipboard:error="onError"
+                v-clipboard:success="onCopy"
+                class="miniTag click-able"
+                size="mini"
+        >#{{ myData.lou }}</el-tag>
         <el-tag class="miniTag" size="mini">{{ myData.postdate }}</el-tag>
-        <el-tag class="miniTag" size="mini" @click="readOnly">只看</el-tag>
         <el-tag v-if="myData.lastEdit" class="miniTag" size="mini">E:{{ myData.lastEdit }}</el-tag>
+        <el-tag class="miniTag click-able" size="mini" @click="readOnly">只看</el-tag>
       </el-row>
     </el-header>
     <!--suppress HtmlUnknownTag -->
@@ -30,6 +34,13 @@ export default {
     }
   },
   methods: {
+    onCopy(e){
+      this.$message.success("已复制回复地址")
+    },
+    onError(e){
+      this.$message.error("复制失败")
+      console.log(e)
+    },
     readOnly(){
       let tid = this.$route.params.tid;
       let authorid = this.myData.authorid;
@@ -57,5 +68,8 @@ export default {
 <style scoped>
 .miniTag{
   margin-left: 3px;
+}
+.click-able{
+  cursor: pointer;
 }
 </style>
