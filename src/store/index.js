@@ -7,6 +7,7 @@ import navi from "./navi"
 
 export default createStore({
   state: {
+    test:true,
   },
   mutations: {
   },

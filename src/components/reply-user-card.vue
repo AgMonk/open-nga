@@ -2,13 +2,7 @@
   <el-card :body-style="{ padding: '10px'}" :class="'box-card '+'black'+index%2">
     <template #header>
       <user-link :id="myData.uid" :username="myData.username"/>
-      <div v-if="$store.state.account.users[myData.uid]">
-        <el-avatar
-            v-if="$store.state.account.users[myData.uid].avatar && $store.state.account.users[myData.uid].avatar.length>0"
-            :error="avatarError" :size="150" :src="$store.state.account.users[myData.uid].avatar"
-            fit="scale-down" shape="square"
-        />
-      </div>
+      <my-avatar :uid="myData.uid" />
     </template>
     <el-form :inline="true">
       <el-form-item label="威望">
@@ -34,10 +28,11 @@
 import {copyObj} from "@/assets/js/utils";
 import UserLink from "@/components/user-link";
 import "../assets/css/ui-color.css"
+import MyAvatar from "@/components/my-avatar";
 
 export default {
   name: "reply-user-card",
-  components: {UserLink},
+  components: {MyAvatar, UserLink},
   data() {
     return {
       myData: {}

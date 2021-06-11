@@ -35,6 +35,11 @@ request.interceptors.request.use(function (config) {
 
 
 request.interceptors.response.use(function (response) {
+    let error = response.data.error;
+    if (error) {
+        ElMessage.error(error[0])
+        throw error
+    }
 
     return response.data
 }, onRejected);

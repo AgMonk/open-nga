@@ -7,6 +7,7 @@
                 v-clipboard:success="onCopy"
                 class="miniTag click-able"
                 size="mini"
+                @click.right="openUrl('https://bbs.nga.cn/read.php?pid='+myData.pid)"
         >#{{ myData.lou }}
         </el-tag>
         <el-tag class="miniTag" size="mini">
@@ -50,6 +51,9 @@ export default {
     }
   },
   methods: {
+    openUrl(url){
+      window.open(url)
+    },
     threadOnly(v){
       this.$router.push(getRoute(["thread",this.myData.fid,1,this.myData.authorid,v]))
     },
