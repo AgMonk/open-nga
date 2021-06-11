@@ -153,19 +153,8 @@ export default {
 
       // console.log(data)
     },
-    refreshNavi() {
-      let params =this.$route.path.split("/")
-      this.$store.commit("navi/setParams", {
-        key: params[1],
-        params:params.splice(2,params.length-2),
-      })
-      this.$store.commit("navi/updatePath")
-      this.$store.commit("navi/setShow")
-      this.$nextTick(() => this.$store.commit("navi/setShow"))
-    },
     //更新主题列表
     updateParams() {
-      this.refreshNavi();
       this.$store.dispatch("thread/getThreads", this.getParams()).then(res => {
         this.handlePageData(res)
       })

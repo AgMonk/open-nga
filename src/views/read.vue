@@ -87,11 +87,6 @@ export default {
       this.$route.params.page = e;
       this.$router.push(this.$route)
     },
-    refreshNavi() {
-      this.$store.commit("navi/updatePath")
-      this.$store.commit("navi/setShow")
-      this.$nextTick(() => this.$store.commit("navi/setShow"))
-    },
     updateDetails() {
       let tid = this.$route.params.tid;
       let page = this.$route.params.page;
@@ -137,6 +132,9 @@ export default {
 
       this.replies = res.__R;
 
+
+
+
     },
     //更新主题详情
     updateParams() {
@@ -144,12 +142,6 @@ export default {
       let page = this.$route.params.page;
       let authorid = this.$route.params.authorid;
       let pid = this.$route.params.pid;
-      this.$store.commit("navi/setParams", {
-        key: "read",
-        params: pid ? [pid] : (authorid ? [tid, page, authorid] : [tid, page]),
-      })
-      this.refreshNavi();
-
       //  请求详情数据
       this.$store.dispatch("read/getDetail", {tid, page, authorid, pid}).then(res => {
         console.log(res)
