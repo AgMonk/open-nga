@@ -4,6 +4,7 @@
     <el-header>
       <div>
         <el-button type="primary" @click="updateThreads">刷新</el-button>
+        <el-button type="primary" @click="newThread">发帖</el-button>
       </div>
       <el-pagination
           :current-page.sync="pagination.page"
@@ -72,6 +73,7 @@ import {unFollow} from "@/assets/js/api/api";
 import Datetime from "@/components/datetime";
 import ThreadLink from "@/components/thread-link";
 import UserLink from "@/components/user-link";
+import {getRoute} from "@/assets/js/api/routerUtils";
 
 export default {
   name: "thread",
@@ -87,6 +89,10 @@ export default {
     }
   },
   methods: {
+    newThread(){
+      let fid = this.$route.params.fid;
+      this.$router.push(getRoute(["post","new",fid,0,0,0]))
+    },
     unFollow(id) {
       if (!confirm("取消关注？")) {
         return

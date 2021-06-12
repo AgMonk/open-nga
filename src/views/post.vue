@@ -6,7 +6,7 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-        <reply-text-area :data="{subject:params.post_subject,content}" @submit="submit" />
+        <reply-text-area :content="content" :params="params" />
     </el-main>
     <el-footer></el-footer>
   </el-container>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import {doPost, prePost} from "@/assets/js/api/postApi";
+import {prePost} from "@/assets/js/api/postApi";
 import {copyObj} from "@/assets/js/utils";
 import ReplyTextArea from "@/components/reply-text-area";
 
@@ -40,15 +40,6 @@ export default {
     }
   },
   methods: {
-    submit(e){
-      console.log(e)
-      this.params.post_subject = e.subject;
-      this.content = e.content;
-
-      doPost(params,this.content+"\n"+"测试").then(res=>{
-        console.log(res)
-      })
-    }
   },
   mounted() {
     console.clear()
@@ -63,17 +54,13 @@ export default {
     }
 
     prePost(params).then(res => {
-      console.log(res)
-      this.content = res.content;
+      this.content = res.content?res.content:"";
       this.attachUrl = res.attach_url
       this.auth = res.auth;
 
       params.action = res.action;
       params.post_subject = res.subject;
       this.params = params
-      // doPost(params,this.content+"\n"+"测试").then(res=>{
-      //   console.log(res)
-      // })
     })
   },
   watch: {},

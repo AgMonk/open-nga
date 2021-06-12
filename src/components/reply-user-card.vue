@@ -1,5 +1,5 @@
 <template>
-  <el-card :body-style="{ padding: '10px'}" :class="'box-card '+'black'+index%2">
+  <el-card :body-style="{ padding: '10px'}" :class="'box-card '+'yellow'+index%2">
     <template #header>
       <user-link :id="myData.uid" :username="myData.username"/>
       <my-avatar :uid="myData.uid" />
