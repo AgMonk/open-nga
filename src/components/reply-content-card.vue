@@ -3,28 +3,33 @@
     <!--  <el-container direction="horizontal">-->
     <el-header height="30px" style="padding: 0 10px">
       <el-row>
-        <el-tag v-clipboard:copy="'https://bbs.nga.cn/read.php?pid='+myData.pid" v-clipboard:error="onError"
-                v-clipboard:success="onCopy"
-                class="miniTag click-able"
-                size="mini"
-                @click.right="openUrl('https://bbs.nga.cn/read.php?pid='+myData.pid)"
-        >#{{ myData.lou }}
-        </el-tag>
-        <el-tag class="miniTag" size="mini">
-          <i class="el-icon-success click-able" @click="topicRecommend(myData.tid,myData.pid,1)"/>
-          {{ myData.score }}
-          <i class="el-icon-error click-able" @click="topicRecommend(myData.tid,myData.pid,-1)"/>
-        </el-tag>
-        <el-tag class="miniTag" size="mini">{{ myData.postdate }}</el-tag>
-        <el-tag v-if="myData.lastEdit" class="miniTag" size="mini">E:{{ myData.lastEdit }}</el-tag>
-        <el-tag class="miniTag click-able" size="mini" @click="readOnly">只看</el-tag>
-        <el-tag class="miniTag click-able" size="mini" @click="threadOnly(0)">本版主题</el-tag>
-        <el-tag class="miniTag click-able" size="mini" @click="threadOnly(1)">本版回复</el-tag>
-        <el-tag v-if="myData.reply_to" class="miniTag click-able" size="mini" type="warning"
-                @click="$router.push(`/read/`+myData.reply_to)">回复目标</el-tag>
+        <el-col :span="18" style="text-align: left">
+          <el-tag v-clipboard:copy="'https://bbs.nga.cn/read.php?pid='+myData.pid" v-clipboard:error="onError"
+                  v-clipboard:success="onCopy"
+                  class="miniTag click-able"
+                  size="mini"
+                  @click.right="openUrl('https://bbs.nga.cn/read.php?pid='+myData.pid)"
+          >#{{ myData.lou }}
+          </el-tag>
+          <el-tag class="miniTag" size="mini">
+            <i class="el-icon-success click-able" @click="topicRecommend(myData.tid,myData.pid,1)"/>
+            {{ myData.score }}
+            <i class="el-icon-error click-able" @click="topicRecommend(myData.tid,myData.pid,-1)"/>
+          </el-tag>
+          <el-tag class="miniTag" size="mini">{{ myData.postdate }}</el-tag>
+          <el-tag v-if="myData.lastEdit" class="miniTag" size="mini">E:{{ myData.lastEdit }}</el-tag>
+          <el-tag class="miniTag click-able" size="mini" @click="readOnly">只看</el-tag>
+          <el-tag class="miniTag click-able" size="mini" @click="threadOnly(0)">本版主题</el-tag>
+          <el-tag class="miniTag click-able" size="mini" @click="threadOnly(1)">本版回复</el-tag>
+          <el-tag v-if="myData.reply_to" class="miniTag click-able" size="mini" type="warning"
+                  @click="$router.push(`/read/`+myData.reply_to)">回复目标
+          </el-tag>
+        </el-col>
+        <el-col :span="6" style="text-align: right">
 
         <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`)"><i class="el-icon-chat-line-square"/>引用</el-tag>
         <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`)"><i class="el-icon-chat-line-round"/>回复</el-tag>
+        </el-col>
 
       </el-row>
     </el-header>

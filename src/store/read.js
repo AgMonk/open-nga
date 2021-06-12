@@ -28,15 +28,18 @@ export default {
             return read(params).then(res => {
 
                 // 声望等级
-                let levelString = res.__F.custom_level;
-                while (levelString.includes("r:")) {
-                    levelString = levelString.replace("r:", "\"r\":")
-                }
-                while (levelString.includes("n:")) {
-                    levelString = levelString.replace("n:", "\"n\":")
-                }
-                let reputationsLevels = JSON.parse(levelString)
                 let getLevelName = (reputation) => {
+                    let levelString = res.__F.custom_level;
+                    if (!levelString) {
+                        return undefined
+                    }
+                    while (levelString.includes("r:")) {
+                        levelString = levelString.replace("r:", "\"r\":")
+                    }
+                    while (levelString.includes("n:")) {
+                        levelString = levelString.replace("n:", "\"n\":")
+                    }
+                    let reputationsLevels = JSON.parse(levelString)
                     for (let i = reputationsLevels.length - 1; i >= 0; i--) {
                         let v = reputationsLevels[i]
                         if (reputation >= v.r) {
