@@ -51,9 +51,11 @@ export default {
     this.$store.dispatch("forum/getFavForum")
     console.log(getCookieMap())
 
+    let uid = getCookie("ngaPassportUid");
+    uid = uid?uid:0;
     this.$store.commit("navi/setParams", {
       key: "account",
-      params: [getCookie("ngaPassportUid")]
+      params: [uid]
     })
     this.refreshNavi()
 

@@ -5,6 +5,7 @@
        v-if="!username.toString().startsWith('#anony_')"
        :params="[id]" :text="username?username:$store.state.account.users[id].username"
        router="account"
+       :text-style="{color: '#77878f'}"
    />
  </span>
 </template>

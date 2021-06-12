@@ -4,6 +4,21 @@ import {request, request8} from "@/assets/js/api/nga-request";
 import axios from "axios";
 import {ElMessage} from "element-plus";
 
+export const transformRequest =  [
+    function (data) {
+        let ret = ''
+        for (let it in data) {
+            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+        }
+        ret = ret.substring(0, ret.lastIndexOf('&'));
+        return ret
+    }
+]
+export const formDataHeaders={
+    'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+
 export const thread = (params) => {
     return request8.get("thread.php", {
         params,
@@ -99,20 +114,10 @@ export const searchForum = (keyword) => {
 }
 //点赞 或 撤赞 value = 1 赞  value = -1 踩
 export const topicRecommend = (tid, pid, value = 1) => {
+
     return request({
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        transformRequest: [
-            function (data) {
-                let ret = ''
-                for (let it in data) {
-                    ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-                }
-                ret = ret.substring(0, ret.lastIndexOf('&'));
-                return ret
-            }
-        ],
+        headers: formDataHeaders,
+        transformRequest,
         url:"nuke.php",
         method:"post",
         data:{
@@ -130,3 +135,4 @@ export const topicRecommend = (tid, pid, value = 1) => {
         }
     })
 }
+

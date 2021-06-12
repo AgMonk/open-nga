@@ -77,19 +77,21 @@ export default {
                     resolve(state.users[uid])
                 })
             }
-            if (isNaN(uid)){
+            if (isNaN(uid)) {
                 let u = {
                     uid,
-                    username:uid,
+                    username: uid,
                 }
-                commit("saveUser",u)
+                commit("saveUser", u)
                 return new Promise(resolve => {
                     resolve(u)
                 })
             }
             return userInfo(uid).then(res => {
                 let info = res.data[0];
-                delete  info.rvrc
+                if (uid !== getCookie("ngaPassportUid")) {
+                    delete info.rvrc
+                }
                 commit("saveUser", info)
                 return info
             })

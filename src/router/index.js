@@ -15,6 +15,8 @@ const routes = [
   {path: "/read/:tid/:page",name:"read",component:()=>import("../views/read"),},
   {path: "/read/:tid/:page/:authorid",name:"readOnly",component:()=>import("../views/read"),},
   {path: "/read/:pid",name:"readReply",component:()=>import("../views/read"),},
+
+  {path: "/post/:action/:fid/:tid/:pid/:stid",name:"post",component:()=>import("../views/post"),},
 ]
 
 const router = createRouter({
