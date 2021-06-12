@@ -20,6 +20,8 @@
         <el-tag class="miniTag click-able" size="mini" @click="readOnly">只看</el-tag>
         <el-tag class="miniTag click-able" size="mini" @click="threadOnly(0)">本版主题</el-tag>
         <el-tag class="miniTag click-able" size="mini" @click="threadOnly(1)">本版回复</el-tag>
+        <el-tag v-if="myData.reply_to" class="miniTag click-able" size="mini" type="warning"
+                @click="$router.push(`/read/`+myData.reply_to)">回复目标</el-tag>
       </el-row>
     </el-header>
     <!--suppress HtmlUnknownTag -->
