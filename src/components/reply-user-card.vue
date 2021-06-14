@@ -2,7 +2,7 @@
   <el-card :body-style="{ padding: '10px'}" :class="'box-card '+'yellow'+index%2">
     <template #header>
       <user-link :id="myData.uid" :username="myData.username"/>
-      <my-avatar :uid="myData.uid" />
+      <!--      <my-avatar :uid="myData.uid" />-->
     </template>
     <el-form :inline="true">
       <el-form-item label="威望">
@@ -17,8 +17,8 @@
           }}
         </el-tag>
       </el-form-item>
-      <el-form-item label="声望">
-        <el-tag v-if="myData.reputation" size="small">{{ myData.reputation.name }}({{ myData.reputation.value }})</el-tag>
+      <el-form-item v-if="myData.reputation" label="声望">
+        <reputation-tag :data="myData.reputation" />
       </el-form-item>
     </el-form>
   </el-card>
@@ -29,10 +29,11 @@ import {copyObj} from "@/assets/js/utils";
 import UserLink from "@/components/user-link";
 import "../assets/css/ui-color.css"
 import MyAvatar from "@/components/my-avatar";
+import ReputationTag from "@/components/reputation-tag";
 
 export default {
   name: "reply-user-card",
-  components: {MyAvatar, UserLink},
+  components: {ReputationTag, MyAvatar, UserLink},
   data() {
     return {
       myData: {}
