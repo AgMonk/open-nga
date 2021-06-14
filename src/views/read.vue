@@ -1,48 +1,57 @@
 <template>
-  <el-container direction="vertical">
-    <!--  <el-container direction="horizontal">-->
-    <el-header :class="'yellow'+0" height="130px">
-      <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 10px">
-        <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i">
-          <my-router-link :params="item.params" :router="item.router" :text="item.text"/>
-        </el-breadcrumb-item>
-      </el-breadcrumb>
-      <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新</el-button>
-      <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
-      <el-pagination
-          :current-page.sync="pagination.page"
-          :page-size.sync="pagination.size"
-          :total="pagination.total"
-          layout="prev, pager, next, jumper"
-          style="margin-top: 10px"
-          @current-change="page">
-      </el-pagination>
-    </el-header>
-    <!--suppress HtmlUnknownTag -->
-    <el-main style="padding: 0;border: black solid">
-      <el-row v-for="(row,i) in replies" :key="i" :class="'yellow'+i%2">
-        <el-col :span="6" >
-          <reply-user-card :data="row.userInfo" :index="i"/>
-        </el-col>
-        <el-col :span="18" >
-          <reply-content-card :data="row"/>
-        </el-col>
+  <div>
+    <el-container direction="vertical">
+      <!--  <el-container direction="horizontal">-->
+      <el-header :class="'yellow'+0" height="130px">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 10px">
+          <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i">
+            <my-router-link :params="item.params" :router="item.router" :text="item.text"/>
+          </el-breadcrumb-item>
+        </el-breadcrumb>
+        <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新</el-button>
+        <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
+        <el-pagination
+            :current-page.sync="pagination.page"
+            :page-size.sync="pagination.size"
+            :total="pagination.total"
+            layout="prev, pager, next, jumper"
+            style="margin-top: 10px"
+            @current-change="page">
+        </el-pagination>
+      </el-header>
+      <!--suppress HtmlUnknownTag -->
+      <el-main style="padding: 0;border: black solid">
+        <el-row v-for="(row,i) in replies" :key="i" :class="'yellow'+i%2">
+          <el-col :span="6">
+            <reply-user-card :data="row.userInfo" :index="i"/>
+          </el-col>
+          <el-col :span="18">
+            <reply-content-card :data="row"/>
+          </el-col>
 
-      </el-row>
-    </el-main>
-    <el-footer :class="'yellow'+0" height="100px">
-      <el-pagination
-          :current-page.sync="pagination.page"
-          :page-size.sync="pagination.size"
-          :total="pagination.total"
-          layout="prev, pager, next, jumper"
-          style="margin-top: 10px"
-          @current-change="page">
-      </el-pagination>
-      <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新</el-button>
-      <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
-    </el-footer>
-  </el-container>
+        </el-row>
+      </el-main>
+      <el-footer :class="'yellow'+0" height="100px">
+        <el-pagination
+            :current-page.sync="pagination.page"
+            :page-size.sync="pagination.size"
+            :total="pagination.total"
+            layout="prev, pager, next, jumper"
+            style="margin-top: 10px"
+            @current-change="page">
+        </el-pagination>
+        <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新</el-button>
+        <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
+      </el-footer>
+    </el-container>
+    <el-container direction="vertical">
+      <!--suppress HtmlUnknownTag -->
+      <el-main>
+        <reply-text-area :content="content" :params="{tid:$route.params.tid,post_subject:subject}"
+                         @submitted="updateDetails"/>
+      </el-main>
+    </el-container>
+  </div>
 
 </template>
 
@@ -52,12 +61,15 @@ import ReplyUserCard from "@/components/reply-user-card";
 import ReplyContentCard from "@/components/reply-content-card";
 import "../assets/css/ui-color.css"
 import {getRoute} from "@/assets/js/api/routerUtils";
+import ReplyTextArea from "@/components/reply-text-area";
 
 export default {
   name: "read",
-  components: {ReplyContentCard, ReplyUserCard, MyRouterLink},
+  components: {ReplyTextArea, ReplyContentCard, ReplyUserCard, MyRouterLink},
   data() {
     return {
+      content: "",
+      subject: "",
       pagination: {
         page: 1,
         size: 20,
@@ -68,9 +80,9 @@ export default {
     }
   },
   methods: {
-    newReply(){
-        let tid = this.$route.params.tid;
-        this.$router.push(getRoute(["post","reply",0,tid,0,0]))
+    newReply() {
+      let tid = this.$route.params.tid;
+      this.$router.push(getRoute(["post", "reply", 0, tid, 0, 0]))
     },
     page(e) {
       this.$route.params.page = e;
@@ -120,8 +132,6 @@ export default {
       })
 
       this.replies = res.__R;
-
-
 
 
     },

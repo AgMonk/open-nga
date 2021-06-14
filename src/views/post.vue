@@ -6,7 +6,7 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-        <reply-text-area :content="content" :params="params" />
+        <reply-text-area :content="content" :params="params" focus="1" />
     </el-main>
     <el-footer></el-footer>
   </el-container>
@@ -42,6 +42,7 @@ export default {
   methods: {
   },
   mounted() {
+
     console.clear()
     let params = copyObj(this.$route.params);
 
