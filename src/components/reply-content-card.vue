@@ -26,7 +26,8 @@
           </el-tag>
         </el-col>
         <el-col :span="6" style="text-align: right">
-
+        <el-tag v-if="myData.authorid === parseInt($store.state.navi.params.account[0])"
+            class="miniTag click-able" size="mini" @click="reply(`modify`)"><i class="el-icon-chat-line-square"/>编辑</el-tag>
         <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`)"><i class="el-icon-chat-line-square"/>引用</el-tag>
         <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`)"><i class="el-icon-chat-line-round"/>回复</el-tag>
         </el-col>
@@ -58,7 +59,8 @@ export default {
   name: "reply-content-card",
   data() {
     return {
-      myData: {}
+      myData: {},
+
     }
   },
   methods: {

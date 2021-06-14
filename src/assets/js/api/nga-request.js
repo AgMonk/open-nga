@@ -3,8 +3,8 @@ import {ElMessage} from 'element-plus';
 
 function onRejected(error) {
     // 对响应错误做点什么
+    console.log(error.response)
     let data = error.response.data;
-    console.log(data)
     ElMessage.error(data.error[0])
     return Promise.reject(error);
 }

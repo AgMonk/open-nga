@@ -42,6 +42,11 @@
         </el-pagination>
         <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新</el-button>
         <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 10px">
+          <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i">
+            <my-router-link :params="item.params" :router="item.router" :text="item.text"/>
+          </el-breadcrumb-item>
+        </el-breadcrumb>
       </el-footer>
     </el-container>
     <el-container direction="vertical">
@@ -142,10 +147,14 @@ export default {
       let authorid = this.$route.params.authorid;
       let pid = this.$route.params.pid;
       //  请求详情数据
-      this.$store.dispatch("read/getDetail", {tid, page, authorid, pid}).then(res => {
-        console.log(res)
-        this.handlePageData(res)
-      })
+      if (page === 'e') {
+        this.updateDetails()
+      }else{
+        this.$store.dispatch("read/getDetail", {tid, page, authorid, pid}).then(res => {
+          console.log(res)
+          this.handlePageData(res)
+        })
+      }
     },
   },
   watch: {

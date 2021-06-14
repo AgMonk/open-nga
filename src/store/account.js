@@ -100,6 +100,7 @@ export default {
         getLoginStatus({dispatch, commit, state}) {
             let uid = getCookie("ngaPassportUid");
             return dispatch("userInfo", uid).then(res => {
+                console.log(res)
                 state.userInfo = res;
                 return res
             })
