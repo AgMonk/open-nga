@@ -54,6 +54,7 @@
 import {copyObj} from "@/assets/js/utils";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import {topicRecommend} from "@/assets/js/api/api";
+import {bbsCodeParser} from "@/assets/js/bbsCode/bbsCodeParser";
 
 export default {
   name: "reply-content-card",
@@ -93,6 +94,8 @@ export default {
     },
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
+
+      console.log(bbsCodeParser(this.myData.content))
     }
   },
   mounted() {

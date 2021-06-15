@@ -10,7 +10,28 @@ function getRegExp(tagName) {
     return new RegExp(`\\[` + tagName + `.+?` + `\\[\/` + tagName + `\\]`)
 }
 
-function splitCode(tagName,code) {
+// 关键字在字符串中出现的次数
+function countKeyword(keyword, code) {
+    return code.split(keyword).length - 1;
+}
+
+//从code中截取一个tag 包含的部分 (检查同名嵌套)
+function subTagCode(tagName, code) {
+    let startCode = "[" + tagName
+    let endCode = "[/" + tagName + "]";
+
+    let i = 0;
+    let temp;
+    do {
+        i = code.indexOf(endCode, i) + endCode.length;
+        temp = code.substring(0, i)
+        console.log(temp)
+        console.log(countKeyword(startCode, temp)+" -> "+countKeyword(endCode, temp))
+    } while (countKeyword(startCode, temp) !== countKeyword(endCode, temp))
+    return temp;
+}
+
+function splitCode(tagName, code) {
     let prefix = code.substring(0, code.indexOf("]") + 1);
     let suffix = code.substring(code.lastIndexOf("[/"));
     let innerCode = code.substring(code.indexOf("]") + 1, code.lastIndexOf("[/"));
@@ -25,12 +46,12 @@ function splitCode(tagName,code) {
 
 // 解析单个tag
 function simpleParser(tagName, code) {
-    let codeObj = splitCode(tagName,code);
+    let codeObj = splitCode(tagName, code);
     return new BbsTag(tagName, codeObj.props, bbsCodeParser(codeObj.innerCode));
 }
 
 function codeParser(tagName, code) {
-    let codeObj = splitCode(tagName,code);
+    let codeObj = splitCode(tagName, code);
     return new BbsTag(tagName, codeObj.props, codeObj.innerCode);
 }
 
@@ -49,15 +70,15 @@ let tagParser = {
     "tid": (code) => simpleParser("tid", code),
     "url": (code) => simpleParser("url", code),
     "color": (code) => simpleParser("color", code),
-    "list": (code) => simpleParser("list", code),
+    // "list": (code) => simpleParser("list", code),
     "table": (code) => simpleParser("table", code),
     "tr": (code) => simpleParser("tr", code),
     "td": (code) => simpleParser("td", code),
     "code": (code) => codeParser("code", code),
-    /*todo list 未适配*/
+    /* todo list 未适配 */
 }
 
-// 如果code 的指定位置为 tag的名称
+// 判断 code 的指定位置为 tag的名称
 let foundTagParser = (code, startIndex) => {
     let c = code.substring(startIndex);
     let keys = Object.keys(tagParser);
@@ -71,8 +92,8 @@ let foundTagParser = (code, startIndex) => {
 
 
 // code解析器 应当返回一个数组 数组成员为 BbsTag
-// export const
-let
+export const
+// let
     bbsCodeParser = function (code) {
         let array = [];
 
@@ -92,14 +113,10 @@ let
                         code = code.substring(i);
                         i = 0;
                     }
-                    let regExp = getRegExp(tagName);
-                    let match = code.match(regExp);
-                    if (match) {
-                        let tagCode = match[0]
-                        array.push(tagParser[tagName](tagCode));
-                        code = code.replace(tagCode, "")
-                        i = 0;
-                    }
+                    let tagCode = subTagCode(tagName, code);
+                    array.push(tagParser[tagName](tagCode));
+                    code = code.replace(tagCode, "")
+                    i = 0;
                 } else {
                     i++;
                 }
