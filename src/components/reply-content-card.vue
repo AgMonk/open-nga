@@ -35,7 +35,7 @@
       </el-row>
     </el-header>
     <!--suppress HtmlUnknownTag -->
-    <el-main style="padding: 10px">
+    <el-main style="padding: 10px;text-align: left">
       {{ myData.content }}
     </el-main>
     <el-footer style="padding: 0 10px">
