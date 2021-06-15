@@ -1,61 +1,277 @@
 [
   {
-    "type": "quote",
+    "type": "table",
     "props": "",
     "children": [
       {
-        "type": "pid",
-        "props": "524613046,25968165,2329",
-        "children": [
-          {
-            "type": "span",
-            "props": "",
-            "children": "Reply"
-          }
-        ]
-      },
-      {
-        "type": "span",
-        "props": "",
-        "children": " "
-      },
-      {
-        "type": "b",
+        "type": "tr",
         "props": "",
         "children": [
           {
-            "type": "span",
-            "props": "",
-            "children": "Post by "
-          },
-          {
-            "type": "uid",
-            "props": "17601424",
+            "type": "td",
+            "props": "33",
             "children": [
               {
                 "type": "span",
                 "props": "",
-                "children": "苗尚青"
+                "children": "第一行第一列，宽度33%"
               }
             ]
           },
           {
-            "type": "span",
+            "type": "td",
+            "props": "25",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第一行第二列，宽度25%"
+              }
+            ]
+          },
+          {
+            "type": "td",
             "props": "",
-            "children": " (2021-06-15 12:16):"
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第一行第三列，宽度自动"
+              }
+            ]
           }
         ]
       },
       {
-        "type": "span",
+        "type": "tr",
         "props": "",
-        "children": "<br/><br/>羽毛也来抢测试zkr了？"
+        "children": [
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第二行第一列"
+              }
+            ]
+          },
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第二行第二列"
+              }
+            ]
+          },
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第二行第三列"
+              }
+            ]
+          }
+        ]
       }
     ]
   },
   {
-    "type": "span",
+    "type": "table",
     "props": "",
-    "children": "<br/><br/>羽毛是谁啊[s:ac:哭笑]"
+    "children": [
+      {
+        "type": "tr",
+        "props": "",
+        "children": [
+          {
+            "type": "td",
+            "props": " top",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第一行第一列 顶端对齐"
+              }
+            ]
+          },
+          {
+            "type": "td",
+            "props": " top",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第一行第二列 顶端对齐"
+              }
+            ]
+          },
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第一行第三列"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "tr",
+        "props": "",
+        "children": [
+          {
+            "type": "td",
+            "props": " colspan2 width50",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "二行第一列和第二列合并 宽度50%"
+              }
+            ]
+          },
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第二行第三列"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "tr",
+        "props": "",
+        "children": [
+          {
+            "type": "td",
+            "props": " colspan3",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第三行第一列和第二列第三列合并"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "table",
+    "props": "",
+    "children": [
+      {
+        "type": "tr",
+        "props": "",
+        "children": [
+          {
+            "type": "td",
+            "props": " rowspan3",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第一行和第二行第三行第一列合并"
+              }
+            ]
+          },
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第一行第二列"
+              }
+            ]
+          },
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第一行第三列"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "tr",
+        "props": "",
+        "children": [
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第二行第二列"
+              }
+            ]
+          },
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第二行第三列"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "tr",
+        "props": "",
+        "children": [
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第三行第二列"
+              }
+            ]
+          },
+          {
+            "type": "td",
+            "props": "",
+            "children": [
+              {
+                "type": "span",
+                "props": "",
+                "children": "第三行第三列"
+              }
+            ]
+          }
+        ]
+      }
+    ]
   }
 ]
