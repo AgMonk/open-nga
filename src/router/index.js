@@ -17,6 +17,7 @@ const routes = [
   {path: "/read/:pid",name:"readReply",component:()=>import("../views/read"),},
 
   {path: "/post/:action/:fid/:tid/:pid/:stid",name:"post",component:()=>import("../views/post"),},
+  {path:"/test",name:"test",component:()=>import("../views/test"),},
 ]
 
 const router = createRouter({

@@ -1,3 +1,7 @@
+// 输出解析流程
+// let debug = true;
+let debug = false;
+
 // 标签构造函数
 function BbsTag(type, props, children) {
     this.type = type;
@@ -5,9 +9,15 @@ function BbsTag(type, props, children) {
     this.children = children;
 }
 
+function debugLog(e) {
+    if (debug) {
+        console.log(e)
+    }
+}
+
 // 生成标签的正则表达式
-function getRegExp(tagName) {
-    return new RegExp(`\\[` + tagName + `.+?` + `\\[\/` + tagName + `\\]`)
+function getTagPairRegExp(tagName) {
+    return new RegExp("^\\[" + tagName + "([^[]*?)\\](.*?)\\[\/" + tagName + "\\]")
 }
 
 // 关键字在字符串中出现的次数
@@ -22,12 +32,24 @@ function subTagCode(tagName, code) {
 
     let i = 0;
     let temp;
-    do {
-        i = code.indexOf(endCode, i) + endCode.length;
-        temp = code.substring(0, i)
-        console.log(temp)
-        console.log(countKeyword(startCode, temp)+" -> "+countKeyword(endCode, temp))
-    } while (countKeyword(startCode, temp) !== countKeyword(endCode, temp))
+
+    let countStart;
+    let countEnd;
+    while (i < code.length) {
+        i = code.indexOf(endCode, i);
+        if (i > 0) {
+            i += endCode.length;
+            temp = code.substring(0, i)
+            countStart = countKeyword(startCode, temp);
+            countEnd = countKeyword(endCode, temp);
+            if (countStart === countEnd) {
+                return temp
+            }
+        } else {
+            break
+        }
+    }
+    console.warn("tag数量不匹配: " + temp)
     return temp;
 }
 
@@ -70,66 +92,97 @@ let tagParser = {
     "tid": (code) => simpleParser("tid", code),
     "url": (code) => simpleParser("url", code),
     "color": (code) => simpleParser("color", code),
-    // "list": (code) => simpleParser("list", code),
+    "list": (code) => simpleParser("list", code),
+    "ul": (code) => simpleParser("ul", code),
     "table": (code) => simpleParser("table", code),
+    "size": (code) => simpleParser("size", code),
     "tr": (code) => simpleParser("tr", code),
     "td": (code) => simpleParser("td", code),
     "code": (code) => codeParser("code", code),
-    /* todo list 未适配 */
 }
 
 // 判断 code 的指定位置为 tag的名称
 let foundTagParser = (code, startIndex) => {
     let c = code.substring(startIndex);
-    let keys = Object.keys(tagParser);
+    let keys = Object.keys(tagParser).sort((a, b) => b.length - a.length);
     for (let i = 0; i < keys.length; i++) {
         let key = keys[i];
-        if (c.startsWith(`[` + key)) {
+        if (getTagPairRegExp(key).exec(c)) {
             return key;
         }
     }
 }
 
-
+// 带预处理解析
 // code解析器 应当返回一个数组 数组成员为 BbsTag
-export const
-// let
-    bbsCodeParser = function (code) {
-        let array = [];
+// export const
 
-        let i = 0;
-        while (i < code.length) {
-            let char = code[i];
-            // 发现疑似tag名称开始
-            if (char === '[') {
-                //确认是否发现tag
-                let tagName = foundTagParser(code, i);
-                if (tagName) {
-                    //    发现tag
-                    if (i > 0) {
-                        //    如果 i 此时大于 0 则把 前方文字作为 span解析
-                        let spanText = code.substring(0, i)
-                        array.push(new BbsTag("span", "", spanText))
-                        code = code.substring(i);
-                        i = 0;
-                    }
-                    let tagCode = subTagCode(tagName, code);
-                    array.push(tagParser[tagName](tagCode));
-                    code = code.replace(tagCode, "")
+let bbsCodeParser = function (code) {
+    debugLog("解析tag： " + code)
+    let array = [];
+
+    let i = 0;
+    while (i < code.length) {
+        let char = code[i];
+        // 发现疑似tag名称开始
+        if (char === '[') {
+            //确认是否发现tag
+            let tagName = foundTagParser(code, i);
+            if (tagName) {
+                debugLog(`发现Tag： ` + tagName)
+                //    发现tag
+                if (i > 0) {
+                    //    如果 i 此时大于 0 则把 前方文字作为 span解析
+                    let spanText = code.substring(0, i).replace(/<br\/>/g, "\n")
+                    debugLog("添加span： " + spanText)
+                    array.push(new BbsTag("span", "", spanText))
+                    code = code.substring(i);
                     i = 0;
-                } else {
-                    i++;
                 }
+                let tagCode = subTagCode(tagName, code);
+                debugLog(`截取Tag串: ` + tagCode)
+                array.push(tagParser[tagName](tagCode));
+                code = code.replace(tagCode, "")
+                i = 0;
             } else {
                 i++;
             }
+        } else {
+            i++;
         }
-        //检查完毕 如果 i>0 则表示剩余为纯文本 添加一个span
-        if (i > 0) {
-            array.push(new BbsTag("span", "", code))
-        }
-        return array;
     }
+    //检查完毕 如果 i>0 则表示剩余为纯文本 添加一个span
+    if (i > 0) {
+        let spanText = code.replace(/<br\/>/g, "\n")
+        debugLog("添加span： " + spanText)
+        array.push(new BbsTag("span", "", spanText))
+    }
+    return array;
+}
+
+//    删除指定标签附近的多余换行符 <br/>
+function delBrTag(code, tagName) {
+    return code
+        .replace(new RegExp("<br\/>\\[" + tagName + "]", "g"), "[" + tagName + "]")
+        .replace(new RegExp("<br\/>\\[\/" + tagName + "]", "g"), "[/" + tagName + "]")
+}
+
+export const parseBbsCode = (code) => {
+    // 删除多余换行符
+    code = delBrTag(code, "h")
+    code = delBrTag(code, "list")
+    code = delBrTag(code, "quote")
+
+    //表格标签标准化
+    code = code
+        .replace(/<br\/>\[\*]/g, "[/ul][ul]")
+        .replace(/\[\*]/g, "[/ul][ul]")
+        .replace(/\[list]\[\/ul]/g, "[list]")
+        .replace(/\[\/list]/g, "[/ul][/list]")
+
+    console.log("解析正文：" + code)
+    return bbsCodeParser(code)
+}
 
 
 
