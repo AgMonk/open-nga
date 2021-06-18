@@ -26,10 +26,11 @@
           </el-tag>
         </el-col>
         <el-col :span="6" style="text-align: right">
-        <el-tag v-if="myData.authorid === parseInt($store.state.navi.params.account[0])"
-            class="miniTag click-able" size="mini" @click="reply(`modify`)"><i class="el-icon-chat-line-square"/>编辑</el-tag>
-        <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`)"><i class="el-icon-chat-line-square"/>引用</el-tag>
-        <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`)"><i class="el-icon-chat-line-round"/>回复</el-tag>
+          <el-tag v-if="myData.authorid === parseInt($store.state.navi.params.account[0])"
+                  class="miniTag click-able" size="mini" @click="reply(`modify`)"><i class="el-icon-chat-line-square"/>编辑
+          </el-tag>
+          <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`)"><i class="el-icon-chat-line-square"/>引用</el-tag>
+          <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`)"><i class="el-icon-chat-line-round"/>回复</el-tag>
         </el-col>
 
       </el-row>
@@ -37,7 +38,9 @@
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 10px;text-align: left">
       {{ myData.content }}
-      <content-parser :content="myData.content">{{myData.content}}</content-parser>
+      <div>
+        <content-parser :content="myData.content">{{ myData.content }}</content-parser>
+      </div>
     </el-main>
     <el-footer style="padding: 0 10px">
       <div v-if="myData.operationLog">
@@ -67,19 +70,19 @@ export default {
     }
   },
   methods: {
-    reply(action){
-      this.$router.push(getRoute(["post",action,this.myData.fid,this.myData.tid,this.myData.pid,0]))
+    reply(action) {
+      this.$router.push(getRoute(["post", action, this.myData.fid, this.myData.tid, this.myData.pid, 0]))
     },
-    openUrl(url){
+    openUrl(url) {
       window.open(url)
     },
-    threadOnly(v){
-      this.$router.push(getRoute(["thread",this.myData.fid,1,this.myData.authorid,v]))
+    threadOnly(v) {
+      this.$router.push(getRoute(["thread", this.myData.fid, 1, this.myData.authorid, v]))
     },
-    topicRecommend(tid,pid,value){
-      topicRecommend(tid,pid,value).then(res=>{
+    topicRecommend(tid, pid, value) {
+      topicRecommend(tid, pid, value).then(res => {
         this.$message.success(res.message)
-        this.myData.score +=res.value
+        this.myData.score += res.value
       })
     },
     onCopy() {
@@ -96,7 +99,6 @@ export default {
     },
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
-
       // console.log(JSON.stringify(parseBbsCode(this.myData.content)))
 
     }
