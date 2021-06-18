@@ -94,6 +94,7 @@ let tagParser = {
     "color": (code) => simpleParser("color", code),
     "list": (code) => simpleParser("list", code),
     "ul": (code) => simpleParser("ul", code),
+    "li": (code) => simpleParser("li", code),
     "table": (code) => simpleParser("table", code),
     "size": (code) => simpleParser("size", code),
     "tr": (code) => simpleParser("tr", code),
@@ -102,7 +103,7 @@ let tagParser = {
 }
 
 // 判断 code 的指定位置为 tag的名称
-let foundTagParser = (code, startIndex) => {
+function foundTagParser (code, startIndex) {
     let c = code.substring(startIndex);
     let keys = Object.keys(tagParser).sort((a, b) => b.length - a.length);
     for (let i = 0; i < keys.length; i++) {
@@ -117,7 +118,7 @@ let foundTagParser = (code, startIndex) => {
 // code解析器 应当返回一个数组 数组成员为 BbsTag
 // export const
 
-let bbsCodeParser = function (code) {
+function bbsCodeParser (code) {
     debugLog("解析tag： " + code)
     let array = [];
 
@@ -168,6 +169,10 @@ function delBrTag(code, tagName) {
 }
 
 export const parseBbsCode = (code) => {
+    if (!code) {
+        return [];
+    }
+
     // 删除多余换行符
     code = delBrTag(code, "h")
     code = delBrTag(code, "list")
@@ -175,10 +180,10 @@ export const parseBbsCode = (code) => {
 
     //表格标签标准化
     code = code
-        .replace(/<br\/>\[\*]/g, "[/ul][ul]")
-        .replace(/\[\*]/g, "[/ul][ul]")
-        .replace(/\[list]\[\/ul]/g, "[list]")
-        .replace(/\[\/list]/g, "[/ul][/list]")
+        .replace(/<br\/>\[\*]/g, "[/li][li]")
+        .replace(/\[\*]/g, "[/li][li]")
+        .replace(/\[list]\[\/li]/g, "[ul]")
+        .replace(/\[\/list]/g, "[/li][/ul]")
 
     console.log("解析正文：" + code)
     return bbsCodeParser(code)

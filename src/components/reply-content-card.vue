@@ -37,6 +37,7 @@
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 10px;text-align: left">
       {{ myData.content }}
+      <content-parser :content="myData.content">{{myData.content}}</content-parser>
     </el-main>
     <el-footer style="padding: 0 10px">
       <div v-if="myData.operationLog">
@@ -54,10 +55,11 @@
 import {copyObj} from "@/assets/js/utils";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import {topicRecommend} from "@/assets/js/api/api";
-import {parseBbsCode} from "@/assets/js/bbsCode/bbsCodeParser";
+import ContentParser from "@/components/content-render";
 
 export default {
   name: "reply-content-card",
+  components: {ContentParser},
   data() {
     return {
       myData: {},
@@ -80,7 +82,7 @@ export default {
         this.myData.score +=res.value
       })
     },
-    onCopy(e) {
+    onCopy() {
       this.$message.success("已复制回复地址")
     },
     onError(e) {
@@ -95,8 +97,8 @@ export default {
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
 
-      console.log(parseBbsCode(this.myData.content))
-      console.log(JSON.stringify(parseBbsCode(this.myData.content)))
+      // console.log(JSON.stringify(parseBbsCode(this.myData.content)))
+
     }
   },
   mounted() {
