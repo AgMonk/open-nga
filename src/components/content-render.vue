@@ -11,6 +11,7 @@ export default {
   date() {
     return {
       myData: [],
+      collapseExpanded:"",
     }
   },
   methods: {
@@ -33,7 +34,7 @@ export default {
         "url": (children, props) => {
           let url = props !== '' ? props : children[0].children;
           let text = props !== '' ? children[0].children : "[链接]";
-          console.log(text+" -> "+url)
+
           let ngaUrlRegExp = /^https?:\/\/(bbs\.ngacn\.cc|nga\.178\.com|bbs\.nga\.cn|ngabbs\.com)\/(.+?)\.php\?(.+)/
           let match = ngaUrlRegExp.exec(url)
           let router;
@@ -64,19 +65,40 @@ export default {
               if (paramMap.pid) {
                 params = [paramMap.pid]
               } else if (paramMap.authorid) {
-                params = [paramMap.tid,page,paramMap.authorid]
-              } else{
-                params = [paramMap.tid,page]
+                params = [paramMap.tid, page, paramMap.authorid]
+              } else {
+                params = [paramMap.tid, page]
               }
             }
 
           }
           if (typeof params === 'object') {
             console.log("1")
-            return <my-router-link router={router} params={params} text={text} linkStyle="color:red" />
+            return <my-router-link router={router} params={params} text={text} linkStyle="color:red"/>
           }
-            console.log("2")
+          console.log("2")
           return <el-link href={url} linkStyle="color:blue">{text}</el-link>
+        },
+        "collapse": (children, props) => {
+          let title = props ? "[折叠内容]: "+props : "[折叠内容]";
+          return <el-collapse >
+            <el-collapse-item title={title} >
+              {this.render(children)}
+            </el-collapse-item>
+          </el-collapse>
+        },
+        "img":(children) => {
+          let url = children[0].children;
+          if (url.startsWith("./mon")) {
+          //  站内图片
+            let imgSrc = "/img"+url.substring(1)
+                .replace(".thumb.jpg", "")
+                .replace("https","http")
+            ;
+            return <el-link href={imgSrc} target="_blank">
+             <el-image src={imgSrc} />
+            </el-link>
+          }
         },
         "span": (children) => <span>{children}</span>,
       }

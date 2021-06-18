@@ -27,6 +27,10 @@ export default {
     })
   },
   methods: {
+    error(e){
+      console.log(11111)
+      console.log(e)
+    },
     copy(uid) {
       if (this.users[uid]) {
         let avatar = this.users[uid].avatar;
@@ -36,6 +40,9 @@ export default {
           let urls = avatar.split("|")
               // .map(a => a.substring(0, a.indexOf("?")))
               .map(a => a.replace(".a", ""))
+              .map(a => a.replace("https://img.nga.178.com", ""))
+              .map(a => a.replace("http://img.nga.178.com", ""))
+              .map(a => a.replace("http://pic1.178.com", ""))
               // .map(a => a.replace("https", "http"))
 
           this.urls.push(urls[0])

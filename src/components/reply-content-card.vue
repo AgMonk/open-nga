@@ -16,7 +16,7 @@
             {{ myData.score }}
             <i class="el-icon-error click-able" @click="topicRecommend(myData.tid,myData.pid,-1)"/>
           </el-tag>
-          <el-tag class="miniTag" size="mini">{{ myData.postdate }}</el-tag>
+          <el-tag class="miniTag click-able" size="mini" @click="$router.push(`/read/`+myData.pid)">{{ myData.postdate }}</el-tag>
           <el-tag v-if="myData.lastEdit" class="miniTag" size="mini">E:{{ myData.lastEdit }}</el-tag>
           <el-tag class="miniTag click-able" size="mini" @click="readOnly">只看</el-tag>
           <el-tag class="miniTag click-able" size="mini" @click="threadOnly(0)">本版主题</el-tag>
@@ -59,10 +59,11 @@ import {copyObj} from "@/assets/js/utils";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import {topicRecommend} from "@/assets/js/api/api";
 import ContentParser from "@/components/content-render";
+import MyRouterLink from "@/components/my-router-link";
 
 export default {
   name: "reply-content-card",
-  components: {ContentParser},
+  components: {MyRouterLink, ContentParser},
   data() {
     return {
       myData: {},
