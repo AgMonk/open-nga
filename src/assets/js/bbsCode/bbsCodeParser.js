@@ -134,7 +134,8 @@ function bbsCodeParser (code) {
                 //    发现tag
                 if (i > 0) {
                     //    如果 i 此时大于 0 则把 前方文字作为 span解析
-                    let spanText = code.substring(0, i).replace(/<br\/>/g, "\n")
+                    let spanText = code.substring(0, i)
+                        .replace(/<br\/>/g, "\n")
                     debugLog("添加span： " + spanText)
                     array.push(new BbsTag("span", "", spanText))
                     code = code.substring(i);
@@ -154,7 +155,8 @@ function bbsCodeParser (code) {
     }
     //检查完毕 如果 i>0 则表示剩余为纯文本 添加一个span
     if (i > 0) {
-        let spanText = code.replace(/<br\/>/g, "\n")
+        let spanText = code
+            .replace(/<br\/>/g, "\n")
         debugLog("添加span： " + spanText)
         array.push(new BbsTag("span", "", spanText))
     }

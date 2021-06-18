@@ -28,9 +28,13 @@ export default {
           {this.render(children)}</el-card>,
         "h": (children) => <h3 style="margin: 8px auto;">{this.render(children)}</h3>,
         "ul": (children) => <ul>{this.render(children)}</ul>,
+        "b": (children) => <b>{this.render(children)}</b>,
         "li": (children) => <li>{this.render(children)}</li>,
         "pid": (children, props) => <my-router-link router="read" params={[props.split(',')[0]]}
                                                     text={"[" + children[0].children + "]"}/>,
+        "uid": (children, props) => <my-router-link router="account" params={[props]}
+                                                    text={"[" + children[0].children + "]"}/>,
+
         "url": (children, props) => {
           let url = props !== '' ? props : children[0].children;
           let text = props !== '' ? children[0].children : "[链接]";
@@ -100,7 +104,7 @@ export default {
             </el-link>
           }
         },
-        "span": (children) => <span>{children}</span>,
+        "span": (children) => <span style="white-space: pre-line">{children}</span>,
       }
 
       let array = [];
