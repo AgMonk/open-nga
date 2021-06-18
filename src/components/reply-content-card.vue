@@ -26,6 +26,7 @@
           </el-tag>
         </el-col>
         <el-col :span="6" style="text-align: right">
+          <el-switch v-model="showCode" active-color="#13ce66" active-text="显示源代码" inactive-color="#ff4949"></el-switch>
           <el-tag v-if="myData.authorid === parseInt($store.state.navi.params.account[0])"
                   class="miniTag click-able" size="mini" @click="reply(`modify`)"><i class="el-icon-chat-line-square"/>编辑
           </el-tag>
@@ -37,8 +38,8 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 10px;text-align: left">
-      {{ myData.content }}
-      <div>
+      <div v-show="showCode">{{ myData.content }}</div>
+      <div v-show="!showCode">
         <content-parser :content="myData.content">{{ myData.content }}</content-parser>
       </div>
     </el-main>
@@ -67,7 +68,7 @@ export default {
   data() {
     return {
       myData: {},
-
+      showCode:false,
     }
   },
   methods: {
