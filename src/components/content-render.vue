@@ -22,19 +22,31 @@ export default {
       }
 
       let renderMap = {
-        "quote": (children) => <el-card
+        "collapse": (children, props) => {
+          let title = props ? "[折叠内容]: "+props : "[折叠内容]";
+          return <el-collapse >
+            <el-collapse-item title={title} >
+              {this.render(children)}
+            </el-collapse-item>
+          </el-collapse>
+        },
+        "quote": (children) => {return <el-card
             className="box-card"
             body-style="padding:10px;border: 1px solid #81a3f3;background-color: #70cef742;">
-          {this.render(children)}</el-card>,
-        "h": (children) => <h3 style="margin: 8px auto;">{this.render(children)}</h3>,
-        "ul": (children) => <ul>{this.render(children)}</ul>,
-        "b": (children) => <b>{this.render(children)}</b>,
-        "li": (children) => <li>{this.render(children)}</li>,
-        "pid": (children, props) => <my-router-link router="read" params={[props.split(',')[0]]}
-                                                    text={"[" + children[0].children + "]"}/>,
-        "uid": (children, props) => <my-router-link router="account" params={[props]}
-                                                    text={"[" + children[0].children + "]"}/>,
-
+          {this.render(children)}</el-card>},
+        "img":(children) => {
+          let url = children[0].children;
+          if (url.startsWith("./mon")) {
+            //  站内图片
+            let imgSrc = "/img"+url.substring(1)
+                .replace(".thumb.jpg", "")
+                .replace("https","http")
+            ;
+            return <el-link href={imgSrc} target="_blank">
+              <el-image src={imgSrc} />
+            </el-link>
+          }
+        },
         "url": (children, props) => {
           let url = props !== '' ? props : children[0].children;
           let text = props !== '' ? children[0].children : "[链接]";
@@ -83,28 +95,24 @@ export default {
           console.log("2")
           return <el-link href={url} linkStyle="color:blue">{text}</el-link>
         },
-        "collapse": (children, props) => {
-          let title = props ? "[折叠内容]: "+props : "[折叠内容]";
-          return <el-collapse >
-            <el-collapse-item title={title} >
-              {this.render(children)}
-            </el-collapse-item>
-          </el-collapse>
-        },
-        "img":(children) => {
-          let url = children[0].children;
-          if (url.startsWith("./mon")) {
-          //  站内图片
-            let imgSrc = "/img"+url.substring(1)
-                .replace(".thumb.jpg", "")
-                .replace("https","http")
-            ;
-            return <el-link href={imgSrc} target="_blank">
-             <el-image src={imgSrc} />
-            </el-link>
-          }
-        },
+        "ul": (children) => <ul>{this.render(children)}</ul>,
+        "h": (children) => <h3 style="margin: 8px auto;">{this.render(children)}</h3>,
+        "b": (children) => <b>{this.render(children)}</b>,
+        "u": (children) => <u>{this.render(children)}</u>,
+        "i": (children) => <i>{this.render(children)}</i>,
+        "li": (children) => <li>{this.render(children)}</li>,
+        "del": (children) => <del>{this.render(children)}</del>,
+        "uid": (children, props) => <my-router-link router="account" params={[props]}
+                                                    text={"[" + children[0].children + "]"}/>,
+        "pid": (children, props) => <my-router-link router="read" params={[props.split(',')[0]]}
+                                                    text={"[" + children[0].children + "]"}/>,
         "span": (children) => <span style="white-space: pre-line">{children}</span>,
+        /* todo */
+        "tid":undefined,
+        "color":undefined,
+        "size":undefined,
+        "code":undefined,
+
       }
 
       let array = [];
@@ -117,29 +125,6 @@ export default {
         } else {
           array.push(renderMap['span'](tag.children));
         }
-        // switch (tag.type) {
-        //   case "quote":
-        //     array.push(<el-card class="box-card"
-        //                         body-style="padding:10px;border: 1px solid #81a3f3;background-color: #70cef742;">
-        //       {this.render(tag.children)}</el-card>);
-        //     break;
-        //   case "h":
-        //     array.push(<h3 style="margin: 8px auto;">{this.render(tag.children)}</h3>);
-        //     break;
-        //   case "ul":
-        //     array.push(<ul>{this.render(tag.children)}</ul>);
-        //     break;
-        //   case "li":
-        //     array.push(<li>{this.render(tag.children)}</li>);
-        //     break;
-        //   case "span":
-        //     array.push(<span>{tag.children}</span>);
-        //     break;
-        //   default:
-        //     array.push(<span>{tag.children}</span>);
-        //     break;
-        //
-        // }
 
       }
 

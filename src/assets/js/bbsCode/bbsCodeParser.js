@@ -92,7 +92,6 @@ let tagParser = {
     "tid": (code) => simpleParser("tid", code),
     "url": (code) => simpleParser("url", code),
     "color": (code) => simpleParser("color", code),
-    "list": (code) => simpleParser("list", code),
     "ul": (code) => simpleParser("ul", code),
     "li": (code) => simpleParser("li", code),
     "table": (code) => simpleParser("table", code),
