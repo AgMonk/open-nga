@@ -34,6 +34,7 @@ import {getCookie, setCookies} from "@/assets/js/cookieUtils";
 import Money from "@/components/money";
 import UserInfo from "@/components/user-info";
 import {delCache, getCacheByPrefix} from "@/assets/js/storageUtils";
+import account from "@/store/account";
 
 export default {
   name: "account",
@@ -52,9 +53,9 @@ export default {
       return getCookie("ngaPassportUid");
     },
     delAccount(key){
-      let cookie = this.accounts[key];
-      let accountKey = "account "+cookie.username
+      let accountKey = "account "+key
       delCache(accountKey)
+      delete this.accounts[key];
       this.selected = undefined
     },
     changeAccount(key) {

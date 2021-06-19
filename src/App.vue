@@ -1,5 +1,5 @@
 <template>
-  <div style="background-color: #ffedc3">
+  <div :class="$store.state.config.config.uiColor+0">
 <!--  <div style="background-color: #fff8e7">-->
     <navi/>
     <router-view/>

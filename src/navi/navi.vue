@@ -48,6 +48,8 @@ export default {
     }
   },
   mounted() {
+    this.$store.commit("config/load")
+
     this.$store.dispatch("forum/getFavForum")
     console.log(getCookieMap())
 

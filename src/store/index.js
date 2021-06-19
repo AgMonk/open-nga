@@ -4,6 +4,7 @@ import forum from "./forum"
 import thread from "./thread"
 import read from "./read"
 import navi from "./navi"
+import config from "./config"
 
 export default createStore({
   state: {
@@ -14,6 +15,6 @@ export default createStore({
   actions: {
   },
   modules: {
-    account,forum,thread,navi,read
+    account,forum,thread,navi,read,config
   }
 })

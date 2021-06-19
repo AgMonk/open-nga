@@ -2,7 +2,7 @@
   <div>
     <el-container direction="vertical">
       <!--  <el-container direction="horizontal">-->
-      <el-header :class="'yellow'+0" height="130px">
+      <el-header :class="$store.state.config.config.uiColor+0" height="130px">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 10px">
           <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i">
             <my-router-link :params="item.params" :router="item.router" :text="item.text"/>
@@ -21,7 +21,7 @@
       </el-header>
       <!--suppress HtmlUnknownTag -->
       <el-main style="padding: 0;border: black solid">
-        <el-row v-for="(row,i) in replies" :key="i" :class="'yellow'+i%2">
+        <el-row v-for="(row,i) in replies" :key="i" :class="$store.state.config.config.uiColor+i%2">
           <el-col :span="6">
             <reply-user-card :data="row.userInfo" :index="i"/>
           </el-col>
@@ -31,7 +31,7 @@
 
         </el-row>
       </el-main>
-      <el-footer :class="'yellow'+0" height="100px">
+      <el-footer :class="$store.state.config.config.uiColor+0" height="150px">
         <el-pagination
             :current-page.sync="pagination.page"
             :page-size.sync="pagination.size"
@@ -42,7 +42,7 @@
         </el-pagination>
         <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新</el-button>
         <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
-        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 10px">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 20px">
           <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i">
             <my-router-link :params="item.params" :router="item.router" :text="item.text"/>
           </el-breadcrumb-item>
@@ -52,6 +52,7 @@
     <el-container direction="vertical">
       <!--suppress HtmlUnknownTag -->
       <el-main>
+        <h3>快速回复</h3>
         <reply-text-area :content="content" :params="{tid:$route.params.tid,post_subject:subject}"
                          @submitted="updateDetails"/>
       </el-main>
