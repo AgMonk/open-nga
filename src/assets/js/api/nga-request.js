@@ -70,6 +70,9 @@ export const request8 = axios.create({
                 while (result.includes("\t")) {
                     result = result.replace("\t", "")
                 }
+
+
+
                 // noinspection JSCheckFunctionSignatures
                 resolve(JSON.parse(result))
             }

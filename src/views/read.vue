@@ -96,7 +96,9 @@ export default {
     updateDetails() {
       let tid = this.$route.params.tid;
       let page = this.$route.params.page;
-      this.$store.dispatch("read/updateDetail", {tid, page}).then(res => {
+      let authorid = this.$route.params.authorid;
+      let pid = this.$route.params.pid;
+      this.$store.dispatch("read/updateDetail", {tid, page,authorid, pid}).then(res => {
         this.handlePageData(res)
         this.$message.success("刷新成功")
       })

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="users[uid] && urls.length>0">
+  <div v-if="show">
     <el-link
         :href="urls[index]" target="_blank">
       <el-avatar
@@ -17,6 +17,7 @@ export default {
   name: "my-avatar",
   data() {
     return {
+      show:false,
       urls: [],
       index:0,
     }
@@ -27,11 +28,9 @@ export default {
     })
   },
   methods: {
-    error(e){
-      console.log(11111)
-      console.log(e)
-    },
     copy(uid) {
+      this.show = false;
+
       if (this.users[uid]) {
         let avatar = this.users[uid].avatar;
         if (avatar && avatar.length > 0) {
@@ -53,6 +52,7 @@ export default {
           }
 
           this.index = Math.floor((Math.random()*this.urls.length-1)+1);
+          this.show = true;
         }
       }
     }

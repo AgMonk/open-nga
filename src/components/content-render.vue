@@ -6,7 +6,8 @@ export default {
   name: "content-render",
   components: {MyRouterLink},
   render() {
-    return this.render(this.myData, 2)
+    return this.render(parseBbsCode(this.content))
+    // return this.render(this.myData, 2)
   },
   date() {
     return {
@@ -40,6 +41,7 @@ export default {
             //  站内图片
             let imgSrc = "/img"+url.substring(1)
                 .replace(".thumb.jpg", "")
+                .replace(".medium.jpg", "")
                 .replace("https","http")
             ;
             return <el-link href={imgSrc} target="_blank">
@@ -49,7 +51,6 @@ export default {
         },
         "url": (children, props) => {
           let url = props !== '' ? props : children[0].children;
-          let text = props !== '' ? children[0].children : "[链接]";
 
           let ngaUrlRegExp = /^https?:\/\/(bbs\.ngacn\.cc|nga\.178\.com|bbs\.nga\.cn|ngabbs\.com)\/(.+?)\.php\?(.+)/
           let match = ngaUrlRegExp.exec(url)
@@ -59,7 +60,6 @@ export default {
             //  站内链接
             router = match[2];
             params = match[3];
-            text = "[站内链接]"
 
             let paramMap = {};
             params.split("&").forEach(p => {
@@ -89,11 +89,9 @@ export default {
 
           }
           if (typeof params === 'object') {
-            console.log("1")
-            return <my-router-link router={router} params={params} text={text} linkStyle="color:red"/>
+            return <my-router-link router={router} params={params}  linkStyle="color:red">{this.render(children)}</my-router-link>
           }
-          console.log("2")
-          return <el-link href={url} linkStyle="color:blue">{text}</el-link>
+          return <el-link target="_blank" href={url} linkStyle="color:blue">{this.render(children)}</el-link>
         },
         "ul": (children) => <ul>{this.render(children)}</ul>,
         "h": (children) => <h3 style="margin: 8px auto;">{this.render(children)}</h3>,
@@ -107,12 +105,19 @@ export default {
         "pid": (children, props) => <my-router-link router="read" params={[props.split(',')[0]]}
                                                     text={"[" + children[0].children + "]"}/>,
         "span": (children) => <span style="white-space: pre-line">{children}</span>,
-        /* todo */
-        "tid":undefined,
-        "color":undefined,
-        "size":undefined,
-        "code":undefined,
-
+        "tid":(children, props) => <my-router-link router="read" params={[props,1]}
+                                                   text={"[" + children[0].children + "]"}/>,
+        "color":(children,props) => <span style={'color: '+props}>{this.render(children)}</span>,
+        "size":(children,props) =><span style={"font-size:"+props}>{this.render(children)}</span>,
+        "align":(children,props) =><span style={"text-align:"+props}>{this.render(children)}</span>,
+        "code":(children) => {
+          let text = children
+              .replace(/<br\/>/g,"\n")
+          ;
+          return <div style="background-color: black;color: #bfcddc">
+            <pre>{text}</pre>
+          </div>
+        },
       }
 
       let array = [];
@@ -123,7 +128,9 @@ export default {
         if (render) {
           array.push(render(tag.children, tag.props));
         } else {
-          array.push(renderMap['span'](tag.children));
+          console.log("未知标签： "+tag.type)
+          // array.push(renderMap['span'](tag.children));
+          array.push(<span style="white-space: pre-line">{tag.raw}</span>);
         }
 
       }

@@ -3,10 +3,11 @@
 let debug = false;
 
 // 标签构造函数
-function BbsTag(type, props, children) {
+function BbsTag(type, props, children,raw) {
     this.type = type;
     this.props = props;
     this.children = children;
+    this.raw = raw;
 }
 
 function debugLog(e) {
@@ -69,12 +70,12 @@ function splitCode(tagName, code) {
 // 解析单个tag
 function simpleParser(tagName, code) {
     let codeObj = splitCode(tagName, code);
-    return new BbsTag(tagName, codeObj.props, bbsCodeParser(codeObj.innerCode));
+    return new BbsTag(tagName, codeObj.props, bbsCodeParser(codeObj.innerCode),code);
 }
 
 function codeParser(tagName, code) {
     let codeObj = splitCode(tagName, code);
-    return new BbsTag(tagName, codeObj.props, codeObj.innerCode);
+    return new BbsTag(tagName, codeObj.props, codeObj.innerCode,code);
 }
 
 // tag解析方法
@@ -98,6 +99,7 @@ let tagParser = {
     "size": (code) => simpleParser("size", code),
     "tr": (code) => simpleParser("tr", code),
     "td": (code) => simpleParser("td", code),
+    "align": (code) => simpleParser("align", code),
     "code": (code) => codeParser("code", code),
 }
 
@@ -136,7 +138,7 @@ function bbsCodeParser (code) {
                     let spanText = code.substring(0, i)
                         .replace(/<br\/>/g, "\n")
                     debugLog("添加span： " + spanText)
-                    array.push(new BbsTag("span", "", spanText))
+                    array.push(new BbsTag("span", "", spanText,spanText))
                     code = code.substring(i);
                     i = 0;
                 }
@@ -157,7 +159,7 @@ function bbsCodeParser (code) {
         let spanText = code
             .replace(/<br\/>/g, "\n")
         debugLog("添加span： " + spanText)
-        array.push(new BbsTag("span", "", spanText))
+        array.push(new BbsTag("span", "", spanText,spanText))
     }
     return array;
 }

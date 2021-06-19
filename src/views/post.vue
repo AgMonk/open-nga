@@ -56,6 +56,13 @@ export default {
 
     prePost(params).then(res => {
       this.content = res.content?res.content:"";
+
+      this.content = this.content
+          .replace(/&quot;/g, "\"")
+          .replace(/&lt;/g, "<")
+          .replace(/&gt;/g, ">")
+          .replace(/&#39;/g, "'")
+
       this.attachUrl = res.attach_url
       this.auth = res.auth;
 

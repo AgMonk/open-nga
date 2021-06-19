@@ -38,7 +38,9 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 10px;text-align: left">
-      <div v-show="showCode">{{ myData.content }}</div>
+      <div v-show="showCode">
+        {{ myData.content }}
+      </div>
       <div v-show="!showCode">
         <content-parser :content="myData.content">{{ myData.content }}</content-parser>
       </div>

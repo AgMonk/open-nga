@@ -49,6 +49,14 @@ export default {
                 }
                 Object.keys(res.__R).forEach(key => {
                     let reply = res.__R[key];
+
+                    reply.content = reply.content
+                        .replace(/&quot;/g, "\"")
+                        .replace(/&lt;/g, "<")
+                        .replace(/&gt;/g, ">")
+                        .replace(/&#39;/g, "'")
+
+
                     // 发布时间格式化
                     reply.postdate = new Date(reply.postdatetimestamp * 1000).format("yyyy-MM-dd hh:mm:ss")
                     //  复制声望数据
