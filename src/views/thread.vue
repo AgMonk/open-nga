@@ -16,7 +16,7 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-      <el-table :data="threads">
+      <el-table :cell-class-name="cellClassName" :data="threads">
         <el-table-column label="#" width="40px">
           <template #default="s">
             {{ s.$index + 1 }}
@@ -90,6 +90,9 @@ export default {
     }
   },
   methods: {
+    cellClassName({row, column, rowIndex, columnIndex}){
+      return this.$store.state.config.config.uiColor+rowIndex%2
+    },
     newThread(){
       let fid = this.$route.params.fid;
       this.$router.push(getRoute(["post","new",fid,0,0,0]))

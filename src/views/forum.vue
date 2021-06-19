@@ -9,11 +9,11 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-      <el-table :data="$store.state.forum.forums" @cell-click="clickForum">
-        <el-table-column label="版面" prop="name"/>
+      <el-table :cell-class-name="cellClassName" :data="$store.state.forum.forums" cell-style="cursor: pointer;" @cell-click="clickForum">
+        <el-table-column label="版面" prop="name"  />
         <el-table-column label="移除" width="100px">
           <template #default="s">
-            <el-button type="danger" @click="delFavForum(s)">移除</el-button>
+            <el-button size="mini" type="danger" @click="delFavForum(s)">移除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -44,6 +44,9 @@ export default {
     }
   },
   methods: {
+    cellClassName({row, column, rowIndex, columnIndex}){
+      return this.$store.state.config.config.uiColor+rowIndex%2
+    },
     clickForum(row, column, cell, event) {
       if (column.property === 'name') {
         this.$router.push("/thread/" + row.fid + "/1")
