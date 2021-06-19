@@ -35,6 +35,7 @@ import Money from "@/components/money";
 import UserInfo from "@/components/user-info";
 import {delCache, getCacheByPrefix} from "@/assets/js/storageUtils";
 import account from "@/store/account";
+import "../assets/css/ui-color.css"
 
 export default {
   name: "account",

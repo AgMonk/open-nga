@@ -5,6 +5,7 @@ import {createRouter, createWebHistory} from 'vue-router'
 const routes = [
   {path: "/",redirect:"/forum"},
   {path: "/forum",name:"forum",component:()=>import("../views/forum"),},
+  {path: "/config",name:"config",component:()=>import("../views/config"),},
 
   {path: "/thread/:fid/:page",name:"thread",component:()=>import("../views/thread"),},
   {path: "/thread/:fid/:page/:stid",name:"stid",component:()=>import("../views/thread"),},

@@ -9,6 +9,7 @@ export default {
             "thread": {path: "/thread", title: "主题列表"},
             "read": {path: "/read", title: "主题详情"},
             "account": {path: "/account", title: "用户中心"},
+            "config": {path: "/config", title: "配置"},
         },
         params: {
             "thread": [],

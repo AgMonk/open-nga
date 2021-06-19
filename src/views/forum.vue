@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import {putCache} from "@/assets/js/storageUtils";
 import SearchForum from "@/components/search-forum";
 import {getCookieMap} from "@/assets/js/cookieUtils";
+import "../assets/css/ui-color.css"
 
 export default {
   name: "forum",

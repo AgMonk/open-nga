@@ -8,11 +8,11 @@ export default {
         configKey:"ui-config",
         config:{},
         options:{
-            uiColor:{
-                yellow:"黄色",
-                black:"黑色",
-                green:"绿色",
-            },
+            uiColor:[
+                {label:"黑色",value:"black"},
+                {label:"黄色",value:"yellow"},
+                {label:"绿色",value:"green"},
+            ]
         },
         defaultConfig:{
             uiColor:"green",

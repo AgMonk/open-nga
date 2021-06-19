@@ -74,6 +74,7 @@ import Datetime from "@/components/datetime";
 import ThreadLink from "@/components/thread-link";
 import UserLink from "@/components/user-link";
 import {getRoute} from "@/assets/js/api/routerUtils";
+import "../assets/css/ui-color.css"
 
 export default {
   name: "thread",

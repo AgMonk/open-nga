@@ -17,6 +17,7 @@
 import {prePost} from "@/assets/js/api/postApi";
 import {copyObj} from "@/assets/js/utils";
 import ReplyTextArea from "@/components/reply-text-area";
+import "../assets/css/ui-color.css"
 
 export default {
   name: "post",
