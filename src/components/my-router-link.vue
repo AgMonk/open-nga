@@ -1,7 +1,7 @@
 <template>
   <router-link :to="url?url:getUrl()" style="text-decoration: none">
-    <el-link :href="url?url:getUrl()" :style="linkStyle">
-      <span :style="textStyle">{{ text }}<slot></slot></span>
+    <el-link :class="linkClass" :href="url?url:getUrl()" :style="linkStyle">
+      <span :class="linkClass" :style="linkStyle">{{ text }}<slot></slot></span>
     </el-link>
   </router-link>
 </template>
@@ -24,7 +24,7 @@ export default {
   },
   mounted() {
   },
-  props: ["router", "params", "text","url","linkStyle","textStyle"],
+  props: ["router", "params", "text","url","linkStyle","linkClass"],
 }
 
 </script>

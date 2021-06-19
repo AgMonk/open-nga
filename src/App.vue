@@ -3,6 +3,8 @@
 <!--  <div style="background-color: #fff8e7">-->
     <navi/>
     <router-view/>
+    <notice/>
+    <el-link href="https://github.com/AgMonk/open-nga" target="_blank">[GitHub]</el-link>
   </div>
 </template>
 
@@ -31,8 +33,9 @@
 </style>
 <script>
 import Navi from "@/navi/navi";
+import Notice from "@/views/notice";
 
 export default {
-  components: {Navi}
+  components: {Notice, Navi}
 }
 </script>

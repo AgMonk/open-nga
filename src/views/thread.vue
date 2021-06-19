@@ -16,7 +16,7 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-      <el-table :cell-class-name="cellClassName" :data="threads">
+      <el-table :cell-class-name="cellClassName" :data="threads"  :header-cell-class-name="$store.state.config.config.uiColor+'1'">
         <el-table-column label="#" width="40px">
           <template #default="s">
             {{ s.$index + 1 }}
@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column label="主题">
           <template #default="s">
-            <thread-link :data="s.row"/>
+            <thread-link :data="s.row" :index="s.$index" />
           </template>
         </el-table-column>
         <el-table-column label="作者/发布时间" width="170px">

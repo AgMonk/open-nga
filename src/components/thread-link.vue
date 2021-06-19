@@ -1,7 +1,9 @@
 <template>
   <el-row>
     <el-col :span="['topic_misc_var']?19:24">
-      <my-router-link :link-style="threadColor(data.titlefont||data.topic_misc)" :text="data.subject" :url="getUrl()"/>
+      <my-router-link :link-class="$store.state.config.config.uiColor+index%2"
+                      :link-style="threadColor(data.titlefont||data.topic_misc)"
+                      :text="data.subject" :url="getUrl()"/>
       <el-pagination v-if="data.replies>=20 && !data.__P"
                      :current-page="currentPage"
                      layout="pager"
@@ -87,7 +89,7 @@ export default {
       }
     }
   },
-  props: ["data"],
+  props: ["data","index"],
 }
 
 </script>
