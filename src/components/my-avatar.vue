@@ -17,9 +17,9 @@ export default {
   name: "my-avatar",
   data() {
     return {
-      show:false,
+      show: false,
       urls: [],
-      index:0,
+      index: 0,
     }
   },
   computed: {
@@ -35,23 +35,25 @@ export default {
         let avatar = this.users[uid].avatar;
         if (avatar && avatar.length > 0) {
           this.urls = [];
-
+          let proxy = "https://images.weserv.nl/?url=";
           let urls = avatar.split("|")
               // .map(a => a.substring(0, a.indexOf("?")))
               .map(a => a.replace(".a", ""))
-              .map(a => a.replace("https://img.nga.178.com", ""))
-              .map(a => a.replace("http://img.nga.178.com", ""))
-              .map(a => a.replace("http://pic1.178.com", ""))
-              // .map(a => a.replace("https", "http"))
+              // .map(a => a.replace("https://img.nga.178.com", ""))
+              // .map(a => a.replace("http://img.nga.178.com", ""))
+              // .map(a => a.replace("http://pic1.178.com", ""))
+              .map(a => a.replace("https://", proxy))
+              .map(a => a.replace("http://", proxy))
+          // .map(a => a.replace("https", "http"))
 
           this.urls.push(urls[0])
           let a = urls[0].split("/");
           for (let i = 1; i < urls.length; i++) {
-            a[a.length-1] = urls[i];
+            a[a.length - 1] = urls[i];
             this.urls.push(a.join("/"))
           }
 
-          this.index = Math.floor((Math.random()*this.urls.length-1)+1);
+          this.index = Math.floor((Math.random() * this.urls.length - 1) + 1);
           this.show = true;
         }
       }

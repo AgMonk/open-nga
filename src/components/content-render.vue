@@ -36,18 +36,21 @@ export default {
             body-style="padding:10px;border: 1px solid #81a3f3;background-color: #70cef742;">
           {this.render(children)}</el-card>},
         "img":(children) => {
+          let proxy ="https://images.weserv.nl/?url=img.nga.178.com/attachments"
           let url = children[0].children;
           if (url.startsWith("./mon")) {
             //  站内图片
-            let imgSrc = "/img"+url.substring(1)
+            let imgSrc = proxy+url.substring(1)
+            // let imgSrc = "/img"+url.substring(1)
                 .replace(".thumb.jpg", "")
                 .replace(".medium.jpg", "")
-                .replace("https","http")
+                // .replace("https","http")
             ;
             return <el-link href={imgSrc} target="_blank">
               <el-image src={imgSrc} />
             </el-link>
           }
+          /* todo 外链图 */
         },
         "url": (children, props) => {
           let url = props !== '' ? props : children[0].children;
