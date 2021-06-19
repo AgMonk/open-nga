@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import {getNotice} from "@/assets/js/api/api";
+
 export default {
   name: "notice",
   data() {
@@ -14,6 +16,9 @@ export default {
       myData: {}
     }
   },
+  mounted() {
+    getNotice()
+  }
 }
 
 </script>

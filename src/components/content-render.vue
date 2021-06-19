@@ -33,7 +33,7 @@ export default {
         },
         "quote": (children) => {return <el-card
             className="box-card"
-            body-style="padding:10px;border: 1px solid #81a3f3;background-color: #70cef742;">
+            body-style="padding:10px;border: 1px solid #81a3f3;background-color: #0cb2fb1f;">
           {this.render(children)}</el-card>},
         "img":(children) => {
           let proxy ="https://images.weserv.nl/?url=img.nga.178.com/attachments"

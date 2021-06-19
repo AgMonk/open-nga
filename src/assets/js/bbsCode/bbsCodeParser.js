@@ -188,7 +188,7 @@ export const parseBbsCode = (code) => {
         .replace(/\[list]\[\/li]/g, "[ul]")
         .replace(/\[\/list]/g, "[/li][/ul]")
 
-    console.log("解析正文：" + code)
+    // console.log("解析正文：" + code)
     return bbsCodeParser(code)
 }
 

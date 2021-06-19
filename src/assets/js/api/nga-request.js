@@ -71,7 +71,27 @@ export const request8 = axios.create({
                     result = result.replace("\t", "")
                 }
 
-
+                if (result.includes("unread")) {
+                //    对提醒消息特殊处理
+                    result = result
+                        .replace(/\s/g,"")
+                        .replace(/15:/g,"\"15\":")
+                        .replace(/14:/g,"\"14\":")
+                        .replace(/13:/g,"\"13\":")
+                        .replace(/12:/g,"\"12\":")
+                        .replace(/11:/g,"\"11\":")
+                        .replace(/10:/g,"\"10\":")
+                        .replace(/0:/g,"\"0\":")
+                        .replace(/1:/g,"\"1\":")
+                        .replace(/2:/g,"\"2\":")
+                        .replace(/3:/g,"\"3\":")
+                        .replace(/4:/g,"\"4\":")
+                        .replace(/5:/g,"\"5\":")
+                        .replace(/6:/g,"\"6\":")
+                        .replace(/7:/g,"\"7\":")
+                        .replace(/8:/g,"\"8\":")
+                        .replace(/9:/g,"\"9\":")
+                }
 
                 // noinspection JSCheckFunctionSignatures
                 resolve(JSON.parse(result))

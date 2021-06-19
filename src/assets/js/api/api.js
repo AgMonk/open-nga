@@ -140,3 +140,22 @@ export const topicRecommend = (tid, pid, value = 1) => {
     })
 }
 
+
+export const getNotice = ()=>{
+    return request8("nuke.php",{
+        headers: formDataHeaders,
+        method:"post",
+        transformRequest,
+        params: {
+            __lib:"noti",
+            raw:3,
+        },
+        data:{
+            __act:"get_all",
+            time_limit:1,
+        }
+    }).then(res=>{
+        console.log(res.data)
+        return res.data
+    })
+}
