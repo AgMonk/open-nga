@@ -49,8 +49,7 @@ export default {
                 }
                 Object.keys(res.__R).forEach(key => {
                     let reply = res.__R[key];
-
-                    reply.content = reply.content
+                    reply.content = reply.content.toString()
                         .replace(/&quot;/g, "\"")
                         .replace(/&lt;/g, "<")
                         .replace(/&gt;/g, ">")

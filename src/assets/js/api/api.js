@@ -19,7 +19,11 @@ export const formDataHeaders={
 };
 
 
-export const thread = (params) => {
+export const thread = ({stid,fid,page,authorid,searchpost}) => {
+    let params = stid?{stid,page}
+        :(searchpost?{fid,page,authorid,searchpost}
+            :({fid, page})
+        )
     return request8.get("thread.php", {
         params,
     }).then(res => {

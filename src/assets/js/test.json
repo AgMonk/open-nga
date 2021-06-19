@@ -1,198 +1,305 @@
-[
-  {
-    "type": "size",
-    "props": "120%",
-    "children": [
-      {
-        "type": "span",
-        "props": "",
-        "children": "测试"
-      }
-    ]
-  },
-  {
-    "type": "quote",
-    "props": "",
-    "children": [
-      {
-        "type": "h",
-        "props": "",
-        "children": [
-          {
-            "type": "span",
-            "props": "",
-            "children": "标题1"
-          }
-        ]
+{
+  "data": {
+    "__CU": {
+      "uid": 39841854,
+      "group_bit": 622816,
+      "admincheck": "",
+      "rvrc": 14
+    },
+    "__GLOBAL": {
+      "_ATTACH_BASE_VIEW": "img.nga.178.com/attachments"
+    },
+    "__U": {
+      "63029060": {
+        "uid": 63029060,
+        "username": "abeixgaja",
+        "credit": 1310720,
+        "medal": "",
+        "reputation": "",
+        "groupid": -1,
+        "memberid": 39,
+        "avatar": "",
+        "yz": 4,
+        "site": "",
+        "honor": "",
+        "regdate": 1615125427,
+        "mute_time": "",
+        "postnum": 48,
+        "rvrc": 10,
+        "money": 0,
+        "thisvisit": 1624059256,
+        "signature": "",
+        "nickname": "",
+        "bit_data": 1310720
       },
-      {
-        "type": "quote",
-        "props": "",
-        "children": [
-          {
-            "type": "h",
-            "props": "",
-            "children": [
-              {
-                "type": "span",
-                "props": "",
-                "children": "标题2"
-              }
-            ]
-          },
-          {
-            "type": "list",
-            "props": "",
-            "children": [
-              {
-                "type": "ul",
-                "props": "",
-                "children": [
-                  {
-                    "type": "span",
-                    "props": "",
-                    "children": "列表项1"
-                  }
-                ]
-              },
-              {
-                "type": "ul",
-                "props": "",
-                "children": [
-                  {
-                    "type": "span",
-                    "props": "",
-                    "children": "列表项2"
-                  },
-                  {
-                    "type": "list",
-                    "props": "",
-                    "children": [
-                      {
-                        "type": "ul",
-                        "props": "",
-                        "children": [
-                          {
-                            "type": "span",
-                            "props": "",
-                            "children": "列表项2-1"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "ul",
-                        "props": "",
-                        "children": [
-                          {
-                            "type": "span",
-                            "props": "",
-                            "children": "列表项2-2"
-                          }
-                        ]
-                      },
-                      {
-                        "type": "ul",
-                        "props": "",
-                        "children": [
-                          {
-                            "type": "span",
-                            "props": "",
-                            "children": "列表项2-3"
-                          }
-                        ]
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "type": "ul",
-                "props": "",
-                "children": [
-                  {
-                    "type": "span",
-                    "props": "",
-                    "children": "列表项3"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "type": "quote",
-    "props": "",
-    "children": [
-      {
-        "type": "h",
-        "props": "",
-        "children": [
-          {
-            "type": "span",
-            "props": "",
-            "children": "标题3"
-          }
-        ]
+      "60168943": {
+        "uid": 60168943,
+        "username": "能鸽善鹉小葫芦",
+        "credit": 34865152,
+        "medal": "",
+        "reputation": "61_127",
+        "groupid": -1,
+        "memberid": 39,
+        "avatar": "http://img.nga.178.com/avatars/2002/aef/961/003/60168943_0.png?74",
+        "yz": 4,
+        "site": "",
+        "honor": " 1567530942 稀有度R的复仇鱼人",
+        "regdate": 1546243794,
+        "mute_time": "",
+        "postnum": 261,
+        "rvrc": 10,
+        "money": 21986,
+        "thisvisit": 1624015270,
+        "signature": "",
+        "nickname": "",
+        "bit_data": 34865152
       },
-      {
-        "type": "quote",
-        "props": "",
-        "children": [
-          {
-            "type": "h",
-            "props": "",
-            "children": [
-              {
-                "type": "span",
-                "props": "",
-                "children": "标题4"
-              }
-            ]
-          },
-          {
-            "type": "list",
-            "props": "",
-            "children": [
-              {
-                "type": "ul",
-                "props": "",
-                "children": [
-                  {
-                    "type": "span",
-                    "props": "",
-                    "children": "列表项1"
-                  }
-                ]
-              },
-              {
-                "type": "ul",
-                "props": "",
-                "children": [
-                  {
-                    "type": "span",
-                    "props": "",
-                    "children": "列表项2"
-                  }
-                ]
-              },
-              {
-                "type": "ul",
-                "props": "",
-                "children": [
-                  {
-                    "type": "span",
-                    "props": "",
-                    "children": "列表项3"
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+      "61600787": {
+        "uid": 61600787,
+        "username": "TachankaBoom",
+        "credit": 34865152,
+        "medal": "",
+        "reputation": "61_67,161_30",
+        "groupid": -1,
+        "memberid": 39,
+        "avatar": "https://img.nga.178.com/avatars/2002/413/abf/003/61600787_0.png?28",
+        "yz": 4,
+        "site": "",
+        "honor": "",
+        "regdate": 1579995057,
+        "mute_time": "",
+        "postnum": 141,
+        "rvrc": 10,
+        "money": 13900,
+        "thisvisit": 1624038608,
+        "signature": "",
+        "nickname": "",
+        "bit_data": 34865152
+      },
+      "__GROUPS": {
+        "39": {
+          "0": "学徒",
+          "1": 622816,
+          "2": 39
+        }
+      },
+      "__REPUTATIONS": {
+        "102": {
+          "63029060": 0,
+          "60168943": 0,
+          "61600787": 0,
+          "0": "格里芬G.K"
+        }
       }
-    ]
-  }
-]
+    },
+    "__R": {
+      "0": {
+        "content": "真的太难了啊这个.救救孩子吧  [img]./mon_202106/19/-bqqbQ2o-hpi4K2gT3cSsg-g1.jpg.medium.jpg[/img]",
+        "alterinfo": "[E1624071784 0 0]	",
+        "tid": 27265909,
+        "score": 0,
+        "score_2": 0,
+        "postdate": "2021-06-19 08:42",
+        "authorid": 63029060,
+        "subject": "安卓官服，萌新求个大佬好友位",
+        "type": 33628160,
+        "fid": -547859,
+        "pid": 0,
+        "recommend": 0,
+        "follow": 0,
+        "lou": 0,
+        "content_length": 79,
+        "attachs": {
+          "0": {
+            "attachurl": "mon_202106/19/-bqqbQ2o-hpi4K2gT3cSsg-g1.jpg",
+            "size": 88,
+            "type": "img",
+            "subid": 0,
+            "url_utf8_org_name": "14e4f2a523dadfb0.png",
+            "dscp": "",
+            "path": "mon_202106/19",
+            "name": "-bqqbQ2o-hpi4K2gT3cSsg-g1.jpg",
+            "ext": "jpg",
+            "thumb": 120
+          }
+        },
+        "from_client": "8 Android",
+        "postdatetimestamp": 1624063366
+      },
+      "1": {
+        "pid": 525643271,
+        "fid": -547859,
+        "tid": 27265909,
+        "authorid": 60168943,
+        "type": 0,
+        "score": 0,
+        "score_2": 0,
+        "recommend": 0,
+        "postdate": "2021-06-19 09:09",
+        "subject": "",
+        "alterinfo": "",
+        "content": "1403607<br/>是咸鱼，不是大佬，不过有什么需要的队伍，或者需要打什么敌人的队伍，可以游戏里聊天告诉我，会尽量提供帮助",
+        "lou": 1,
+        "content_length": 109,
+        "from_client": "8 Android",
+        "postdatetimestamp": 1624064941
+      },
+      "2": {
+        "pid": 525658283,
+        "fid": -547859,
+        "tid": 27265909,
+        "authorid": 63029060,
+        "type": 0,
+        "score": 0,
+        "score_2": 0,
+        "recommend": 0,
+        "postdate": "2021-06-19 10:31",
+        "subject": "",
+        "alterinfo": "",
+        "content": "3559656我id",
+        "lou": 2,
+        "content_length": 11,
+        "from_client": "8 Android",
+        "postdatetimestamp": 1624069862
+      },
+      "3": {
+        "pid": 525659023,
+        "fid": -547859,
+        "tid": 27265909,
+        "authorid": 61600787,
+        "type": 0,
+        "score": 0,
+        "score_2": 0,
+        "recommend": 0,
+        "postdate": "2021-06-19 10:34",
+        "subject": "",
+        "alterinfo": "",
+        "content": 1048429,
+        "lou": 3,
+        "content_length": 7,
+        "from_client": "8 Android",
+        "postdatetimestamp": 1624070088
+      },
+      "4": {
+        "pid": 525659498,
+        "fid": -547859,
+        "tid": 27265909,
+        "authorid": 63029060,
+        "type": 0,
+        "score": 0,
+        "score_2": 0,
+        "recommend": 0,
+        "postdate": "2021-06-19 10:37",
+        "subject": "",
+        "alterinfo": "",
+        "content": "[quote][pid=525643271,27265909,1]Reply[/pid] [b]Post by [uid=60168943]能鸽善鹉小葫芦[/uid] (2021-06-19 09:09):[/b]<br/><br/>1403607<br/>是咸鱼，不是大佬，不过有什么需要的队伍，或者需要打什么敌人的队伍，可以游戏里聊天告诉我，会尽量提供帮助[/quote]<br/><br/>好的呀",
+        "lou": 4,
+        "content_length": 11,
+        "from_client": "8 Android",
+        "reply_to": 525643271,
+        "postdatetimestamp": 1624070226
+      }
+    },
+    "__T": {
+      "fid": -547859,
+      "tid": 27265909,
+      "topic_misc": "AgFQXSw",
+      "subject": "安卓官服，萌新求个大佬好友位",
+      "locked": 0,
+      "recommend": 0,
+      "quote_to": "",
+      "quote_from": 0,
+      "type": 73728,
+      "replies": 4,
+      "authorid": 63029060,
+      "postdate": 1624063366,
+      "lastpost": 1624070226,
+      "author": "abeixgaja",
+      "lastposter": "abeixgaja",
+      "digest": 0,
+      "lastmodify": 1624071784,
+      "tpid": 0,
+      "topic_misc_var": {
+        "2": 22043948
+      },
+      "__ST": {
+        "fid": -547859,
+        "tid": 22043948,
+        "topic_misc": "AQAAACE",
+        "subject": "好友招募",
+        "locked": 0,
+        "recommend": 10,
+        "quote_to": "",
+        "quote_from": 0,
+        "type": 37888,
+        "replies": 0,
+        "authorid": 195362,
+        "postdate": 1591283184,
+        "lastpost": 1624070226,
+        "author": 35544333,
+        "lastposter": 35544333,
+        "digest": 0,
+        "lastmodify": 1623517564,
+        "tpid": 0,
+        "topic_misc_var": {
+          "1": 33
+        },
+        "__P": {
+          "aid": "a:3:{i:1;i:217;i:2;s:14:\"218.67.252.162\";i:0;i:-547859;}",
+          "score": 0,
+          "score_2": 0,
+          "content": "[list]\n[*][b]1. [/b] [b][color=red]在本合集发布主题时，标题必须包含区服标签，无标签发帖将被删除。[/color][/b]\n标签包括：[安卓官服] [IOS] [安卓B服] [渠道混服] [应用宝] [日服] [EN服] [台服] 等\n[*][b]2. [/b] 长期征集好友请前往[b][url=/read.php?tid=22041661][color=green]&lt;长期好友招募集合贴&gt;[/color][/url][/b]\n[*][b]3. [/b] 寻找推图助战前往[b][url=/read.php?tid=22041581][color=green]&lt;强力AR/RF助战提供集合贴&gt;[/color][/url][/b][/list]",
+          "alterinfo": "[E1620572341 38148967 星光下的彩虹]\n",
+          "post_misc_var": {
+            "content_length": 217,
+            "fid": -547859,
+            "userip": "218.67.252.162"
+          },
+          "recommend": 10,
+          "type": 37888,
+          "authorid": 195362,
+          "postdate": 1591283184,
+          "subject": "好友招募",
+          "pid": "",
+          "tid": 22043948,
+          "fid": -547859
+        },
+        "post_misc_var": {
+          "content_length": 217,
+          "fid": -547859,
+          "userip": "218.67.252.162"
+        }
+      },
+      "post_misc_var": {
+        "content_length": 79,
+        "fid": -547859,
+        "attachs": {
+          "0": {
+            "attachurl": "mon_202106/19/-bqqbQ2o-hpi4K2gT3cSsg-g1.jpg",
+            "size": 88,
+            "type": "img",
+            "subid": 0,
+            "url_utf8_org_name": "14e4f2a523dadfb0.png",
+            "dscp": "",
+            "path": "mon_202106/19",
+            "name": "-bqqbQ2o-hpi4K2gT3cSsg-g1.jpg",
+            "ext": "jpg",
+            "thumb": 120
+          }
+        },
+        "from_client": "8 Xiaomi Redmi Note 8 Pro(Android 10)"
+      },
+      "this_visit_rows": 5
+    },
+    "__F": {
+      "custom_level": "[{r:-21000,n:\"妹妹酱\"},{r:-500,n:\"军方卧底\"},{r:0,n:\"WA2000\"},{r:101,n:\"UMP45\"},{r:201,n:\"G36\"},{r:301,n:\"AK-12\"},{r:401,n:\"AN-94\"},{r:403,n:\"M4A1\"},{r:404,n:\"AN-94\"},{r:406,n:\"Vector\"},{r:407,n:\"AN-94\"},{r:412,n:\"ST AR-15\"},{r:413,n:\"AN-94\"},{r:423,n:\"MK23\"},{r:425,n:\"春田\"},{r:426,n:\"AN-94\"},{r:501,n:\"M4 SOPMODII\"},{r:601,n:\"HK416\"},{r:1000,n:\"16LAB研究员\"},{r:3000,n:\"智能AI(过去式)\"}]",
+      "name": "少女前线-16LAB研究院"
+    },
+    "__R__ROWS": 5,
+    "__R__ROWS_PAGE": 20,
+    "__ROWS": 5,
+    "__PAGE": 1
+  },
+  "encode": "GBK",
+  "time": 1624073176
+}

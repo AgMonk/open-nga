@@ -104,6 +104,19 @@ export default {
       })
     },
     handlePageData(res) {
+      // 设置param
+      let thread = res.__T;
+      let st = thread.__ST
+      console.log(st?[thread.fid,1,st.tid]:[thread.fid,1])
+      this.$store.commit("navi/setParams", {
+        key: "thread",
+        params: st?[thread.fid,1,st.tid]:[thread.fid,1]
+      })
+      this.$store.commit("navi/updatePath")
+      this.$store.commit("navi/setShow")
+      this.$nextTick(() => this.$store.commit("navi/setShow"))
+
+
       this.breadcrumbs = [];
       //版面
       this.breadcrumbs.push({
