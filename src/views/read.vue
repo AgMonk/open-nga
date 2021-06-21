@@ -26,7 +26,7 @@
             <reply-user-card :data="row.userInfo" :index="i"/>
           </el-col>
           <el-col :span="18">
-            <reply-content-card :data="row"/>
+            <reply-content-card :ref="'#'+row.lou" :data="row"/>
           </el-col>
 
         </el-row>
@@ -53,7 +53,7 @@
       <!--suppress HtmlUnknownTag -->
       <el-main>
         <h3>快速回复</h3>
-        <reply-text-area :content="content" :params="{tid:$route.params.tid,post_subject:subject}"
+        <reply-text-area :content="content" :params="replyParams"
                          @submitted="updateDetails"/>
       </el-main>
     </el-container>
@@ -81,6 +81,7 @@ export default {
         size: 20,
         total: 20,
       },
+      replyParams:{},
       breadcrumbs: [],
       replies: [],
     }
@@ -105,6 +106,12 @@ export default {
       })
     },
     handlePageData(res) {
+
+      this.replyParams = {
+        tid:res.__T.tid,
+        post_subject:"",
+      }
+
       // 设置param
       let thread = res.__T;
       let st = thread.__ST
@@ -154,7 +161,13 @@ export default {
 
       this.replies = res.__R;
 
+      if (this.$route.params.page === 'e') {
+        this.$route.params.page = res.__PAGE;
+        this.$router.push(this.$route)
+      }
 
+
+      // console.log(this.$refs['#'+this.replies[0].lou])
     },
     //更新主题详情
     updateParams() {
@@ -169,6 +182,7 @@ export default {
         this.$store.dispatch("read/getDetail", {tid, page, authorid, pid}).then(res => {
           console.log(res)
           this.handlePageData(res)
+          document.body.scrollIntoView()
         })
       }
     },

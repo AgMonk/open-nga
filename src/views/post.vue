@@ -56,20 +56,25 @@ export default {
     }
 
     prePost(params).then(res => {
-      this.content = res.content?res.content:"";
+      if (!res.__MESSAGE) {
+        this.content = res.content ? res.content : "";
 
-      this.content = this.content
-          .replace(/&quot;/g, "\"")
-          .replace(/&lt;/g, "<")
-          .replace(/&gt;/g, ">")
-          .replace(/&#39;/g, "'")
+        this.content = this.content
+            .replace(/&quot;/g, "\"")
+            .replace(/&lt;/g, "<")
+            .replace(/&gt;/g, ">")
+            .replace(/&#39;/g, "'")
 
-      this.attachUrl = res.attach_url
-      this.auth = res.auth;
+        this.attachUrl = res.attach_url
+        this.auth = res.auth;
 
-      params.action = res.action;
-      params.post_subject = res.subject;
-      this.params = params
+        params.action = res.action;
+        params.post_subject = res.subject;
+        this.params = params
+      }else{
+        this.$message.error(res.__MESSAGE["1"]);
+        history.back();
+      }
     })
   },
   watch: {},
