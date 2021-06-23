@@ -10,7 +10,8 @@
         </el-breadcrumb>
         <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新(r)</el-button>
         <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
-        <el-switch v-model="autoRefresh.enable" active-color="green" active-text="自动刷新(/3min)"  inactive-color="red" style="margin-left: 5px" />
+        <el-switch v-model="autoRefresh.enable" active-color="green" active-text="自动刷新(/3min)" inactive-color="red"
+                   style="margin-left: 5px"/>
         <el-pagination
             :current-page.sync="pagination.page"
             :page-size.sync="pagination.size"
@@ -54,6 +55,7 @@
           </el-breadcrumb-item>
         </el-breadcrumb>
       </el-footer>
+      <clock :load="lastRefreshTime"/>
     </el-container>
     <el-container direction="vertical">
       <!--suppress HtmlUnknownTag -->
@@ -74,12 +76,14 @@ import ReplyContentCard from "@/components/reply-content-card";
 import "../assets/css/ui-color.css"
 import {getRoute} from "@/assets/js/api/routerUtils";
 import ReplyTextArea from "@/components/reply-text-area";
+import Clock from "@/components/clock";
 
 export default {
   name: "read",
-  components: {ReplyTextArea, ReplyContentCard, ReplyUserCard, MyRouterLink},
+  components: {Clock, ReplyTextArea, ReplyContentCard, ReplyUserCard, MyRouterLink},
   data() {
     return {
+      lastRefreshTime: new Date(),
       content: "",
       subject: "",
       pagination: {
@@ -95,9 +99,9 @@ export default {
       currentLevel: 0,
 
       // 自动刷新功能
-      autoRefresh:{
-        enable:false,
-        interval:undefined,
+      autoRefresh: {
+        enable: true,
+        interval: undefined,
       },
     }
   },
@@ -118,10 +122,14 @@ export default {
       let pid = this.$route.params.pid;
       this.$store.dispatch("read/updateDetail", {tid, page, authorid, pid}).then(res => {
         this.handlePageData(res)
+        this.lastRefreshTime = new Date();
+        this.removeAutoRefresh()
+        this.setAutoRefresh()
         this.$message.success("刷新成功")
       })
     },
     handlePageData(res) {
+
 
       this.replyParams = {
         tid: res.__T.tid,
@@ -202,12 +210,12 @@ export default {
         })
       }
     },
-    scrollLevel(c){
+    scrollLevel(c) {
       if (!this.replies[this.currentLevel + c]) {
         this.$message.error("已达到顶回复或尾回复")
-        return ;
+        return;
       }
-      this.currentLevel+=c;
+      this.currentLevel += c;
       let level = this.replies[this.currentLevel].lou;
       let element = document.getElementById("#" + level);
       element.scrollIntoView()
@@ -228,7 +236,7 @@ export default {
           }
         }
         if (e.key === 'd') {
-          let maxPage = Math.floor(this.pagination.total / this.pagination.size +1)
+          let maxPage = Math.floor(this.pagination.total / this.pagination.size + 1)
           //  下一页
           if (this.pagination.page === maxPage) {
             this.$message.error("已达到尾页 / 请尝试刷新(r)")
@@ -238,13 +246,24 @@ export default {
 
         }
         if (e.key === 's') {
-         this.scrollLevel(1)
+          this.scrollLevel(1)
         }
- if (e.key === 'w') {
-         this.scrollLevel(-1)
+        if (e.key === 'w') {
+          this.scrollLevel(-1)
         }
 
       }
+    },
+    setAutoRefresh() {
+      //  自动刷新
+      this.autoRefresh.interval = setInterval(() => {
+        if (this.autoRefresh.enable) {
+          this.updateDetails();
+        }
+      }, 3 * 60 * 1000)
+    },
+    removeAutoRefresh() {
+      clearInterval(this.autoRefresh.interval)
     },
   },
   watch: {
@@ -260,17 +279,11 @@ export default {
     this.updateParams();
     document.addEventListener('keypress', this.keypress)
 
-  //  自动刷新
-    this.autoRefresh.interval = setInterval(()=>{
-      if (this.autoRefresh.enable){
-        this.updateDetails();
-      }
-    },3*60*1000)
+    this.setAutoRefresh()
   },
   unmounted() {
     document.removeEventListener('keypress', this.keypress)
-
-    clearInterval(this.autoRefresh.interval)
+    this.removeAutoRefresh()
   }
 }
 
