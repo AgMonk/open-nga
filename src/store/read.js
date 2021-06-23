@@ -125,8 +125,10 @@ export default {
                 })
 
                 if (params.page === 'e') {
-                    params.page = res.__PAGE;
+                    let p = JSON.parse(JSON.stringify(params))
+                    p.page =  res.__PAGE;
                     console.log("更新最新页 "+ res.__PAGE);
+                    state.details[JSON.stringify(p)] = res;
                 }
                 state.details[JSON.stringify(params)] = res;
                 return res;

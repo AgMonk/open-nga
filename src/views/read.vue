@@ -161,10 +161,10 @@ export default {
 
       this.replies = res.__R;
 
-      if (this.$route.params.page === 'e') {
-        this.$route.params.page = res.__PAGE;
-        this.$router.push(this.$route)
-      }
+      // if (this.$route.params.page === 'e') {
+      //   this.$route.params.page = res.__PAGE;
+      //   this.$router.push(this.$route)
+      // }
 
 
       // console.log(this.$refs['#'+this.replies[0].lou])
