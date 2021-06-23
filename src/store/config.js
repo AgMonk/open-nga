@@ -29,7 +29,6 @@ export default {
         load(state){
             let cache = getCache(state.configKey);
             state.config = cache?cache:copyObj(state.defaultConfig);
-            console.log(state.config)
         },
 
     },

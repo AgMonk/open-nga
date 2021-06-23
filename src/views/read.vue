@@ -139,7 +139,7 @@ export default {
       // 设置param
       let thread = res.__T;
       let st = thread.__ST
-      console.log(st ? [thread.fid, 1, st.tid] : [thread.fid, 1])
+      // console.log(st ? [thread.fid, 1, st.tid] : [thread.fid, 1])
       this.$store.commit("navi/setParams", {
         key: "thread",
         params: st ? [thread.fid, 1, st.tid] : [thread.fid, 1]
@@ -212,7 +212,7 @@ export default {
     },
     scrollLevel(c) {
       if (!this.replies[this.currentLevel + c]) {
-        this.$message.error("已达到顶回复或尾回复")
+        // this.$message.error("已达到顶回复或尾回复")
         return;
       }
       this.currentLevel += c;
@@ -221,37 +221,37 @@ export default {
       element.scrollIntoView()
     },
     keypress(e) {
-      if (e.path[0].nodeName === 'BODY') {
-        if (e.key === 'r') {
-          //  刷新主题列表
-          this.updateDetails();
+      if (!['BODY',"DIV"].includes(e.path[0].nodeName)) {
+        console.log(e.path[0].nodeName)
+        return;
+      }
+      if (e.key === 'r') {
+        //  刷新主题列表
+        this.updateDetails();
+      }
+      if (e.key === 'a') {
+        //  上一页
+        if (this.pagination.page === 1) {
+          this.$message.error("已达到首页")
+        } else {
+          this.page(this.pagination.page - 1)
+        }
+      }
+      if (e.key === 'd') {
+        let maxPage = Math.floor(this.pagination.total / this.pagination.size + 1)
+        //  下一页
+        if (this.pagination.page === maxPage) {
+          this.$message.error("已达到尾页 / 请尝试刷新(r)")
+        } else {
+          this.page(this.pagination.page - (-1))
         }
 
-        if (e.key === 'a') {
-          //  上一页
-          if (this.pagination.page === 1) {
-            this.$message.error("已达到首页")
-          } else {
-            this.page(this.pagination.page - 1)
-          }
-        }
-        if (e.key === 'd') {
-          let maxPage = Math.floor(this.pagination.total / this.pagination.size + 1)
-          //  下一页
-          if (this.pagination.page === maxPage) {
-            this.$message.error("已达到尾页 / 请尝试刷新(r)")
-          } else {
-            this.page(this.pagination.page - (-1))
-          }
-
-        }
-        if (e.key === 's') {
-          this.scrollLevel(1)
-        }
-        if (e.key === 'w') {
-          this.scrollLevel(-1)
-        }
-
+      }
+      if (e.key === 's') {
+        this.scrollLevel(1)
+      }
+      if (e.key === 'w') {
+        this.scrollLevel(-1)
       }
     },
     setAutoRefresh() {

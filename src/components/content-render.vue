@@ -1,6 +1,7 @@
 <script>
 import {parseBbsCode} from "@/assets/js/bbsCode/bbsCodeParser";
 import MyRouterLink from "@/components/my-router-link";
+import {getEmoteUrl} from "@/assets/js/emote";
 
 export default {
   name: "content-render",
@@ -12,7 +13,7 @@ export default {
   date() {
     return {
       myData: [],
-      collapseExpanded:"",
+      collapseExpanded: "",
     }
   },
   methods: {
@@ -24,30 +25,32 @@ export default {
 
       let renderMap = {
         "collapse": (children, props) => {
-          let title = props ? "[折叠内容]: "+props : "[折叠内容]";
-          return <el-collapse >
-            <el-collapse-item title={title} >
+          let title = props ? "[折叠内容]: " + props : "[折叠内容]";
+          return <el-collapse>
+            <el-collapse-item title={title}>
               {this.render(children)}
             </el-collapse-item>
           </el-collapse>
         },
-        "quote": (children) => {return <el-card
-            className="box-card"
-            body-style="padding:10px;border: 1px solid #81a3f3;background-color: #0cb2fb1f;">
-          {this.render(children)}</el-card>},
-        "img":(children) => {
-          let proxy ="https://images.weserv.nl/?url=img.nga.178.com/attachments"
+        "quote": (children) => {
+          return <el-card
+              className="box-card"
+              body-style="padding:10px;border: 1px solid #81a3f3;background-color: #0cb2fb1f;">
+            {this.render(children)}</el-card>
+        },
+        "img": (children) => {
+          let proxy = "https://images.weserv.nl/?url=img.nga.178.com/attachments"
           let url = children[0].children;
           if (url.startsWith("./mon")) {
             //  站内图片
-            let imgSrc = proxy+url.substring(1)
-            // let imgSrc = "/img"+url.substring(1)
-                .replace(".thumb.jpg", "")
-                .replace(".medium.jpg", "")
+            let imgSrc = proxy + url.substring(1)
+                    // let imgSrc = "/img"+url.substring(1)
+                    .replace(".thumb.jpg", "")
+                    .replace(".medium.jpg", "")
                 // .replace("https","http")
             ;
             return <el-link href={imgSrc} target="_blank">
-              <el-image src={imgSrc} />
+              <el-image src={imgSrc}/>
             </el-link>
           }
           /* todo 外链图 */
@@ -55,7 +58,7 @@ export default {
         "url": (children, props) => {
           let url = props !== '' ? props : children[0].children;
           if (url.startsWith("/read.php?tid=")) {
-            url = "https://bbs.nga.cn"+url;
+            url = "https://bbs.nga.cn" + url;
           }
           let ngaUrlRegExp = /^https?:\/\/(bbs\.ngacn\.cc|nga\.178\.com|bbs\.nga\.cn|ngabbs\.com)\/(.+?)\.php\?(.+)/
           let match = ngaUrlRegExp.exec(url)
@@ -94,7 +97,7 @@ export default {
 
           }
           if (typeof params === 'object') {
-            return <my-router-link router={router} params={params}  linkStyle="color:red">{this.render(children)}</my-router-link>
+            return <my-router-link router={router} params={params} linkStyle="color:red">{this.render(children)}</my-router-link>
           }
           return <el-link target="_blank" href={url} linkStyle="color:blue">{this.render(children)}</el-link>
         },
@@ -109,19 +112,41 @@ export default {
                                                     text={"[" + children[0].children + "]"}/>,
         "pid": (children, props) => <my-router-link router="read" params={[props.split(',')[0]]}
                                                     text={"[" + children[0].children + "]"}/>,
-        "span": (children) => <span style="white-space: pre-line">{children}</span>,
-        "tid":(children, props) => <my-router-link router="read" params={[props,1]}
-                                                   text={"[" + children[0].children + "]"}/>,
-        "color":(children,props) => <span style={'color: '+props}>{this.render(children)}</span>,
-        "size":(children,props) =><span style={"font-size:"+props}>{this.render(children)}</span>,
-        "align":(children,props) =><span style={"text-align:"+props}>{this.render(children)}</span>,
-        "code":(children) => {
+        "tid": (children, props) => <my-router-link router="read" params={[props, 1]}
+                                                    text={"[" + children[0].children + "]"}/>,
+        "color": (children, props) => <span style={'color: ' + props}>{this.render(children)}</span>,
+        "size": (children, props) => <span style={"font-size:" + props}>{this.render(children)}</span>,
+        "align": (children, props) => <span style={"text-align:" + props}>{this.render(children)}</span>,
+        "code": (children) => {
           let text = children
-              .replace(/<br\/>/g,"\n")
+              .replace(/<br\/>/g, "\n")
           ;
           return <div style="background-color: black;color: #bfcddc">
             <pre>{text}</pre>
           </div>
+        },
+        "span": (children) => {
+          let proxy = "https://images.weserv.nl/?url="
+          let regExp = /\[s:(.*?):(.+?)]/g
+          let r;
+          let temp = "" + children;
+          if (temp.match(regExp)) {
+            // 有官方表情
+            let array = [];
+            while (r = regExp.exec(temp)) {
+              array.push(<span style="white-space: pre-line">{temp.substring(0, r.index)}</span>)
+              let namespace = r[1];
+              let key = r[2];
+              let url = getEmoteUrl(namespace,key)
+
+              url = proxy+url.replace("https://","")
+
+              array.push(<el-image src={url}/>)
+              temp = temp.substring(r.index+r[0].length);
+            }
+            return array;
+          }
+          return <span style="white-space: pre-line">{children}</span>
         },
       }
 
@@ -133,7 +158,7 @@ export default {
         if (render) {
           array.push(render(tag.children, tag.props));
         } else {
-          console.log("未知标签： "+tag.type)
+          console.log("未知标签： " + tag.type)
           // array.push(renderMap['span'](tag.children));
           array.push(<span style="white-space: pre-line">{tag.raw}</span>);
         }
