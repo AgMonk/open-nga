@@ -13,8 +13,8 @@ export default {
         method({dispatch, commit, state}) {
 
         },
-        getDetail({dispatch, commit, state}, {tid, page,authorid, pid}) {
-            let params = pid ? {pid}:{tid,page,authorid}
+        getDetail({dispatch, commit, state}, {tid, page, authorid, pid}) {
+            let params = pid ? {pid} : {tid, page, authorid}
             let t = state.details[JSON.stringify(params)];
             if (t) {
                 return new Promise((resolve) => {
@@ -23,8 +23,8 @@ export default {
             }
             return dispatch("updateDetail", params)
         },
-        updateDetail({dispatch, commit, state},{tid, page,authorid, pid}) {
-            let params = pid ? {pid}:{tid,page,authorid}
+        updateDetail({dispatch, commit, state}, {tid, page, authorid, pid}) {
+            let params = pid ? {pid} : {tid, page, authorid}
             return read(params).then(res => {
 
                 // 声望等级
@@ -49,11 +49,13 @@ export default {
                 }
                 Object.keys(res.__R).forEach(key => {
                     let reply = res.__R[key];
-                    reply.content = reply.content.toString()
-                        .replace(/&quot;/g, "\"")
-                        .replace(/&lt;/g, "<")
-                        .replace(/&gt;/g, ">")
-                        .replace(/&#39;/g, "'")
+                    if (reply.content) {
+                        reply.content = reply.content.toString()
+                            .replace(/&quot;/g, "\"")
+                            .replace(/&lt;/g, "<")
+                            .replace(/&gt;/g, ">")
+                            .replace(/&#39;/g, "'")
+                    }
 
 
                     // 发布时间格式化
@@ -81,7 +83,7 @@ export default {
                     }
 
                     // 修改记录
-                    if (reply.alterinfo.length > 0) {
+                    if (reply.alterinfo && reply.alterinfo.length > 0) {
                         reply.alterinfo.split("]")
                             .filter(s => s !== '')
                             .map(s => s.replace("[", ""))
@@ -103,8 +105,8 @@ export default {
                                         //L6 0 0 300 20 引战/转进/AOE
                                         type: "禁言",
                                         days: log.data[0],
-                                        reputation: log.data[3]*(-1),
-                                        rvrc: log.data[4] / 10*(-1),
+                                        reputation: log.data[3] * (-1),
+                                        rvrc: log.data[4] / 10 * (-1),
                                         reason: log.data[5],
                                     })
                                 }
@@ -126,8 +128,8 @@ export default {
 
                 if (params.page === 'e') {
                     let p = JSON.parse(JSON.stringify(params))
-                    p.page =  res.__PAGE;
-                    console.log("更新最新页 "+ res.__PAGE);
+                    p.page = res.__PAGE;
+                    console.log("更新最新页 " + res.__PAGE);
                     state.details[JSON.stringify(p)] = res;
                 }
                 state.details[JSON.stringify(params)] = res;

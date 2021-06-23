@@ -25,6 +25,10 @@
           <el-tag v-if="myData.reply_to" class="miniTag click-able" size="mini" type="warning"
                   @click="$router.push(`/read/`+myData.reply_to)">回复目标
           </el-tag>
+          <el-tag v-if="myData.comment_to_id" class="miniTag click-able" size="mini" type="warning"
+                  @click="$router.push(`/read/`+myData.comment_to_id)">评论目标
+          </el-tag>
+
         </el-col>
         <el-col :span="6" style="text-align: right">
           <el-switch v-model="showCode" active-color="#13ce66" active-text="显示源代码" inactive-color="#ff4949"></el-switch>
@@ -39,11 +43,26 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 10px;text-align: left">
+      <div v-if="myData.subject">
+        <h2>{{myData.subject}}</h2>
+      </div>
       <div v-show="showCode">
         {{ myData.content }}
       </div>
       <div v-show="!showCode">
         <content-parser :content="myData.content">{{ myData.content }}</content-parser>
+      </div>
+<!--      评论贴条-->
+      <div v-if="myData.comment">
+        <h4>评论</h4>
+       <div v-for="(comment,i) in myData.comment" :key="i">
+         <el-card class="box-card">
+           <template #header>
+             <user-link :id="comment.authorid" :username="users[comment.authorid]"/>
+           </template>
+           <content-parser :content="comment.content">{{ comment.content }}</content-parser>
+         </el-card>
+       </div>
       </div>
     </el-main>
     <el-footer style="padding: 0 10px">
@@ -64,15 +83,22 @@ import {getRoute} from "@/assets/js/api/routerUtils";
 import {topicRecommend} from "@/assets/js/api/api";
 import ContentParser from "@/components/content-render";
 import MyRouterLink from "@/components/my-router-link";
+import UserLink from "@/components/user-link";
+import {mapState} from "vuex";
 
 export default {
   name: "reply-content-card",
-  components: {MyRouterLink, ContentParser},
+  components: {UserLink, MyRouterLink, ContentParser},
   data() {
     return {
       myData: {},
       showCode:false,
     }
+  },
+  computed: {
+    ...mapState({
+      users: state => state.account.users,
+    })
   },
   methods: {
     reply(action) {
