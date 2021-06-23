@@ -17,7 +17,9 @@ export default {
     }
   },
   mounted() {
-    getNotice()
+    getNotice().then(res=>{
+      console.log(res)
+    })
   }
 }
 

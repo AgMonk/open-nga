@@ -4,7 +4,7 @@ import {request, request8} from "@/assets/js/api/nga-request";
 import axios from "axios";
 import {ElMessage} from "element-plus";
 
-export const transformRequest =  [
+export const transformRequest = [
     function (data) {
         let ret = ''
         for (let it in data) {
@@ -14,15 +14,15 @@ export const transformRequest =  [
         return ret
     }
 ]
-export const formDataHeaders={
+export const formDataHeaders = {
     'Content-Type': 'application/x-www-form-urlencoded'
 };
 
 
-export const thread = ({stid,fid,page,authorid,searchpost}) => {
-    let params = stid?{stid,page}
-        :(searchpost?{fid,page,authorid,searchpost}
-            :({fid, page})
+export const thread = ({stid, fid, page, authorid, searchpost}) => {
+    let params = stid ? {stid, page}
+        : (searchpost ? {fid, page, authorid, searchpost}
+                : ({fid, page})
         )
     return request8.get("thread.php", {
         params,
@@ -122,9 +122,9 @@ export const topicRecommend = (tid, pid, value = 1) => {
     return request({
         headers: formDataHeaders,
         transformRequest,
-        url:"nuke.php",
-        method:"post",
-        data:{
+        url: "nuke.php",
+        method: "post",
+        data: {
             __lib: "topic_recommend",
             __act: "add",
             tid,
@@ -132,30 +132,60 @@ export const topicRecommend = (tid, pid, value = 1) => {
             value,
             raw: 3,
         }
-    }).then(res=>{
+    }).then(res => {
         return {
-            message:res.data[0],
-            value:res.data[1],
+            message: res.data[0],
+            value: res.data[1],
         }
     })
 }
 
 
-export const getNotice = ()=>{
-    return request8("nuke.php",{
+export const getNotice = () => {
+    return request8("nuke.php", {
         headers: formDataHeaders,
-        method:"post",
+        method: "post",
         transformRequest,
         params: {
-            __lib:"noti",
-            raw:3,
+            __lib: "noti",
+            raw: 3,
         },
-        data:{
-            __act:"get_all",
-            time_limit:1,
+        data: {
+            __act: "get_all",
+            time_limit: 1,
         }
-    }).then(res=>{
-        console.log(res.data)
-        return res.data
+    }).then(res => {
+        // 回复提醒
+        let replies = res.data["0"]["0"];
+        replies = replies.map(reply => {
+            return {
+                authorId: reply["1"],
+                authorName: reply["2"],
+                repliedId: reply["3"],
+                repliedName: reply["4"],
+                threadSubject: reply["5"],
+                tid: reply["6"],
+                replyPid: reply["7"],
+                repliedPid: reply["8"],
+                timestamp: reply["9"],
+                page: reply["10"],
+                timeString: new Date(reply["9"] * 1000).format("yyyy-MM-dd hh:mm:ss")
+            }
+        }).reverse();
+
+        // 赞踩变化
+        let approbation = res.data["0"]["2"];
+        approbation = approbation.map(r => {
+            return {
+                uid: r["3"],
+                threadSubject: r["5"],
+                tid: r["6"],
+                pid: r["7"],
+                timestamp: r["9"],
+                timeString: new Date(r["9"] * 1000).format("yyyy-MM-dd hh:mm:ss")
+            }
+        }).reverse();
+
+        return {replies, approbation}
     })
 }
