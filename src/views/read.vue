@@ -10,6 +10,7 @@
         </el-breadcrumb>
         <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新(r)</el-button>
         <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
+        <el-switch v-model="autoRefresh.enable" active-color="green" active-text="自动刷新(/3min)"  inactive-color="red" style="margin-left: 5px" />
         <el-pagination
             :current-page.sync="pagination.page"
             :page-size.sync="pagination.size"
@@ -92,6 +93,12 @@ export default {
 
       // 当前楼层
       currentLevel: 0,
+
+      // 自动刷新功能
+      autoRefresh:{
+        enable:false,
+        interval:undefined,
+      },
     }
   },
   methods: {
@@ -252,9 +259,18 @@ export default {
   mounted() {
     this.updateParams();
     document.addEventListener('keypress', this.keypress)
+
+  //  自动刷新
+    this.autoRefresh.interval = setInterval(()=>{
+      if (this.autoRefresh.enable){
+        this.updateDetails();
+      }
+    },3*60*1000)
   },
   unmounted() {
     document.removeEventListener('keypress', this.keypress)
+
+    clearInterval(this.autoRefresh.interval)
   }
 }
 

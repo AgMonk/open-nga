@@ -151,7 +151,7 @@ export default {
     "content": {
       handler: function (e) {
         this.myData = parseBbsCode(e)
-        console.log(this.myData)
+        // console.log(this.myData)
       }
     }
   },
