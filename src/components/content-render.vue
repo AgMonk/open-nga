@@ -144,6 +144,7 @@ export default {
               array.push(<el-image src={url}/>)
               temp = temp.substring(r.index+r[0].length);
             }
+            array.push(<span style="white-space: pre-line">{temp}</span>)
             return array;
           }
           return <span style="white-space: pre-line">{children}</span>
