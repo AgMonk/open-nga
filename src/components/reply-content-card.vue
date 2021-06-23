@@ -4,7 +4,8 @@
     <el-header height="30px" style="padding: 0 10px">
       <el-row>
         <el-col :span="18" style="text-align: left">
-          <el-tag v-clipboard:copy="'https://bbs.nga.cn/read.php?pid='+myData.pid" v-clipboard:error="onError"
+          <el-tag v-clipboard:copy="myData.pid===0?'https://bbs.nga.cn/read.php?tid='+myData.tid:'https://bbs.nga.cn/read.php?pid='+myData.pid"
+                  v-clipboard:error="onError"
                   v-clipboard:success="onCopy"
                   class="miniTag click-able"
                   size="mini"
