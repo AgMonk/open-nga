@@ -1,9 +1,9 @@
 <template>
-  <el-container direction="vertical">
+  <el-container ref="threadList" direction="vertical">
     <!--  <el-container direction="horizontal">-->
     <el-header>
       <div>
-        <el-button type="primary" @click="updateThreads">刷新</el-button>
+        <el-button type="primary" @click="updateThreads">刷新(r)</el-button>
         <el-button type="primary" @click="newThread">发帖</el-button>
       </div>
       <el-pagination
@@ -168,7 +168,13 @@ export default {
       this.$store.dispatch("thread/getThreads", this.getParams()).then(res => {
         this.handlePageData(res)
       })
-    }
+    },
+    keypress(e) {
+      if (e.key === 'r' && e.path[0].nodeName==='BODY') {
+      //  刷新主题列表
+        this.updateThreads();
+      }
+    },
   },
   watch: {
     $route: {
@@ -181,7 +187,12 @@ export default {
   },
   mounted() {
     this.updateParams();
+
+    document.addEventListener('keypress', this.keypress)
   },
+  unmounted() {
+    document.removeEventListener('keypress', this.keypress)
+  }
 }
 
 </script>

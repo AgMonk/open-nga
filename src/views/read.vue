@@ -8,7 +8,7 @@
             <my-router-link :params="item.params" :router="item.router" :text="item.text"/>
           </el-breadcrumb-item>
         </el-breadcrumb>
-        <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新</el-button>
+        <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新(r)</el-button>
         <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
         <el-pagination
             :current-page.sync="pagination.page"
@@ -21,12 +21,17 @@
       </el-header>
       <!--suppress HtmlUnknownTag -->
       <el-main style="padding: 0;border: black solid">
-        <el-row v-for="(row,i) in replies" :key="i" :class="$store.state.config.config.uiColor+i%2">
+        <el-row
+            v-for="(row,i) in replies"
+            :id="'#'+row.lou"
+            :key="i"
+            :class="$store.state.config.config.uiColor+i%2"
+        >
           <el-col :span="6">
             <reply-user-card :data="row.userInfo" :index="i"/>
           </el-col>
           <el-col :span="18">
-            <reply-content-card :ref="'#'+row.lou" :data="row"/>
+            <reply-content-card :data="row"/>
           </el-col>
 
         </el-row>
@@ -40,7 +45,7 @@
             style="margin-top: 10px"
             @current-change="page">
         </el-pagination>
-        <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新</el-button>
+        <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新(r)</el-button>
         <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 20px">
           <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i">
@@ -81,9 +86,12 @@ export default {
         size: 20,
         total: 20,
       },
-      replyParams:{},
+      replyParams: {},
       breadcrumbs: [],
       replies: [],
+
+      // 当前楼层
+      currentLevel: 0,
     }
   },
   methods: {
@@ -93,6 +101,7 @@ export default {
     },
     page(e) {
       this.$route.params.page = e;
+      this.currentLevel = 0;
       this.$router.push(this.$route)
     },
     updateDetails() {
@@ -100,7 +109,7 @@ export default {
       let page = this.$route.params.page;
       let authorid = this.$route.params.authorid;
       let pid = this.$route.params.pid;
-      this.$store.dispatch("read/updateDetail", {tid, page,authorid, pid}).then(res => {
+      this.$store.dispatch("read/updateDetail", {tid, page, authorid, pid}).then(res => {
         this.handlePageData(res)
         this.$message.success("刷新成功")
       })
@@ -108,17 +117,17 @@ export default {
     handlePageData(res) {
 
       this.replyParams = {
-        tid:res.__T.tid,
-        post_subject:"",
+        tid: res.__T.tid,
+        post_subject: "",
       }
 
       // 设置param
       let thread = res.__T;
       let st = thread.__ST
-      console.log(st?[thread.fid,1,st.tid]:[thread.fid,1])
+      console.log(st ? [thread.fid, 1, st.tid] : [thread.fid, 1])
       this.$store.commit("navi/setParams", {
         key: "thread",
-        params: st?[thread.fid,1,st.tid]:[thread.fid,1]
+        params: st ? [thread.fid, 1, st.tid] : [thread.fid, 1]
       })
       this.$store.commit("navi/updatePath")
       this.$store.commit("navi/setShow")
@@ -178,12 +187,56 @@ export default {
       //  请求详情数据
       if (page === 'e') {
         this.updateDetails()
-      }else{
+      } else {
         this.$store.dispatch("read/getDetail", {tid, page, authorid, pid}).then(res => {
           console.log(res)
           this.handlePageData(res)
           document.body.scrollIntoView()
         })
+      }
+    },
+    scrollLevel(c){
+      if (!this.replies[this.currentLevel + c]) {
+        this.$message.error("已达到顶回复或尾回复")
+        return ;
+      }
+      this.currentLevel+=c;
+      let level = this.replies[this.currentLevel].lou;
+      let element = document.getElementById("#" + level);
+      element.scrollIntoView()
+    },
+    keypress(e) {
+      if (e.path[0].nodeName === 'BODY') {
+        if (e.key === 'r') {
+          //  刷新主题列表
+          this.updateDetails();
+        }
+
+        if (e.key === 'a') {
+          //  上一页
+          if (this.pagination.page === 1) {
+            this.$message.error("已达到首页")
+          } else {
+            this.page(this.pagination.page - 1)
+          }
+        }
+        if (e.key === 'd') {
+          let maxPage = Math.floor(this.pagination.total / this.pagination.size +1)
+          //  下一页
+          if (this.pagination.page === maxPage) {
+            this.$message.error("已达到尾页 / 请尝试刷新(r)")
+          } else {
+            this.page(this.pagination.page - (-1))
+          }
+
+        }
+        if (e.key === 's') {
+         this.scrollLevel(1)
+        }
+ if (e.key === 'w') {
+         this.scrollLevel(-1)
+        }
+
       }
     },
   },
@@ -198,7 +251,11 @@ export default {
   },
   mounted() {
     this.updateParams();
+    document.addEventListener('keypress', this.keypress)
   },
+  unmounted() {
+    document.removeEventListener('keypress', this.keypress)
+  }
 }
 
 </script>
