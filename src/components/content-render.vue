@@ -54,7 +54,9 @@ export default {
         },
         "url": (children, props) => {
           let url = props !== '' ? props : children[0].children;
-
+          if (url.startsWith("/read.php?tid=")) {
+            url = "https://bbs.nga.cn"+url;
+          }
           let ngaUrlRegExp = /^https?:\/\/(bbs\.ngacn\.cc|nga\.178\.com|bbs\.nga\.cn|ngabbs\.com)\/(.+?)\.php\?(.+)/
           let match = ngaUrlRegExp.exec(url)
           let router;
