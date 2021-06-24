@@ -133,6 +133,7 @@ export default {
 
       this.replyParams = {
         tid: res.__T.tid,
+        fid: res.__T.fid,
         post_subject: "",
       }
 
@@ -212,7 +213,7 @@ export default {
     },
     scrollLevel(c) {
       if (!this.replies[this.currentLevel + c]) {
-        // this.$message.error("已达到顶回复或尾回复")
+        this.$message.error("已达到顶回复或尾回复: " + this.currentLevel)
         return;
       }
       this.currentLevel += c;
@@ -253,6 +254,10 @@ export default {
       if (e.key === 'w') {
         this.scrollLevel(-1)
       }
+      if (e.key === 'q') {
+        this.$router.push(getRoute(['thread',this.replyParams.fid,1]))
+      }
+
     },
     setAutoRefresh() {
       //  自动刷新
@@ -269,6 +274,9 @@ export default {
   watch: {
     $route: {
       handler: function (e) {
+        //切换参数时重置当前位置
+        this.currentLevel = 0;
+
         if (e.path.startsWith("/read")) {
           this.updateParams();
         }
@@ -280,10 +288,13 @@ export default {
     document.addEventListener('keypress', this.keypress)
 
     this.setAutoRefresh()
+    console.log("mounted")
   },
   unmounted() {
     document.removeEventListener('keypress', this.keypress)
     this.removeAutoRefresh()
+    console.log("unmounted")
+
   }
 }
 
