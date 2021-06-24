@@ -29,6 +29,13 @@ export default {
   },
   mounted() {
   },
+  watch:{
+    "score":{
+      handler:function (e){
+        this.myScore =e;
+      }
+    }
+  },
   props: ["tid","pid","score"],
 }
 
