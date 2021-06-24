@@ -126,25 +126,28 @@ export default {
           </div>
         },
         "span": (children) => {
+          console.log(children)
           let proxy = "https://images.weserv.nl/?url="
           let regExp = /\[s:(.*?):(.+?)]/g
           let r;
-          let temp = "" + children;
-          if (temp.match(regExp)) {
+          let startIndex = 0;
+          if (children.match(regExp)) {
             // 有官方表情
             let array = [];
-            while (r = regExp.exec(temp)) {
-              array.push(<span style="white-space: pre-line">{temp.substring(0, r.index)}</span>)
+            while (r = regExp.exec(children)) {
+              array.push(<span style="white-space: pre-line">{children.substring(startIndex, r.index)}</span>)
+
+              //获取表情图地址
               let namespace = r[1];
               let key = r[2];
-              let url = getEmoteUrl(namespace,key)
-
-              url = proxy+url.replace("https://","")
-
+              let url = getEmoteUrl(namespace, key)
+              url = proxy + url.replace("https://", "")
+              //插入图片
               array.push(<el-image src={url}/>)
-              temp = temp.substring(r.index+r[0].length);
+              //  更新起始位置
+              startIndex = r.index + r[0].length;
             }
-            array.push(<span style="white-space: pre-line">{temp}</span>)
+            array.push(<span style="white-space: pre-line">{children.substring(startIndex)}</span>)
             return array;
           }
           return <span style="white-space: pre-line">{children}</span>

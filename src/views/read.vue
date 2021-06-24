@@ -288,12 +288,10 @@ export default {
     document.addEventListener('keypress', this.keypress)
 
     this.setAutoRefresh()
-    console.log("mounted")
   },
   unmounted() {
     document.removeEventListener('keypress', this.keypress)
     this.removeAutoRefresh()
-    console.log("unmounted")
 
   }
 }
