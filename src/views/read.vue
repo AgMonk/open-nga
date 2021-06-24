@@ -11,6 +11,7 @@
         <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新(r)</el-button>
         <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
         <el-switch v-model="autoRefresh.enable" active-color="green" active-text="自动刷新(/3min)" inactive-color="red"
+                   @change="autoRefreshChanged"
                    style="margin-left: 5px"/>
         <el-pagination
             :current-page.sync="pagination.page"
@@ -100,12 +101,15 @@ export default {
 
       // 自动刷新功能
       autoRefresh: {
-        enable: true,
+        enable: this.$store.state.config.config.autoRefresh,
         interval: undefined,
       },
     }
   },
   methods: {
+    autoRefreshChanged(e){
+     this.$store.commit("config/setConfig",{key:"autoRefresh",value:e})
+    },
     newReply() {
       let tid = this.$route.params.tid;
       this.$router.push(getRoute(["post", "reply", 0, tid, 0, 0]))
@@ -129,8 +133,6 @@ export default {
       })
     },
     handlePageData(res) {
-
-
       this.replyParams = {
         tid: res.__T.tid,
         fid: res.__T.fid,

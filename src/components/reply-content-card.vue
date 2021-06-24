@@ -4,12 +4,13 @@
     <el-header height="30px" style="padding: 0 10px">
       <el-row>
         <el-col :span="18" style="text-align: left">
-          <el-tag v-clipboard:copy="myData.pid===0?'https://bbs.nga.cn/read.php?tid='+myData.tid:'https://bbs.nga.cn/read.php?pid='+myData.pid"
-                  v-clipboard:error="onError"
-                  v-clipboard:success="onCopy"
-                  class="miniTag click-able"
-                  size="mini"
-                  @click.right="openUrl('https://bbs.nga.cn/read.php?pid='+myData.pid)"
+          <el-tag
+              v-clipboard:copy="myData.pid===0?'https://bbs.nga.cn/read.php?tid='+myData.tid:'https://bbs.nga.cn/read.php?pid='+myData.pid"
+              v-clipboard:error="onError"
+              v-clipboard:success="onCopy"
+              class="miniTag click-able"
+              size="mini"
+              @click.right="openUrl(myData.pid===0?'https://bbs.nga.cn/read.php?tid='+myData.tid:'https://bbs.nga.cn/read.php?pid='+myData.pid)"
           >#{{ myData.lou }}
           </el-tag>
           <el-tag class="miniTag" size="mini">
@@ -44,7 +45,7 @@
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 10px;text-align: left">
       <div v-if="myData.subject">
-        <h2>{{myData.subject}}</h2>
+        <h2>{{ myData.subject }}</h2>
       </div>
       <div v-show="showCode">
         {{ myData.content }}
@@ -52,17 +53,24 @@
       <div v-show="!showCode">
         <content-parser :content="myData.content">{{ myData.content }}</content-parser>
       </div>
-<!--      评论贴条-->
+      <!--suppress JSUnresolvedVariable -->
+      <!--热评-->
+      <div v-if="myData.hotreply">
+        <h4 style="color: red">热评区</h4>
+      </div>
+
+
+      <!--      评论贴条-->
       <div v-if="myData.comment">
         <h4>评论</h4>
-       <div v-for="(comment,i) in myData.comment" :key="i">
-         <el-card class="box-card">
-           <template #header>
-             <user-link :id="comment.authorid" :username="users[comment.authorid]"/>
-           </template>
-           <content-parser :content="comment.content">{{ comment.content }}</content-parser>
-         </el-card>
-       </div>
+        <div v-for="(comment,i) in myData.comment" :key="i">
+          <el-card class="box-card">
+            <template #header>
+              <user-link :id="comment.authorid" :username="users[comment.authorid]"/>
+            </template>
+            <content-parser :content="comment.content">{{ comment.content }}</content-parser>
+          </el-card>
+        </div>
       </div>
     </el-main>
     <el-footer style="padding: 0 10px">
@@ -92,7 +100,7 @@ export default {
   data() {
     return {
       myData: {},
-      showCode:false,
+      showCode: false,
     }
   },
   computed: {

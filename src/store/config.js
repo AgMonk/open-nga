@@ -16,19 +16,21 @@ export default {
         },
         defaultConfig:{
             uiColor:"green",
+            autoRefresh:false,
         }
     },
     mutations: {
-        setConfig(state,{key,value}) {
-            state.config[key] = value;
-            this.save(state)
-        },
         save(state){
             putCache(state.configKey,state.config)
         },
         load(state){
             let cache = getCache(state.configKey);
             state.config = cache?cache:copyObj(state.defaultConfig);
+        },
+        setConfig(state,{key,value}) {
+            state.config[key] = value;
+            console.log(state.config)
+            putCache(state.configKey,state.config)
         },
 
     },
