@@ -9,7 +9,7 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-      <el-table :cell-class-name="cellClassName" :data="$store.state.forum.forums" cell-style="cursor: pointer;" @cell-click="clickForum">
+      <el-table :cell-class-name="cellClassName" :cell-style="{cursor: 'pointer'}" :data="$store.state.forum.forums" @cell-click="clickForum">
         <el-table-column label="版面" prop="name"  />
         <el-table-column label="移除" width="100px">
           <template #default="s">
@@ -28,7 +28,6 @@
 
 <script>
 import SearchForum from "@/components/search-forum";
-import {getCookieMap} from "@/assets/js/cookieUtils";
 import "../assets/css/ui-color.css"
 
 export default {
@@ -44,10 +43,10 @@ export default {
     }
   },
   methods: {
-    cellClassName({row, column, rowIndex, columnIndex}){
+    cellClassName({rowIndex}){
       return this.$store.state.config.config.uiColor+rowIndex%2
     },
-    clickForum(row, column, cell, event) {
+    clickForum(row, column) {
       if (column.property === 'name') {
         this.$router.push("/thread/" + row.fid + "/1")
       }
@@ -69,7 +68,6 @@ export default {
     }
   },
   mounted() {
-    console.log(getCookieMap())
   },
 }
 

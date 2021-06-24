@@ -7,6 +7,7 @@
       <i v-show="gotNew.replies || gotNew.pm||gotNew.approbation" class="el-icon-warning"/>
     </el-button>
     <el-drawer
+        append-to-body
         v-model="showDrawer"
         size="60%"
         title="提示信息"
@@ -23,10 +24,12 @@
               <user-link :id="item.authorId" :username="item.authorName"/>
               &nbsp;
               <my-reply-link :pid="item.replyPid" text="[回复]"/>
-             了你在
+             了你
+              <span v-if="item.repliedPid">在</span>
+              <span v-if="!item.repliedPid">的</span>
               <my-thread-link :page="item.page" :text="item.threadSubject.substring(0,Math.min(item.threadSubject.length,20))" :tid="item.tid"/>
-              的
-              <my-reply-link :pid="item.repliedPid" text="[回复]"/>
+              <span v-if="item.repliedPid">的</span>
+              <my-reply-link v-if="item.repliedPid" :pid="item.repliedPid" text="[回复]"/>
 
             </div>
           </div>
@@ -63,6 +66,8 @@
         </el-collapse-item>
 
       </el-collapse>
+
+      <el-button type="danger" @click="clearNotice">清空信息</el-button>
     </el-drawer>
   </div>
 </template>
@@ -93,6 +98,11 @@ export default {
     })
   },
   methods: {
+    clearNotice(){
+     this.$store.dispatch("notice/clearNotice").then(() =>{
+       this.showDrawer=false;
+     })
+    },
     noHint(tid, pid) {
       noHint(tid, pid).then(res => {
         this.$message.success(res)
@@ -118,6 +128,7 @@ export default {
   ,
   mounted() {
     this.getNotice()
+    setInterval(this.getNotice,1000*60)
   }
 }
 

@@ -1,4 +1,4 @@
-// noinspection SpellCheckingInspection
+// noinspection SpellCheckingInspection,JSUnfilteredForInLoop
 
 import {request, request8} from "@/assets/js/api/nga-request";
 import axios from "axios";
@@ -143,19 +143,36 @@ export const topicRecommend = (tid, pid, value = 1) => {
     })
 }
 //不再提示 赞踩
-export const  noHint = (tid,pid)=>{
+export const noHint = (tid, pid) => {
     return request8("nuke.php", {
         headers: formDataHeaders,
         method: "post",
         transformRequest,
         data: {
-            func:"noti_tag",
-            no_hint:1,
-            tid,pid,
-            raw:3,
+            func: "noti_tag",
+            no_hint: 1,
+            tid, pid,
+            raw: 3,
         }
-    }).then(res=>{
+    }).then(res => {
         return res.data["0"]
+    })
+}
+//清空提醒
+export const clearNotice = () => {
+    return request8("nuke.php", {
+        headers: formDataHeaders,
+        method: "post",
+        transformRequest,
+        params: {
+            __lib: "noti",
+            raw: 3,
+        },
+        data: {
+            __act: "del",
+        }
+    }).then(res => {
+        ElMessage.success(res.data["0"])
     })
 }
 
@@ -173,9 +190,10 @@ export const getNotice = () => {
             time_limit: 1,
         }
     }).then(res => {
+        console.log(res)
         // 回复提醒
         let replies = res.data["0"]["0"];
-        replies = replies.map(reply => {
+        replies = !replies ? undefined : replies.map(reply => {
             return {
                 authorId: reply["1"],
                 authorName: reply["2"],
@@ -193,7 +211,7 @@ export const getNotice = () => {
 
         // 短消息提醒
         let pm = res.data["0"]["1"];
-        pm = pm.map(r => {
+        pm = !pm ? undefined : pm.map(r => {
             return {
                 authorId: r["1"],
                 authorName: r["2"],
@@ -204,7 +222,7 @@ export const getNotice = () => {
         }).reverse();
         // 赞踩变化
         let approbation = res.data["0"]["2"];
-        approbation = approbation.map(r => {
+        approbation = !approbation ? undefined : approbation.map(r => {
             return {
                 uid: r["3"],
                 threadSubject: r["5"],
@@ -215,6 +233,6 @@ export const getNotice = () => {
             }
         }).reverse();
 
-        return {replies, approbation,pm}
+        return {replies, approbation, pm}
     })
 }

@@ -1,5 +1,5 @@
 // 提醒
-import {getNotice} from "@/assets/js/api/api";
+import {clearNotice, getNotice} from "@/assets/js/api/api";
 
 export default {
     namespaced: true,
@@ -7,11 +7,11 @@ export default {
         approbation: [],
         replies: [],
         pm: [],
-        gotNew:{
-            hasNew:false,
-            approbation:false,
-            replies:false,
-            pm:false,
+        gotNew: {
+            hasNew: false,
+            approbation: false,
+            replies: false,
+            pm: false,
         }
     },
     mutations: {},
@@ -19,31 +19,34 @@ export default {
         method({dispatch, commit, state}) {
 
         },
-        getNotice({dispatch, commit, state}) {
+        clearNotice({state}) {
+                if (confirm("清除所有提示信息?")){
+                    clearNotice().then(() =>{
+                        state.approbation=[];
+                        state.replies=[];
+                        state.pm=[];
+                    })
+                }
+        },
+
+        getNotice({state}) {
             getNotice().then(res => {
                 //检查是否有新消息
-
-                if (state.approbation.length !== res.approbation.length) {
-                    state.gotNew.approbation = true;
-                } else if (state.approbation[0].timestamp !== res.approbation[0].timestamp) {
-                    state.gotNew.approbation = true;
+                let checkNew = (key)=>{
+                    if (res[key]){
+                        if (state[key].length !== res[key].length) {
+                            state.gotNew[key] = true;
+                        }else if (state[key][0].timestamp!==res[key][0].timestamp) {
+                            state.gotNew[key] = true;
+                        }
+                        state[key] = res[key]
+                    }
                 }
 
-                if (state.pm.length !== res.pm.length) {
-                    state.gotNew.pm = true;
-                } else if (state.pm[0].timestamp !== res.pm[0].timestamp) {
-                    state.gotNew.pm = true;
-                }
+                checkNew("approbation")
+                checkNew("pm")
+                checkNew("replies")
 
-                if (state.replies.length !== res.replies.length) {
-                    state.gotNew.replies = true;
-                } else if (state.replies[0].timestamp !== res.replies[0].timestamp) {
-                    state.gotNew.replies = true;
-                }
-
-                state.approbation = res.approbation
-                state.pm = res.pm
-                state.replies = res.replies
 
                 console.log(res)
             })
