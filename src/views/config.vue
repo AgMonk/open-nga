@@ -11,6 +11,15 @@
           </el-select>
         </el-form-item>
       </el-form>
+
+      <div style="text-align: left">
+        <h4>使用提示</h4>
+        <ul>
+          <li>主题内左键点击楼层号可以复制该回复/主题的官方链接，右键点击则直接打开该链接</li>
+          <li>版面列表和主题内 快捷键 r 可以刷新当前页</li>
+          <li>主题内 快捷键a d 可以左右翻页 w s可以在当前页跳转楼层 q 可以退回到当前版面的第一页</li>
+        </ul>
+      </div>
     </el-main>
     <el-footer>
     </el-footer>
