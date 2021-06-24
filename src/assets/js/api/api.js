@@ -142,7 +142,22 @@ export const topicRecommend = (tid, pid, value = 1) => {
         }
     })
 }
-
+//不再提示 赞踩
+export const  noHint = (tid,pid)=>{
+    return request8("nuke.php", {
+        headers: formDataHeaders,
+        method: "post",
+        transformRequest,
+        data: {
+            func:"noti_tag",
+            no_hint:1,
+            tid,pid,
+            raw:3,
+        }
+    }).then(res=>{
+        return res.data["0"]
+    })
+}
 
 export const getNotice = () => {
     return request8("nuke.php", {
@@ -176,6 +191,17 @@ export const getNotice = () => {
             }
         }).reverse();
 
+        // 短消息提醒
+        let pm = res.data["0"]["1"];
+        pm = pm.map(r => {
+            return {
+                authorId: r["1"],
+                authorName: r["2"],
+                mid: r["6"],
+                timestamp: r["9"],
+                timeString: new Date(r["9"] * 1000).format("yyyy-MM-dd hh:mm:ss")
+            }
+        }).reverse();
         // 赞踩变化
         let approbation = res.data["0"]["2"];
         approbation = approbation.map(r => {
@@ -189,6 +215,6 @@ export const getNotice = () => {
             }
         }).reverse();
 
-        return {replies, approbation}
+        return {replies, approbation,pm}
     })
 }
