@@ -32,6 +32,7 @@ export const thread = ({stid, fid, page, authorid, searchpost}) => {
             ElMessage.error(res.error[0])
             throw res.error
         }
+        res.data.time = res.time
         return res.data
     })
 }
