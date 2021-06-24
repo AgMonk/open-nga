@@ -73,28 +73,32 @@ export const request8 = axios.create({
 
                 if (result.includes("unread")) {
                 //    对提醒消息特殊处理
-                    result = result
-                        .replace(/\s/g,"")
-                        .replace(/15:/g,"\"15\":")
-                        .replace(/14:/g,"\"14\":")
-                        .replace(/13:/g,"\"13\":")
-                        .replace(/12:/g,"\"12\":")
-                        .replace(/11:/g,"\"11\":")
-                        .replace(/10:/g,"\"10\":")
-                        .replace(/0:/g,"\"0\":")
-                        .replace(/1:/g,"\"1\":")
-                        .replace(/2:/g,"\"2\":")
-                        .replace(/3:/g,"\"3\":")
-                        .replace(/4:/g,"\"4\":")
-                        .replace(/5:/g,"\"5\":")
-                        .replace(/6:/g,"\"6\":")
-                        .replace(/7:/g,"\"7\":")
-                        .replace(/8:/g,"\"8\":")
-                        .replace(/9:/g,"\"9\":")
+                    let r1 = /\s\d{1,2}:/g;
+                    let r2 = /,\d{1,2}:/g;
+                    let res
+                    while (res = r1.exec(result)){
+                        let startIndex = res.index
+                        let endIndex = startIndex + res[0].indexOf(":")
+                        result = result.substring(0,startIndex)+`"`+result.substring(startIndex,endIndex).trim()+`"`+result.substring(endIndex)
+                    }
+                    while (res = r2.exec(result)){
+                        let startIndex = res.index
+                        let endIndex = startIndex + res[0].indexOf(":")
+                        startIndex++
+                        result = result.substring(0,startIndex)+`"`+result.substring(startIndex,endIndex).trim()+`"`+result.substring(endIndex)
+                    }
                 }
 
                 // noinspection JSCheckFunctionSignatures
-                resolve(JSON.parse(result))
+                let json;
+                try {
+                    json = JSON.parse(result);
+                } catch (e) {
+                    console.warn(e)
+                    console.log(result)
+                    throw e
+                }
+                resolve(json)
             }
         });
     }]
