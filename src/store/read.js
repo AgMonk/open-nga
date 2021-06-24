@@ -54,6 +54,7 @@ export default {
                     if (reply.content) {
                         reply.content = reply.content.toString()
                             .replace(/&quot;/g, "\"")
+                            .replace(/&amp;/g, "&")
                             .replace(/&lt;/g, "<")
                             .replace(/&gt;/g, ">")
                             .replace(/&#39;/g, "'")
