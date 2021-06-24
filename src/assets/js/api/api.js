@@ -40,6 +40,8 @@ export const read = (params) => {
     return request8.get("read.php", {
         params
     }).then(res => {
+        // 请求时间
+        res.data.time = res.time
         return res.data
     })
 }

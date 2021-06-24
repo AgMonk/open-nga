@@ -16,7 +16,9 @@ export default {
         getDetail({dispatch, commit, state}, {tid, page, authorid, pid}) {
             let params = pid ? {pid} : {tid, page, authorid}
             let t = state.details[JSON.stringify(params)];
-            if (t) {
+            let now = new Date().getTime()/1000;
+            if (t && (now - t.time) < 3*60) {
+                // 短时间使用缓存数据
                 return new Promise((resolve) => {
                     resolve(t)
                 })

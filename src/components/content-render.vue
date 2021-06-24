@@ -126,7 +126,6 @@ export default {
           </div>
         },
         "span": (children) => {
-          console.log(children)
           let proxy = "https://images.weserv.nl/?url="
           let regExp = /\[s:(.*?):(.+?)]/g
           let r;
