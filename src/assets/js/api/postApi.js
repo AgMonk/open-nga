@@ -1,7 +1,5 @@
-import {request8} from "@/assets/js/api/nga-request";
-import {formDataHeaders, transformRequest} from "@/assets/js/api/api";
 import {ElMessage} from "element-plus";
-import {ngaRequest} from "@/assets/js/api/nga-request-unity";
+import {ngaRequest} from "@/assets/js/api/nga-request";
 
 // 回复准备
 export const prePost = ({fid, tid, pid, action}) => {
@@ -12,10 +10,9 @@ export const prePost = ({fid, tid, pid, action}) => {
         console.log(res)
         return res.data;
     })
-    // return post({fid, tid, pid, action})
 }
 // 发帖
-export const doPost = function ({fid, tid, pid, action, post_subject, attachments, attachments_check}, content) {
+export const doPost = function ({fid, tid, pid, action, post_subject, attachments, attachments_check,post_content}) {
     let params = {...arguments[0], step: 2};
     // 删除 值为0 的参数
     Object.keys(params).forEach(key=>{
@@ -24,16 +21,7 @@ export const doPost = function ({fid, tid, pid, action, post_subject, attachment
         }
     })
     console.log(params)
-    return request8({
-        headers: formDataHeaders,
-        transformRequest,
-        method: "post",
-        url: "post.php",
-        params,
-        data: {
-            post_content: content
-        }
-    }).then(res=>{
+    return ngaRequest.post(params).then(res=>{
         let error = res.error;
         if (error && !error[0].includes("发贴完毕")) {
             ElMessage.error(error[0])

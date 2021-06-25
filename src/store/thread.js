@@ -1,7 +1,7 @@
 // 版面主题
 // noinspection SpellCheckingInspection
 
-import {ngaRequest} from "@/assets/js/api/nga-request-unity";
+import {ngaRequest} from "@/assets/js/api/nga-request";
 
 export default {
     namespaced: true,

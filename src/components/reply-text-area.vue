@@ -7,8 +7,8 @@
       <el-input v-model="myParams.post_subject" placeholder="标题" style="margin-bottom: 5px"/>
       <el-input id="textarea"
                 ref="reply-text-area"
-                v-model="myContent"
-                :rows="myContent.split(`\n`).length+1" placeholder="正文"
+                v-model="myParams.post_content"
+                :rows="!myParams.post_content?10:myParams.post_content.split(`\n`).length+1" placeholder="正文"
                 style="margin-bottom: 5px"
                 type="textarea"
                 @keypress="keypress"
@@ -42,8 +42,9 @@ export default {
     return {
       dialogShow: false,
       callbackUrls: [],
-      myContent:'',
-      myParams: {},
+      myParams: {
+        post_content:"",
+      },
     }
   },
   methods: {
@@ -61,7 +62,7 @@ export default {
     },
     submit() {
       console.log(this.myParams)
-      doPost(this.myParams, this.myContent).then(res => {
+      doPost(this.myParams, this.myParams.post_content).then(res => {
         console.log(res)
         this.dialogShow = true;
 
@@ -74,7 +75,7 @@ export default {
 
         this.$emit("submitted")
         this.myParams.post_subject = "";
-        this.myContent="";
+        this.myParams.post_content="";
       })
     },
   },
@@ -83,23 +84,18 @@ export default {
       this.$refs['reply-text-area'].focus()
     }
 
-    this.myContent = copyObj(this.content)
     this.myParams = copyObj(this.params)
   },
   watch: {
-    "content":{
-      handler:function(e){
-        this.myContent = copyObj(e)
-      }
-    },
     "params":{
       handler:function(e){
         this.myParams = copyObj(e)
+        console.log(e)
       }
     },
 
   },
-  props: ["content", "params","focus"],
+  props: ["params","focus"],
 }
 
 </script>

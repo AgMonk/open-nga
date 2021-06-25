@@ -1,21 +1,7 @@
 // noinspection SpellCheckingInspection,JSUnfilteredForInLoop
 
 import {ElMessage} from "element-plus";
-import {ngaRequest, obj2Array} from "@/assets/js/api/nga-request-unity";
-
-export const transformRequest = [
-    function (data) {
-        let ret = ''
-        for (let it in data) {
-            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
-        }
-        ret = ret.substring(0, ret.lastIndexOf('&'));
-        return ret
-    }
-]
-export const formDataHeaders = {
-    'Content-Type': 'application/x-www-form-urlencoded'
-};
+import {ngaRequest, obj2Array} from "@/assets/js/api/nga-request";
 
 
 export const userInfo = (uid) => {

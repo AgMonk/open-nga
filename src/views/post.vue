@@ -34,6 +34,7 @@ export default {
         tid: 0,
         pid: 0,
         action: 0,
+        post_content: "",
         post_subject: "",
         attachments: "",
         attachments_check: "",
@@ -57,9 +58,9 @@ export default {
 
     prePost(params).then(res => {
       if (!res.__MESSAGE) {
-        this.content = res.content ? res.content : "";
+        params.post_content = res.content ? res.content : "";
 
-        this.content = this.content
+        params.post_content = params.post_content
             .replace(/&quot;/g, "\"")
             .replace(/&amp;/g, "&")
             .replace(/&lt;/g, "<")
