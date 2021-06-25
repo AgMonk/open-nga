@@ -109,24 +109,8 @@ export default {
         }
       })
     },
-    getParams(){
-      let fid = this.$route.params.fid;
-      let page = this.$route.params.page;
-      let stid = this.$route.params.stid;
-      // noinspection SpellCheckingInspection
-      let searchpost = this.$route.params.searchpost==="1"?1:undefined;
-      let authorid = this.$route.params.authorid;
-
-          // 搜索 指定用户在指定版面的发言 、 主题
-      // noinspection SpellCheckingInspection
-      return authorid?{fid,page,authorid,searchpost}
-              // 搜索 合集主题 或 版面主题
-              :(stid?{fid,page,stid}:{fid, page})
-      ;
-    },
     updateThreads() {
-
-      this.$store.dispatch("thread/updateThreads", this.getParams()).then(res => {
+      this.$store.dispatch("thread/updateThreads", this.$route.params).then(res => {
         this.handlePageData(res)
         this.$message.success("刷新成功")
       })
@@ -165,8 +149,8 @@ export default {
       // console.log(data)
     },
     //更新主题列表
-    updateParams() {
-      this.$store.dispatch("thread/getThreads", this.getParams()).then(res => {
+    getThreads() {
+      this.$store.dispatch("thread/getThreads", this.$route.params).then(res => {
         this.handlePageData(res)
       })
     },
@@ -181,13 +165,13 @@ export default {
     $route: {
       handler: function (e) {
         if (e.path.startsWith("/thread")) {
-          this.updateParams();
+          this.getThreads();
         }
       }
     }
   },
   mounted() {
-    this.updateParams();
+    this.getThreads();
 
     document.addEventListener('keypress', this.keypress)
   },

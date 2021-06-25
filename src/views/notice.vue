@@ -126,9 +126,7 @@ export default {
 
     },
     getNotice() {
-      this.$store.dispatch("notice/getNotice").then(() => {
-        console.log(this.gotNew)
-      })
+      this.$store.dispatch("notice/getNotice")
     },
   }
   ,

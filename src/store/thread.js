@@ -1,7 +1,7 @@
 // 版面主题
 // noinspection SpellCheckingInspection
 
-import {thread} from "@/assets/js/api/api";
+import {ngaRequest} from "@/assets/js/api/nga-request-unity";
 
 export default {
     namespaced: true,
@@ -14,19 +14,19 @@ export default {
 
         },
         getThreads({dispatch, commit, state}, params) {
-            let t = state.threads[JSON.stringify(params)];
+            let cache = state.threads[JSON.stringify(params)];
             let now = new Date().getTime() / 1000;
-            if (t && (now - t.time) < 3 * 60) {
+            if (cache && (now - cache.timestamp) < 3 * 60) {
                 return new Promise((resolve) => {
-                    resolve(t)
+                    resolve(cache.data)
                 })
             }
             return dispatch("updateThreads", params)
         },
         updateThreads({dispatch, commit, state}, params) {
-            return thread(params).then(res => {
+            return ngaRequest.thread(params).then(res => {
                 state.threads[JSON.stringify(params)] = res;
-                return res;
+                return res.data;
             })
         },
 

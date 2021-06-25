@@ -46,9 +46,6 @@ export default {
                 checkNew("approbation")
                 checkNew("pm")
                 checkNew("replies")
-
-
-                console.log(res)
             })
         },
 

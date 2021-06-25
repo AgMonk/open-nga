@@ -114,8 +114,11 @@ export const obj2Array = (obj) => {
     Object.keys(obj).forEach(key => {
         array.push(obj[key])
     })
-    console.log(array)
     return array;
+}
+
+export const timestamp2String = (timestamp) =>{
+    return new Date(timestamp*1000).format("yyyy-MM-dd hh:mm:ss")
 }
 
 
@@ -129,7 +132,7 @@ export const ngaRequest = {
     thread({stid, fid, page, authorid, searchpost, favor}) {
         let map = {
             favor: {favor: 1},
-            stid: {stid, page},
+            stid: {fid,page, stid},
             authorid: {fid, page, authorid, searchpost},
             fid: {fid, page},
         }
@@ -145,10 +148,16 @@ export const ngaRequest = {
         }
         return requestUnity({
             url: "thread.php",
-            data,
+            data
         }).then(res=>{
-            delete res.encode;
-            return res;
+            return {
+                data:res.data,
+                timestamp:res.time,
+                timeString:timestamp2String(res.time)
+            };
+        }).then(res=>{
+            console.log(res)
+            return res
         })
     }
 

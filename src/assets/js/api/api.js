@@ -19,24 +19,6 @@ export const formDataHeaders = {
 };
 
 
-export const thread = ({stid, fid, page, authorid, searchpost}) => {
-    let params = stid ? {stid, page}
-        : (searchpost ? {fid, page, authorid, searchpost}
-                : ({fid, page})
-        )
-    return request8.get("thread.php", {
-        params,
-    }).then(res => {
-        // noinspection JSUnresolvedVariable
-        if (res.error) {
-            ElMessage.error(res.error[0])
-            throw res.error
-        }
-        res.data.time = res.time
-        return res.data
-    })
-}
-
 export const read = (params) => {
     return request8.get("read.php", {
         params
@@ -208,7 +190,6 @@ export const getNotice = () => {
             time_limit: 1,
         }
     }).then(res => {
-        console.log(res)
         // 回复提醒
         let replies = res.data["0"]["0"];
         replies = !replies ? undefined : replies.map(reply => {

@@ -1,20 +1,27 @@
 <template>
-  <el-menu
-      :default-active="$route.path"
-      class="el-menu-demo"
-      mode="horizontal"
-      @select="$router.push"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b" v-if="$store.state.navi.show">
-    <el-menu-item v-for="(navi,key) in $store.state.navi.navigators" :key="key" :index="navi.path">{{ navi.title }}</el-menu-item>
-    <!--    <el-menu-item v-for="(item,i) in navi" :key="i" :index="item.path">{{ item.title }}</el-menu-item>-->
+  <div>
+    <el-menu
+        v-if="$store.state.navi.show"
+        :default-active="$route.path"
+        active-text-color="#ffd04b"
+        background-color="#545c64"
+        class="el-menu-demo"
+        mode="horizontal"
+        text-color="#fff" @select="$router.push">
+      <el-menu-item v-for="(navi,key) in $store.state.navi.navigators" :key="key" :index="navi.path">{{
+          navi.title
+        }}
+      </el-menu-item>
+      <!--    <el-menu-item v-for="(item,i) in navi" :key="i" :index="item.path">{{ item.title }}</el-menu-item>-->
 
-  </el-menu>
+    </el-menu>
+    <h4 style="margin-top: 10px;margin-bottom: 10px">{{$route.name}}</h4>
+
+  </div>
 </template>
 
 <script>
-import {getCookie, getCookieMap} from "@/assets/js/cookieUtils";
+import {getCookie} from "@/assets/js/cookieUtils";
 
 export default {
   name: "navi",
@@ -51,7 +58,6 @@ export default {
     this.$store.commit("config/load")
 
     this.$store.dispatch("forum/getFavForum")
-    console.log(getCookieMap())
 
     let uid = getCookie("ngaPassportUid");
     uid = uid?uid:0;
