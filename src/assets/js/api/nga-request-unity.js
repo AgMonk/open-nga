@@ -159,6 +159,34 @@ export const ngaRequest = {
             console.log(res)
             return res
         })
-    }
+    },
+    read({pid,tid,page,authorid}){
+        let map = {
+            pid: {pid},
+            tid: {tid, page},
+            authorid: {tid, page, authorid},
+        }
+        let data;
+        if (pid) {
+            data = map.pid;
+        } else if (authorid) {
+            data = map.authorid;
+        } else if (tid) {
+            data = map.tid;
+        }
+        return requestUnity({
+            url: "read.php",
+            data
+        }).then(res=>{
+            return {
+                data:res.data,
+                timestamp:res.time,
+                timeString:timestamp2String(res.time)
+            };
+        }).then(res=>{
+            console.log(res)
+            return res
+        })
+    },
 
 }

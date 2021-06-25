@@ -1,7 +1,7 @@
 // 版面主题
 // noinspection SpellCheckingInspection,JSUnresolvedVariable
 
-import {read} from "@/assets/js/api/api";
+import {ngaRequest} from "@/assets/js/api/nga-request-unity";
 
 export default {
     namespaced: true,
@@ -25,13 +25,13 @@ export default {
             }
             return dispatch("updateDetail", params)
         },
-        updateDetail({dispatch, commit, state}, {tid, page, authorid, pid}) {
-            let params = pid ? {pid} : {tid, page, authorid}
-            return read(params).then(res => {
+        updateDetail({dispatch, commit, state}, params) {
+            return ngaRequest.read(params).then(res => {
+                let data = res.data;
 
                 // 声望等级
                 let getLevelName = (reputation) => {
-                    let levelString = res.__F.custom_level;
+                    let levelString = data.__F.custom_level;
                     if (!levelString) {
                         return undefined
                     }
@@ -49,8 +49,8 @@ export default {
                         }
                     }
                 }
-                Object.keys(res.__R).forEach(key => {
-                    let reply = res.__R[key];
+                Object.keys(data.__R).forEach(key => {
+                    let reply = data.__R[key];
                     if (reply.content) {
                         reply.content = reply.content.toString()
                             .replace(/&quot;/g, "\"")
@@ -67,7 +67,7 @@ export default {
                     let uid = reply.authorid;
                     let info = {uid}
                     reply.userInfo = info
-                    let reputations = res.__U.__REPUTATIONS;
+                    let reputations = data.__U.__REPUTATIONS;
                     Object.keys(reputations).forEach((key => {
                         let groups = reputations[key];
                         if (groups[uid]) {
@@ -78,7 +78,7 @@ export default {
                     }))
 
                     // 匿名用户 uuid 化 填充用户名
-                    let username = res.__U[reply.authorid].username;
+                    let username = data.__U[reply.authorid].username;
                     info.username = username;
                     if (reply.authorid < 0) {
                         reply.authorid = username;
@@ -131,12 +131,12 @@ export default {
 
                 if (params.page === 'e') {
                     let p = JSON.parse(JSON.stringify(params))
-                    p.page = res.__PAGE;
-                    console.log("更新最新页 " + res.__PAGE);
+                    p.page = data.__PAGE;
+                    console.log("更新最新页 " + data.__PAGE);
                     state.details[JSON.stringify(p)] = res;
                 }
                 state.details[JSON.stringify(params)] = res;
-                return res;
+                return data;
             })
         },
 
