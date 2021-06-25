@@ -101,7 +101,8 @@ export default {
       if (!confirm("取消关注？")) {
         return
       }
-      unFollow(id).then(res => {
+      let fid = this.$route.params.fid;
+      unFollow(id,fid).then(res => {
         if (res.data) {
           this.$message(res.data[0])
           this.updateThreads()

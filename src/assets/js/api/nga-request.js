@@ -79,13 +79,17 @@ export const request8 = axios.create({
                     while (res = r1.exec(result)){
                         let startIndex = res.index
                         let endIndex = startIndex + res[0].indexOf(":")
-                        result = result.substring(0,startIndex)+`"`+result.substring(startIndex,endIndex).trim()+`"`+result.substring(endIndex)
+                        result = result.substring(0,startIndex)
+                            +`"`+result.substring(startIndex,endIndex).trim()
+                            +`"`+result.substring(endIndex)
                     }
                     while (res = r2.exec(result)){
                         let startIndex = res.index
                         let endIndex = startIndex + res[0].indexOf(":")
                         startIndex++
-                        result = result.substring(0,startIndex)+`"`+result.substring(startIndex,endIndex).trim()+`"`+result.substring(endIndex)
+                        result = result.substring(0,startIndex)
+                            +`"`+result.substring(startIndex,endIndex).trim()
+                            +`"`+result.substring(endIndex)
                     }
                 }
 

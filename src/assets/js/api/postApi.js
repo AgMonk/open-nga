@@ -27,8 +27,8 @@ export const doPost = function ({fid, tid, pid, action, post_subject, attachment
     return request8({
         headers: formDataHeaders,
         transformRequest,
-        url: "post.php",
         method: "post",
+        url: "post.php",
         params,
         data: {
             post_content: content

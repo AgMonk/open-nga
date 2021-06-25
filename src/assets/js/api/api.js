@@ -1,7 +1,6 @@
 // noinspection SpellCheckingInspection,JSUnfilteredForInLoop
 
 import {request, request8} from "@/assets/js/api/nga-request";
-import axios from "axios";
 import {ElMessage} from "element-plus";
 
 export const transformRequest = [
@@ -90,27 +89,42 @@ export const delFavForum = (fid) => {
 }
 
 //关注 合集或子版面
-export const follow = (id) => {
-    return request.get("nuke.php", {
+export const follow = (id,fid) => {
+    return request8({
+        headers: formDataHeaders,
+        transformRequest,
+        method: "post",
+        url: "nuke.php",
         params: {
             __lib: "user_option",
             __act: "set",
             raw: 3,
             del: id,
+        },
+        data:{
+            fid,
+            type: 1,
+            info: "add_to_block_tids",
         }
     })
 }
 //取消关注 合集或子版面
-export const unFollow = (id) => {
-    return axios({
-        url: "/api/nuke.php",
-        method: "POST",
+export const unFollow = (id,fid) => {
+    return request8({
+        headers: formDataHeaders,
+        transformRequest,
+        method: "post",
+        url: "nuke.php",
         params: {
-            __output: 11,
             __lib: "user_option",
             __act: "set",
             raw: 3,
             add: id,
+        },
+        data:{
+            fid,
+            type: 1,
+            info: "add_to_block_tids",
         }
     })
 }
