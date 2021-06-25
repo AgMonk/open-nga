@@ -122,7 +122,7 @@ export default {
     },
     updateDetails() {
       this.$store.dispatch("read/updateDetail",this.$route.params).then(res => {
-        this.handlePageData(res)
+        this.handlePageData(res.data)
         this.lastRefreshTime = new Date();
         this.removeAutoRefresh()
         this.setAutoRefresh()
@@ -204,7 +204,7 @@ export default {
       } else {
         this.$store.dispatch("read/getDetail", {tid, page, authorid, pid}).then(res => {
           console.log(res)
-          this.handlePageData(res)
+          this.handlePageData(res.data)
           document.body.scrollIntoView()
         })
       }

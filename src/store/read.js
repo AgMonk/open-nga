@@ -17,7 +17,7 @@ export default {
             let params = pid ? {pid} : {tid, page, authorid}
             let t = state.details[JSON.stringify(params)];
             let now = new Date().getTime()/1000;
-            if (t && (now - t.time) < 3*60) {
+            if (t && (now - t.timestamp) < 3*60) {
                 // 短时间使用缓存数据
                 return new Promise((resolve) => {
                     resolve(t)
