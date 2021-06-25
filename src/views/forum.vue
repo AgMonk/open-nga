@@ -9,8 +9,9 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-      <el-table :cell-class-name="cellClassName" :cell-style="{cursor: 'pointer'}" :data="$store.state.forum.forums" @cell-click="clickForum">
-        <el-table-column label="版面" prop="name"  />
+      <el-table :cell-class-name="cellClassName" :cell-style="{cursor: 'pointer'}" :data="forums"
+                @cell-click="clickForum">
+        <el-table-column label="版面" prop="name"/>
         <el-table-column label="移除" width="100px">
           <template #default="s">
             <el-button size="mini" type="danger" @click="delFavForum(s)">移除</el-button>
@@ -29,6 +30,7 @@
 <script>
 import SearchForum from "@/components/search-forum";
 import "../assets/css/ui-color.css"
+import {mapState} from "vuex";
 
 export default {
   name: "forum",
@@ -42,9 +44,14 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState({
+      forums: state => state.forum.forums,
+    })
+  },
   methods: {
-    cellClassName({rowIndex}){
-      return this.$store.state.config.config.uiColor+rowIndex%2
+    cellClassName({rowIndex}) {
+      return this.$store.state.config.config.uiColor + rowIndex % 2
     },
     clickForum(row, column) {
       if (column.property === 'name') {
@@ -62,12 +69,13 @@ export default {
       }
     },
     refreshFavForum() {
-      this.$store.dispatch("forum/getFavForum").then(()=>{
+      this.$store.dispatch("forum/getFavForum").then(() => {
         this.$message.success("刷新成功")
       })
     }
   },
   mounted() {
+    this.$store.dispatch("forum/getFavForum")
   },
 }
 

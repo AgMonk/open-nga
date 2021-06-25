@@ -2,6 +2,7 @@
 
 import {request, request8} from "@/assets/js/api/nga-request";
 import {ElMessage} from "element-plus";
+import {ngaRequest, obj2Array} from "@/assets/js/api/nga-request-unity";
 
 export const transformRequest = [
     function (data) {
@@ -57,11 +58,14 @@ export const userInfo = (uid) => {
 }
 //查询收藏版面列表
 export const getFavForum = () => {
-    return request.get("nuke.php", {
-        params: {
-            __lib: "forum_favor2",
-            __act: "forum_favor",
-            action: "get",
+    return ngaRequest.nuke({
+        __lib: "forum_favor2",
+        __act: "forum_favor",
+        action: "get",
+    }).then(res => {
+        return {
+            data: obj2Array(res.data[0]),
+            timestamp: res.time
         }
     })
 }
