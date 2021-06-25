@@ -20,7 +20,7 @@ export default {
             if (t && (now - t.timestamp) < 3*60) {
                 // 短时间使用缓存数据
                 return new Promise((resolve) => {
-                    resolve(t)
+                    resolve(t.data)
                 })
             }
             return dispatch("updateDetail", params)

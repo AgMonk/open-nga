@@ -122,7 +122,7 @@ export default {
     },
     updateDetails() {
       this.$store.dispatch("read/updateDetail",this.$route.params).then(res => {
-        this.handlePageData(res.data)
+        this.handlePageData(res)
         this.lastRefreshTime = new Date();
         this.removeAutoRefresh()
         this.setAutoRefresh()
