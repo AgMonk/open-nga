@@ -204,7 +204,7 @@ export default {
       } else {
         this.$store.dispatch("read/getDetail", {tid, page, authorid, pid}).then(res => {
           console.log(res)
-          this.handlePageData(res.data)
+          this.handlePageData(res)
           document.body.scrollIntoView()
         })
       }
