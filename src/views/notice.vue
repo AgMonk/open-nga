@@ -2,7 +2,7 @@
 
 <template>
   <div>
-    <el-button style="position: fixed; bottom: 0; left: 0;" @click="showDrawer=true">
+    <el-button style="position: fixed; bottom: 0; left: 0;" @click="showDrawer=true;getNotice()">
       <i class="el-icon-message-solid"/>
       <i v-show="gotNew.replies || gotNew.pm||gotNew.approbation" class="el-icon-warning"/>
     </el-button>

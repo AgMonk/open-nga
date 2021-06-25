@@ -1,6 +1,5 @@
 // noinspection SpellCheckingInspection,JSUnfilteredForInLoop
 
-import {request, request8} from "@/assets/js/api/nga-request";
 import {ElMessage} from "element-plus";
 import {ngaRequest, obj2Array} from "@/assets/js/api/nga-request-unity";
 
@@ -20,12 +19,10 @@ export const formDataHeaders = {
 
 
 export const userInfo = (uid) => {
-    return request.get("nuke.php", {
-        params: {
-            __lib: "ucp",
-            __act: "get",
-            uid
-        }
+    return ngaRequest.nuke({
+        __lib: "ucp",
+        __act: "get",
+        uid
     })
 }
 //查询收藏版面列表
@@ -43,81 +40,50 @@ export const getFavForum = () => {
 }
 //添加收藏版面
 export const addFavForum = (fid) => {
-    return request.get("nuke.php", {
-        params: {
-            __lib: "forum_favor2",
-            __act: "forum_favor",
-            action: "add",
-            fid
-        }
+    return ngaRequest.nuke({
+        __lib: "forum_favor2",
+        __act: "forum_favor",
+        action: "add",
+        fid
     })
 }
 //添加收藏版面
 export const delFavForum = (fid) => {
-    return request.get("nuke.php", {
-        params: {
-            __lib: "forum_favor2",
-            __act: "forum_favor",
-            action: "del",
-            fid
-        }
+    return ngaRequest.nuke({
+        __lib: "forum_favor2",
+        __act: "forum_favor",
+        action: "del",
+        fid
     })
 }
 
 //关注 合集或子版面
-export const follow = (id,fid) => {
-    return request8({
-        headers: formDataHeaders,
-        transformRequest,
-        method: "post",
-        url: "nuke.php",
-        params: {
-            __lib: "user_option",
-            __act: "set",
-            raw: 3,
-            del: id,
-        },
-        data:{
-            fid,
-            type: 1,
-            info: "add_to_block_tids",
-        }
+export const follow = (id, fid) => {
+    return ngaRequest.nuke({
+        __lib: "user_option",
+        __act: "set",
+        raw: 3,
+        type: 1,
+        info: "add_to_block_tids",
+        del: id,
+        fid,
     })
 }
 //取消关注 合集或子版面
-export const unFollow = (id,fid) => {
-    return request8({
-        headers: formDataHeaders,
-        transformRequest,
-        method: "post",
-        url: "nuke.php",
-        params: {
-            __lib: "user_option",
-            __act: "set",
-            raw: 3,
-            add: id,
-        },
-        data:{
-            fid,
-            type: 1,
-            info: "add_to_block_tids",
-        }
+export const unFollow = (id, fid) => {
+    return ngaRequest.nuke({
+        __lib: "user_option",
+        __act: "set",
+        raw: 3,
+        type: 1,
+        info: "add_to_block_tids",
+        add: id,
+        fid,
     })
-}
-export const searchForum = (keyword) => {
-    return request8("forum.php", {params: {key: keyword}}).then(res => {
-        return res.data
-    });
 }
 //点赞 或 撤赞 value = 1 赞  value = -1 踩
 export const topicRecommend = (tid, pid, value = 1) => {
-
-    return request({
-        headers: formDataHeaders,
-        transformRequest,
-        url: "nuke.php",
-        method: "post",
-        data: {
+    return ngaRequest.nuke({
             __lib: "topic_recommend",
             __act: "add",
             tid,
@@ -125,7 +91,7 @@ export const topicRecommend = (tid, pid, value = 1) => {
             value,
             raw: 3,
         }
-    }).then(res => {
+    ).then(res => {
         return {
             message: res.data[0],
             value: res.data[1],
@@ -134,51 +100,31 @@ export const topicRecommend = (tid, pid, value = 1) => {
 }
 //不再提示 赞踩
 export const noHint = (tid, pid) => {
-    return request8("nuke.php", {
-        headers: formDataHeaders,
-        method: "post",
-        transformRequest,
-        data: {
+    return ngaRequest.nuke({
             func: "noti_tag",
             no_hint: 1,
-            tid, pid,
             raw: 3,
-        }
+            tid, pid,
     }).then(res => {
         return res.data["0"]
     })
 }
 //清空提醒
 export const clearNotice = () => {
-    return request8("nuke.php", {
-        headers: formDataHeaders,
-        method: "post",
-        transformRequest,
-        params: {
+    return ngaRequest.nuke({
             __lib: "noti",
-            raw: 3,
-        },
-        data: {
             __act: "del",
-        }
+            raw: 3,
     }).then(res => {
         ElMessage.success(res.data["0"])
     })
 }
-
 export const getNotice = () => {
-    return request8("nuke.php", {
-        headers: formDataHeaders,
-        method: "post",
-        transformRequest,
-        params: {
+    return ngaRequest.nuke({
             __lib: "noti",
             raw: 3,
-        },
-        data: {
             __act: "get_all",
             time_limit: 1,
-        }
     }).then(res => {
         // 回复提醒
         let replies = res.data["0"]["0"];
@@ -224,4 +170,8 @@ export const getNotice = () => {
 
         return {replies, approbation, pm}
     })
+}
+
+export const searchForum = (key) => {
+    return ngaRequest.forum(key)
 }

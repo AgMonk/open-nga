@@ -36,10 +36,8 @@ export default {
     },
     search(){
       searchForum(this.keyword).then(res=>{
-        this.forums = []
-        Object.keys(res).forEach(key=>{
-          this.forums.push(res[key])
-        })
+        this.forums = res.data
+
         console.log(this.forums)
       })
     },

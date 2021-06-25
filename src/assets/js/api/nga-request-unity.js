@@ -121,6 +121,15 @@ export const timestamp2String = (timestamp) =>{
     return new Date(timestamp*1000).format("yyyy-MM-dd hh:mm:ss")
 }
 
+export const  packageData = (res)=>{
+    let data = {
+        data:res.data,
+        timestamp:res.time,
+        timeString:timestamp2String(res.time)
+    }
+    console.log(data)
+    return data;
+}
 
 export const ngaRequest = {
     nuke(data) {
@@ -150,14 +159,7 @@ export const ngaRequest = {
             url: "thread.php",
             data
         }).then(res=>{
-            return {
-                data:res.data,
-                timestamp:res.time,
-                timeString:timestamp2String(res.time)
-            };
-        }).then(res=>{
-            console.log(res)
-            return res
+            return packageData(res)
         })
     },
     read({pid,tid,page,authorid}){
@@ -178,15 +180,25 @@ export const ngaRequest = {
             url: "read.php",
             data
         }).then(res=>{
-            return {
-                data:res.data,
-                timestamp:res.time,
-                timeString:timestamp2String(res.time)
-            };
-        }).then(res=>{
-            console.log(res)
-            return res
+            return packageData(res)
         })
     },
-
+    forum(key){
+        return requestUnity({
+            url: "forum.php",
+            data:{
+                key
+            }
+        }).then(res=>{
+            let data = packageData(res);
+            data.data = obj2Array(data.data);
+            return data
+        })
+    },
+    post(data){
+        return requestUnity({
+            url: "post.php",
+            data
+        })
+    }
 }

@@ -1,18 +1,18 @@
 import {request8} from "@/assets/js/api/nga-request";
 import {formDataHeaders, transformRequest} from "@/assets/js/api/api";
 import {ElMessage} from "element-plus";
+import {ngaRequest} from "@/assets/js/api/nga-request-unity";
 
-let post = function ({action, fid, tid, pid, stid}) {
-    let params = {...arguments[0], _newui: "", article: 18};
-    return request8.get("post.php", {
-        params
-    }).then(res => {
-        return res.data;
-    })
-}
 // 回复准备
 export const prePost = ({fid, tid, pid, action}) => {
-    return post({fid, tid, pid, action})
+    return ngaRequest.post({
+        fid, tid, pid, action,
+        _newui:""
+    }).then(res => {
+        console.log(res)
+        return res.data;
+    })
+    // return post({fid, tid, pid, action})
 }
 // 发帖
 export const doPost = function ({fid, tid, pid, action, post_subject, attachments, attachments_check}, content) {
