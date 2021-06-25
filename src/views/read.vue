@@ -78,6 +78,7 @@ import "../assets/css/ui-color.css"
 import {getRoute} from "@/assets/js/api/routerUtils";
 import ReplyTextArea from "@/components/reply-text-area";
 import Clock from "@/components/clock";
+import {obj2Array} from "@/assets/js/api/nga-request";
 
 export default {
   name: "read",
@@ -120,11 +121,7 @@ export default {
       this.$router.push(this.$route)
     },
     updateDetails() {
-      let tid = this.$route.params.tid;
-      let page = this.$route.params.page;
-      let authorid = this.$route.params.authorid;
-      let pid = this.$route.params.pid;
-      this.$store.dispatch("read/updateDetail", {tid, page, authorid, pid}).then(res => {
+      this.$store.dispatch("read/updateDetail",this.$route.params).then(res => {
         this.handlePageData(res)
         this.lastRefreshTime = new Date();
         this.removeAutoRefresh()
@@ -186,7 +183,7 @@ export default {
         }
       })
 
-      this.replies = res.__R;
+      this.replies = obj2Array( res.__R);
 
       // if (this.$route.params.page === 'e') {
       //   this.$route.params.page = res.__PAGE;
@@ -194,7 +191,6 @@ export default {
       // }
 
 
-      // console.log(this.$refs['#'+this.replies[0].lou])
     },
     //更新主题详情
     updateParams() {
@@ -253,8 +249,14 @@ export default {
       if (e.key === 's') {
         this.scrollLevel(1)
       }
+      if (e.key === 'S') {
+        this.scrollLevel(this.replies.length - this.currentLevel -1)
+      }
       if (e.key === 'w') {
         this.scrollLevel(-1)
+      }
+      if (e.key === 'W') {
+        this.scrollLevel(-1*this.currentLevel)
       }
       if (e.key === 'q') {
         this.$router.push(getRoute(['thread',this.replyParams.fid,1]))
