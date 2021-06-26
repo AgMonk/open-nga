@@ -14,8 +14,9 @@
                 @keypress="keypress"
       />
       <el-dialog v-model="dialogShow" title="跳转目标">
-        <div v-for="(item,i) in callbackUrls" :key="i" >
-          <my-router-link :text="item.text" :url="item.route" @click="dialogShow=false"/>( {{i+1}} )
+        <div v-for="(item,i) in callbackUrls" :key="i">
+          <my-router-link :text="item.text" :url="item.route" @click="dialogShow=false"/>
+          ( {{ i + 1 }} )
           <br/>
           <br/>
         </div>
@@ -34,6 +35,7 @@ import {doPost} from "@/assets/js/api/postApi";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import MyRouterLink from "@/components/my-router-link";
 import {copyObj} from "@/assets/js/utils";
+import {searchEmotes} from "@/assets/js/emote";
 
 export default {
   name: "reply-text-area",
@@ -43,26 +45,62 @@ export default {
       dialogShow: false,
       callbackUrls: [],
       myParams: {
-        post_content:"",
+        post_content: "",
       },
     }
   },
   methods: {
     keypress(e) {
+      console.log(e)
       let index = e.key;
       if (e.code === 'Enter' && e.ctrlKey) {
         this.submit()
-      }else if (!isNaN(index) &&this.callbackUrls[index-1]) {
+      }
+      if (e.code === 'Space') {
+        // 快速表情功能
+        let textarea = document.getElementById("textarea")
+        let reg = /\s([^\s]+?)$/g;
+        let tempString = this.myParams.post_content.substring(0, textarea.selectionStart)
+        console.log(tempString)
+        let res = reg.exec(tempString)
+        if (res) {
+          console.log(res)
+          let emotes = searchEmotes(res[1]);
+          if (emotes.length > 1) {
+            /* todo 有多个备选表情项 暂不处理 */
+            e.returnValue = false;
+          }
+          if (emotes.length === 1) {
+            //  只有一个备选项 直接替换
+            let newString;
+            let emote = emotes[0]
+            // 根据是否为官方表情 决定替换的字符串格式
+            if (emote.official) {
+              newString = emote.code
+            } else {
+              newString = "[img]" + emote.url + "[/img]"
+            }
+            this.myParams.post_content =
+                tempString.substring(0, res.index)
+                + newString
+                + this.myParams.post_content.substring(textarea.selectionStart);
+            e.returnValue = false;
+          }
+
+        }
+
+      } else if (!isNaN(index) && this.callbackUrls[index - 1]) {
+        // 数字键 选择跳转目标
         e.returnValue = false;
-        this.dialogShow=false;
-        this.$router.push(this.callbackUrls[index-1].route)
-      }else{
+        this.dialogShow = false;
+        this.$router.push(this.callbackUrls[index - 1].route)
+      } else {
         console.log(index)
       }
     },
     submit() {
       console.log(this.myParams)
-      doPost(this.myParams, this.myParams.post_content).then(res => {
+      doPost(this.myParams).then(res => {
         console.log(res)
         this.dialogShow = true;
 
@@ -75,7 +113,7 @@ export default {
 
         this.$emit("submitted")
         this.myParams.post_subject = "";
-        this.myParams.post_content="";
+        this.myParams.post_content = "";
       })
     },
   },
@@ -87,15 +125,15 @@ export default {
     this.myParams = copyObj(this.params)
   },
   watch: {
-    "params":{
-      handler:function(e){
+    "params": {
+      handler: function (e) {
         this.myParams = copyObj(e)
         console.log(e)
       }
     },
 
   },
-  props: ["params","focus"],
+  props: ["params", "focus"],
 }
 
 </script>

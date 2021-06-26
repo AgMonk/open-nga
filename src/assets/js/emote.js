@@ -8,6 +8,7 @@ export const emotesLibrary = {
         {
             name: '默认',
             namespace: '',
+            official:true,
             data: {
                 1: 'smile.gif',
                 2: 'mrgreen.gif',
@@ -41,6 +42,7 @@ export const emotesLibrary = {
         {
             name: 'AC娘(v1)',
             namespace: 'ac',
+            official:true,
             data: {
                 "blink": "ac0.png",
                 "goodjob": "ac1.png",
@@ -96,6 +98,7 @@ export const emotesLibrary = {
         {
             name: 'AC娘(v2)',
             namespace: 'a2',
+            official:true,
             data: {
                 "goodjob": "a2_02.png",
                 "诶嘿": "a2_05.png",
@@ -148,6 +151,7 @@ export const emotesLibrary = {
         {
             name: '潘斯特',
             namespace: 'pst',
+            official:true,
             data: {
                 "举手": "pt00.png",
                 "亲": "pt01.png",
@@ -219,6 +223,7 @@ export const emotesLibrary = {
         {
             name: '外域三人组',
             namespace: 'dt',
+            official:true,
             data: {
                 "ROLL": "dt01.png",
                 "上": "dt02.png",
@@ -258,6 +263,7 @@ export const emotesLibrary = {
         {
             name: '企鹅',
             namespace: 'pg',
+            official:true,
             data: {
                 "战斗力": "pg01.png",
                 "哈啤": "pg02.png",
@@ -303,6 +309,7 @@ export const searchEmotes = (key) => {
             let name = group.name;
             array.push({
                 name,
+                official:group.official,
                 code:"[s:"+group.namespace+":"+key+"]",
                 url:url,
             })

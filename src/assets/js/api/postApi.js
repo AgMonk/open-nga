@@ -32,7 +32,6 @@ export const doPost = function ({fid, tid, pid, action, post_subject, attachment
             delete params[key];
         }
     })
-    console.log(params)
     return ngaRequest.post(params).then(res=>{
         let error = res.error;
         if (error && !error[0].includes("发贴完毕")) {
