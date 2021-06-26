@@ -1,10 +1,11 @@
 <template>
   <div v-if="show">
     <el-link
-        :href="urls[index]" target="_blank">
+        :href="url" target="_blank">
       <el-avatar
-          :size="150" :src="urls[index]"
+          :size="150" :src="url"
           fit="scale-down" shape="square"
+          @error="error"
       />
     </el-link>
   </div>
@@ -17,9 +18,10 @@ export default {
   name: "my-avatar",
   data() {
     return {
+      proxy: "https://images.weserv.nl/?url=",
       show: false,
-      urls: [],
       index: 0,
+      url: "",
     }
   },
   computed: {
@@ -28,32 +30,34 @@ export default {
     })
   },
   methods: {
+    error(e) {
+      let imgCnUrl = "img.nga.cn"
+      let img178Url = "img.nga.178.com"
+      console.warn("头像载入失败: "+this.url)
+      if (this.url.includes(imgCnUrl)) {
+        this.url = this.url
+            .replace(imgCnUrl,img178Url)
+        console.log("尝试换源:"+ this.url)
+      } else if (this.url.includes(this.proxy)) {
+        this.url = this.url
+            .replace(this.proxy,"https://")
+        console.log("尝试直连:"+ this.url)
+      } else{
+        this.show = false;
+      }
+    },
     copy(uid) {
       this.show = false;
-
       if (this.users[uid]) {
-        let avatar = this.users[uid].avatar;
-        if (avatar && avatar.length > 0) {
-          this.urls = [];
-          let proxy = "https://images.weserv.nl/?url=";
-          let urls = avatar.split("|")
-              // .map(a => a.substring(0, a.indexOf("?")))
-              .map(a => a.replace(".a", ""))
-              // .map(a => a.replace("https://img.nga.178.com", ""))
-              // .map(a => a.replace("http://img.nga.178.com", ""))
-              // .map(a => a.replace("http://pic1.178.com", ""))
-              .map(a => a.replace("https://", proxy))
-              .map(a => a.replace("http://", proxy))
-          // .map(a => a.replace("https", "http"))
+        let avatars = this.users[uid].avatars;
+        if (avatars && avatars.length > 0) {
 
-          this.urls.push(urls[0])
-          let a = urls[0].split("/");
-          for (let i = 1; i < urls.length; i++) {
-            a[a.length - 1] = urls[i];
-            this.urls.push(a.join("/"))
+          this.index = Math.floor((Math.random() * avatars.length - 1) + 1);
+          if (!avatars[this.index].includes(this.proxy)) {
+            this.url = avatars[this.index]
+                .replace("https://", this.proxy)
+                .replace("http://", this.proxy)
           }
-
-          this.index = Math.floor((Math.random() * this.urls.length - 1) + 1);
           this.show = true;
         }
       }
@@ -68,11 +72,6 @@ export default {
         this.copy(e)
       }
     },
-    "$store.state.account.users[uid]": {
-      handler: function (e) {
-        console.log(e)
-      }
-    }
   },
   props: ["uid"],
 }

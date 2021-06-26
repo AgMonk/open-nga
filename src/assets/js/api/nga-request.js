@@ -111,7 +111,7 @@ export const packageData = (res) => {
         timestamp: res.time,
         timeString: timestamp2String(res.time)
     }
-    console.log(data)
+    // console.log(data)
     return data;
 }
 

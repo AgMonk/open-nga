@@ -42,7 +42,25 @@ export default {
                 delete info.posts;
             }
 
-            if (!state.users[info.uid]) {
+            let avatar = info.avatar;
+            if (avatar && avatar.length > 0) {
+                let avatars = [];
+                let urls = avatar.split("|")
+                    .map(a => a.replace(".a", ""))
+
+                avatars.push(urls[0])
+                let a = urls[0].split("/");
+                for (let i = 1; i < urls.length; i++) {
+                    a[a.length - 1] = urls[i];
+                    avatars.push(a.join("/"))
+                }
+                info.avatars = avatars;
+            }
+
+
+
+
+                if (!state.users[info.uid]) {
                 state.users[info.uid] = {}
             }
             Object.keys(info).forEach(key => {
