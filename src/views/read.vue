@@ -79,6 +79,7 @@ import "../assets/css/ui-color.css"
 import {getRoute} from "@/assets/js/api/routerUtils";
 import ReplyTextArea from "@/components/reply-text-area";
 import Clock from "@/components/clock";
+import {searchEmotes} from "@/assets/js/emote";
 
 export default {
   name: "read",
@@ -199,6 +200,8 @@ export default {
           console.log(res)
           this.handlePageData(res)
           document.body.scrollIntoView()
+        }).catch(() => {
+          history.back();
         })
       }
     },
@@ -281,9 +284,10 @@ export default {
     }
   },
   mounted() {
+    console.log(searchEmotes("哭笑"))
+
     this.updateParams();
     document.addEventListener('keypress', this.keypress)
-
     this.setAutoRefresh()
   },
   unmounted() {

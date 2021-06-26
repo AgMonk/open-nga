@@ -8,7 +8,7 @@
       <el-input id="textarea"
                 ref="reply-text-area"
                 v-model="myParams.post_content"
-                :rows="!myParams.post_content?10:myParams.post_content.split(`\n`).length+1" placeholder="正文"
+                :rows="!myParams.post_content?5:Math.max(myParams.post_content.split(`\n`).length+1,5)" placeholder="正文"
                 style="margin-bottom: 5px"
                 type="textarea"
                 @keypress="keypress"
@@ -49,15 +49,15 @@ export default {
   },
   methods: {
     keypress(e) {
+      let index = e.key;
       if (e.code === 'Enter' && e.ctrlKey) {
         this.submit()
-      }
-      let index = e.key;
-      if (!isNaN(index) &&this.callbackUrls[index-1]) {
-        console.log(e)
+      }else if (!isNaN(index) &&this.callbackUrls[index-1]) {
         e.returnValue = false;
         this.dialogShow=false;
         this.$router.push(this.callbackUrls[index-1].route)
+      }else{
+        console.log(index)
       }
     },
     submit() {

@@ -2,11 +2,11 @@
 
 import {ElMessage} from "element-plus";
 
-export const defaultEmotes = {
+export const emotesLibrary = {
     prefix: "https://img4.nga.178.com/ngabbs/post/smile/",
     emotes: [
         {
-            groupName: '默认',
+            name: '默认',
             namespace: '',
             data: {
                 1: 'smile.gif',
@@ -39,7 +39,7 @@ export const defaultEmotes = {
             }
         },
         {
-            groupName: 'AC娘(v1)',
+            name: 'AC娘(v1)',
             namespace: 'ac',
             data: {
                 "blink": "ac0.png",
@@ -94,7 +94,7 @@ export const defaultEmotes = {
             }
         },
         {
-            groupName: 'AC娘(v2)',
+            name: 'AC娘(v2)',
             namespace: 'a2',
             data: {
                 "goodjob": "a2_02.png",
@@ -146,7 +146,7 @@ export const defaultEmotes = {
             }
         },
         {
-            groupName: '潘斯特',
+            name: '潘斯特',
             namespace: 'pst',
             data: {
                 "举手": "pt00.png",
@@ -217,7 +217,7 @@ export const defaultEmotes = {
             }
         },
         {
-            groupName: '外域三人组',
+            name: '外域三人组',
             namespace: 'dt',
             data: {
                 "ROLL": "dt01.png",
@@ -256,7 +256,7 @@ export const defaultEmotes = {
             }
         },
         {
-            groupName: '企鹅',
+            name: '企鹅',
             namespace: 'pg',
             data: {
                 "战斗力": "pg01.png",
@@ -279,16 +279,34 @@ export const defaultEmotes = {
     ]
 }
 
-export const getEmoteUrl = (namespace,key) =>{
-    let emotes = defaultEmotes.emotes.filter(emote =>emote.namespace===namespace);
+export const getEmoteUrl = (namespace, key) => {
+    let emotes = emotesLibrary.emotes.filter(emote => emote.namespace === namespace);
     if (emotes.length !== 1) {
-        ElMessage.warning("命名空间错误: "+ namespace);
-        return ;
+        ElMessage.warning("命名空间错误: " + namespace);
+        return;
     }
-    let e  = emotes[0].data[key]
+    let e = emotes[0].data[key]
     if (!e) {
-        ElMessage.warning("找不到表情: "+namespace+" "+key)
-        return ;
+        ElMessage.warning("找不到表情: " + namespace + " " + key)
+        return;
     }
-    return defaultEmotes.prefix+e;
+    let prefix = emotes[0].prefix ? emotes[0].prefix : emotesLibrary.prefix;
+    return prefix + e;
+}
+
+export const searchEmotes = (key) => {
+    let array = [];
+
+    emotesLibrary.emotes.forEach(group=>{
+        if (group.data[key]) {
+            let url = getEmoteUrl(group.namespace,key);
+            let name = group.name;
+            array.push({
+                name,
+                code:"[s:"+group.namespace+":"+key+"]",
+                url:url,
+            })
+        }
+    })
+    return array;
 }

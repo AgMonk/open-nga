@@ -77,9 +77,14 @@ export const requestUnity = axios.create({
                 }
                 json = packageData(json)
                 let error = json.error;
+                let message = json.data["__MESSAGE"];
                 if (error) {
                     ElMessage.error(error[0])
                     reject(error)
+                }
+                if (message && /[审核隐藏锁定]/.exec(message[1])) {
+                    ElMessage.error(message[1])
+                    reject(message[1])
                 } else {
                     resolve(json)
                 }
@@ -87,7 +92,6 @@ export const requestUnity = axios.create({
         });
     }]
 })
-
 
 
 // 添加响应拦截器
@@ -142,7 +146,7 @@ export const ngaRequest = {
         return requestUnity({
             url: "thread.php",
             data
-        }).then(res=>{
+        }).then(res => {
             res.data.__T = obj2Array(res.data.__T);
             return res;
         })
@@ -164,7 +168,7 @@ export const ngaRequest = {
         return requestUnity({
             url: "read.php",
             data
-        }).then(res=>{
+        }).then(res => {
             res.data.__R = obj2Array(res.data.__R);
             return res;
         })

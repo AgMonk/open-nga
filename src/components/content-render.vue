@@ -1,5 +1,5 @@
 <script>
-import {parseBbsCode} from "@/assets/js/bbsCode/bbsCodeParser";
+import {parseBbsCode} from "@/assets/js/bbsCodeParser";
 import MyRouterLink from "@/components/my-router-link";
 import {getEmoteUrl} from "@/assets/js/emote";
 
