@@ -32,6 +32,7 @@
           <el-tag v-if="myData.authorid === parseInt($store.state.navi.params.account[0])"
                   class="miniTag click-able" size="mini" @click="reply(`modify`)"><i class="el-icon-chat-line-square"/>编辑
           </el-tag>
+          <el-tag class="miniTag click-able" size="mini" @click="comment"><i class="el-icon-chat-line-square"/>评论</el-tag>
           <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`)"><i class="el-icon-chat-line-square"/>引用</el-tag>
           <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`)"><i class="el-icon-chat-line-round"/>回复</el-tag>
         </el-col>
@@ -107,6 +108,7 @@ import MyRouterLink from "@/components/my-router-link";
 import UserLink from "@/components/user-link";
 import {mapState} from "vuex";
 import Approbation from "@/components/approbation";
+import {preComment} from "@/assets/js/api/postApi";
 
 export default {
   name: "reply-content-card",
@@ -123,6 +125,9 @@ export default {
     })
   },
   methods: {
+    comment(){
+      preComment(this.myData)
+    },
     reply(action,pid) {
       this.$router.push(getRoute(["post", action, this.myData.fid, this.myData.tid,pid?pid: this.myData.pid, 0]))
     },

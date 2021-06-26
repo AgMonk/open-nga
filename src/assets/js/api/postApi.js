@@ -11,6 +11,18 @@ export const prePost = ({fid, tid, pid, action}) => {
         return res.data;
     })
 }
+// 评论准备
+export const preComment = ({fid, tid, pid}) => {
+    return ngaRequest.post({
+        fid, tid, pid, action:"reply",
+        comment:1,
+    }).then(res => {
+        console.log(res)
+        return res.data;
+    })
+}
+
+
 // 发帖
 export const doPost = function ({fid, tid, pid, action, post_subject, attachments, attachments_check,post_content}) {
     let params = {...arguments[0], step: 2};

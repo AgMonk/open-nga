@@ -1,0 +1,42 @@
+{
+  "data": {
+    "action": "reply",
+    "__T": {
+      "topic_misc_var": {
+        "1": 40
+      }
+    },
+    "content": "[b]Reply to [pid=527253850,25968165,2526]Reply[/pid] Post by [uid=60071329]��� Electronica[/uid] (2021-06-25 15:23)[/b]\n\n",
+    "pid": 527253850,
+    "fid": -547859,
+    "auth": "025ff03e60d6ab52462d627171625af1a2835f014f7b85465595fb726554",
+    "if_moderator": 0,
+    "warning": {
+      "0": {
+        "0": 4097,
+        "1": "���Ȩ�޲��� ���ǿ��Ի���100ͭ�ҶԴ�������һ������",
+        "2": "",
+        "3": 200
+      }
+    },
+    "tid": 25968165,
+    "__CU": {
+      "uid": 39841854,
+      "group_bit": 622816,
+      "admincheck": 0,
+      "rvrc": 14
+    },
+    "__GLOBAL": {
+      "_ATTACH_BASE_VIEW": "img.nga.178.com/attachments"
+    },
+    "__F": {
+      "bit_data": 8392,
+      "fid": -547859,
+      "name": "��Ůǰ��-16LAB�о�Ժ"
+    },
+    "attach_url": "https://img8.nga.cn/attach.php"
+  },
+  "encode": "gbk",
+  "time": 1624681298,
+  "debug": null
+}
