@@ -1,3 +1,4 @@
+<!--suppress JSUnresolvedVariable -->
 <template>
   <div>
     <el-container direction="vertical">
@@ -78,7 +79,6 @@ import "../assets/css/ui-color.css"
 import {getRoute} from "@/assets/js/api/routerUtils";
 import ReplyTextArea from "@/components/reply-text-area";
 import Clock from "@/components/clock";
-import {obj2Array} from "@/assets/js/api/nga-request";
 
 export default {
   name: "read",
@@ -183,14 +183,7 @@ export default {
         }
       })
 
-      this.replies = obj2Array( res.__R);
-
-      // if (this.$route.params.page === 'e') {
-      //   this.$route.params.page = res.__PAGE;
-      //   this.$router.push(this.$route)
-      // }
-
-
+      this.replies =  res.__R;
     },
     //更新主题详情
     updateParams() {

@@ -34,7 +34,7 @@ export const requestUnity = axios.create({
     transformResponse: [function (data) {
         let reader = new FileReader();
         reader.readAsText(data, 'GBK');
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             reader.onload = function () {
                 // console.log(reader.result);
                 let result = reader.result;
@@ -72,42 +72,26 @@ export const requestUnity = axios.create({
                 try {
                     json = JSON.parse(result);
                 } catch (e) {
-                    console.warn(e)
                     console.log(result)
-                    throw e
+                    reject(e)
                 }
-                resolve(json)
+                json = packageData(json)
+                let error = json.error;
+                if (error) {
+                    ElMessage.error(error[0])
+                    reject(error)
+                } else {
+                    resolve(json)
+                }
             }
         });
     }]
 })
 
-let handleError = (res) => {
-    let error = res.error;
-    if (error) {
-        ElMessage.error(error[0])
-        throw error
-    }
-}
 
 
-// 添加请求拦截器
-requestUnity.interceptors.request.use(function (config) {
-    // 在发送请求之前做些什么
-    return config;
-}, function (error) {
-    // 对请求错误做些什么
-    return Promise.reject(error);
-});
 // 添加响应拦截器
-requestUnity.interceptors.response.use(function (response) {
-    let res = response.data;
-    handleError(res)
-    return res
-}, (error) => {
-    handleError(error.response)
-    return Promise.reject(error);
-});
+requestUnity.interceptors.response.use(response => response.data, (error) => Promise.reject(error));
 
 export const obj2Array = (obj) => {
     let array = [];
@@ -117,15 +101,15 @@ export const obj2Array = (obj) => {
     return array;
 }
 
-export const timestamp2String = (timestamp) =>{
-    return new Date(timestamp*1000).format("yyyy-MM-dd hh:mm:ss")
+export const timestamp2String = (timestamp) => {
+    return new Date(timestamp * 1000).format("yyyy-MM-dd hh:mm:ss")
 }
 
-export const  packageData = (res)=>{
+export const packageData = (res) => {
     let data = {
-        data:res.data,
-        timestamp:res.time,
-        timeString:timestamp2String(res.time)
+        data: res.data,
+        timestamp: res.time,
+        timeString: timestamp2String(res.time)
     }
     console.log(data)
     return data;
@@ -141,7 +125,7 @@ export const ngaRequest = {
     thread({stid, fid, page, authorid, searchpost, favor}) {
         let map = {
             favor: {favor: 1},
-            stid: {fid,page, stid},
+            stid: {fid, page, stid},
             authorid: {fid, page, authorid, searchpost},
             fid: {fid, page},
         }
@@ -159,10 +143,11 @@ export const ngaRequest = {
             url: "thread.php",
             data
         }).then(res=>{
-            return packageData(res)
+            res.data.__T = obj2Array(res.data.__T);
+            return res;
         })
     },
-    read({pid,tid,page,authorid}){
+    read({pid, tid, page, authorid}) {
         let map = {
             pid: {pid},
             tid: {tid, page},
@@ -180,22 +165,22 @@ export const ngaRequest = {
             url: "read.php",
             data
         }).then(res=>{
-            return packageData(res)
+            res.data.__R = obj2Array(res.data.__R);
+            return res;
         })
     },
-    forum(key){
+    forum(key) {
         return requestUnity({
             url: "forum.php",
-            data:{
+            data: {
                 key
             }
-        }).then(res=>{
-            let data = packageData(res);
-            data.data = obj2Array(data.data);
+        }).then(res => {
+            res.data = obj2Array(res.data);
             return data
         })
     },
-    post(data){
+    post(data) {
         return requestUnity({
             url: "post.php",
             data
