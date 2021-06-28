@@ -1,33 +1,33 @@
 <template>
- <div>
-   <el-upload
-       ref="upload"
-       :action="attachUrl"
-       :before-upload="beforeUpload"
-       :data="params"
-       :file-list.sync="fileList"
-       :name="prefix"
-       :on-remove="onRemove"
-       :on-success="success"
-       accept="image/*, .zip"
-       list-type="picture-card"
-       multiple
-       with-credentials
-   >
-     <template #default>
-       <i class="el-icon-plus"></i>
-     </template>
-     <template #file="{file}">
-       <div>
-         <img :src="file.url" alt="" class="el-upload-list__item-thumbnail" />
-         <span v-if="!file.status || file.status!==`success`" class="el-upload-list__item-actions">
+  <div>
+    <el-upload
+        ref="upload"
+        :action="attachUrl"
+        :before-upload="beforeUpload"
+        :data="params"
+        :file-list.sync="fileList"
+        :name="prefix"
+        :on-remove="onRemove"
+        :on-success="success"
+        accept="image/*, .zip"
+        list-type="picture-card"
+        multiple
+        with-credentials
+    >
+      <template #default>
+        <i class="el-icon-plus"></i>
+      </template>
+      <template #file="{file}">
+        <div>
+          <img :src="file.url" alt="" class="el-upload-list__item-thumbnail"/>
+          <span v-if="!file.status || file.status!==`success`" class="el-upload-list__item-actions">
             <span
                 class="el-upload-list__item-preview"
             >
             <i class="el-icon-loading"></i>
           </span>
          </span>
-         <span v-if="file.status&& file.status===`success`" class="el-upload-list__item-actions">
+          <span v-if="file.status&& file.status===`success`" class="el-upload-list__item-actions">
           <span
               class="el-upload-list__item-preview"
               @click="handlePictureCardPreview(file)"
@@ -47,27 +47,30 @@
             <i class="el-icon-delete"></i>
           </span>
         </span>
-       </div>
-     </template>
-   </el-upload>
-     <el-dialog v-model="dialogVisible">
-       <el-image :src="dialogImageUrl" />
-     </el-dialog>
- </div>
+        </div>
+      </template>
+    </el-upload>
+    <el-dialog v-model="dialogVisible">
+      <el-image :src="dialogImageUrl"/>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
 import {encodeUTF8} from "@/assets/js/api/nga-request";
+import {copyObj} from "@/assets/js/utils";
+import {parseImageName} from "@/assets/js/api/parseImageName";
 
 export default {
   name: "my-upload",
   data() {
     return {
-      dialogVisible:false,
-      dialogImageUrl:"",
+
+      dialogVisible: false,
+      dialogImageUrl: "",
       prefix: "attachment_file" + this.index,
-      fileList:[],
-      tempFileList:[],
+      fileList: [],
+      tempFileList: [],
       params: {
         func: "upload",
         v2: 1,
@@ -81,14 +84,20 @@ export default {
     }
   },
   methods: {
-    remove(file){
-      if (confirm("删除附件?")){
+    remove(file) {
+      if (confirm("删除附件?")) {
         this.$refs.upload.handleRemove(file)
-        this.$emit('del-attach',file.response.url)
+        this.$emit('del-attach', file.response.url)
       }
     },
-    addFile(file){
-      this.$emit("add-file",file.response)
+    addFile(file) {
+      let f = copyObj(file)
+      let res={
+        description:parseImageName(f.name),
+        isImg:f.response.isImg,
+        url:f.response.url,
+      }
+      this.$emit("add-file", res)
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
@@ -98,41 +107,43 @@ export default {
 
       let regExp = /[\W_]/
       let name = file.name;
-      for (let i = name.length -1; i >=0; i--) {
+      for (let i = name.length - 1; i >= 0; i--) {
         let char = name[i];
-        if (regExp.exec(char)){
-          name = name.substring(0,i)
-              +"%"+Number(encodeUTF8(char)).toString(16)
-              +name.substring(i+1);
+        if (regExp.exec(char)) {
+          name = name.substring(0, i)
+              + "%" + Number(encodeUTF8(char)).toString(16)
+              + name.substring(i + 1);
         }
       }
 
       let m = 1024 * 1024;
       console.log(file)
-      this.params[this.prefix + `_dscp`] = ``;
+      file.description = parseImageName(file.name)
+      // 尝试发现pixiv 或 推特图片
+      this.params[this.prefix + `_dscp`] = file.description;
       this.params[this.prefix + `_watermark`] = ``;
       this.params[this.prefix + `_img`] = 1;
-      this.params[this.prefix + `_auto_size`] = file.size >= 4 * m ? 1:0;
+      this.params[this.prefix + `_auto_size`] = file.size >= 4 * m ? 1 : 0;
       this.params[this.prefix + `_url_utf8_name`] = name;
     },
     success(response, file, fileList) {
-      this.$emit("file-list-changed",fileList)
+      this.$emit("file-list-changed", fileList)
     },
-    onRemove( file, fileList) {
-      this.$emit("file-list-changed",fileList)
+    onRemove(file, fileList) {
+      this.$emit("file-list-changed", fileList)
     },
 
   },
   mounted() {
   },
   watch: {
-    "auth":{
-      handler: function (e){
+    "auth": {
+      handler: function (e) {
         this.params.auth = e;
       }
     },
-    "fid":{
-      handler: function (e){
+    "fid": {
+      handler: function (e) {
         this.params.fid = e;
       }
     },

@@ -7,12 +7,15 @@
     <!--suppress HtmlUnknownTag -->
     <el-main height="720px">
       <reply-text-area ref="reply-text-area" :params="params" focus="1"/>
-      <attachments :data="attachs" @add-file="addFile" @del-attach="delAttach"/>
+      <attachments :data="attachs"
+                   @add-file="addFile"
+                   @del-attach="delAttach"
+      />
       <my-upload :attach-url="`/attach`"
                  :auth="auth" :fid="params.fid" :index="1"
+                 @file-list-changed="fileListChanged"
                  @add-file="addFile"
                  @del-attach="delAttach"
-                 @file-list-changed="fileListChanged"
       />
     </el-main>
     <el-footer></el-footer>
