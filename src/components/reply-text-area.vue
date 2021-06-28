@@ -46,6 +46,7 @@ export default {
       callbackUrls: [],
       myParams: {
         post_content: "",
+        post_subject: "",
       },
     }
   },
@@ -61,10 +62,10 @@ export default {
         let textarea = document.getElementById("textarea")
         let reg = /\s([^\s]+?)$/g;
         let tempString = this.myParams.post_content.substring(0, textarea.selectionStart)
-        console.log(tempString)
+        // console.log(tempString)
         let res = reg.exec(tempString)
         if (res) {
-          console.log(res)
+          // console.log(res)
           let emotes = searchEmotes(res[1]);
           if (emotes.length > 1) {
             /* todo 有多个备选表情项 暂不处理 */
@@ -127,7 +128,18 @@ export default {
   watch: {
     "params": {
       handler: function (e) {
+        let content = this.myParams.post_content;
+        let subject = this.myParams.post_subject;
+
         this.myParams = copyObj(e)
+
+        if (content && content.length > 0) {
+          this.myParams.post_content = content;
+        }
+        if (subject && subject.length > 0) {
+          this.myParams.post_subject = subject;
+        }
+
         console.log(e)
       }
     },

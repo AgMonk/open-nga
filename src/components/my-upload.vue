@@ -1,7 +1,7 @@
 <template>
   <el-upload
       :action="attachUrl"
-      :before-remove="beforeRemove"
+      :on-remove="onRemove"
       :before-upload="beforeUpload"
       :data="params"
       :file-list="fileList"
@@ -63,9 +63,10 @@ export default {
     success(response, file, fileList) {
       console.log(fileList)
       console.log(response)
+      this.$emit("file-list-changed",fileList)
     },
-    beforeRemove( file, fileList) {
-      console.log(fileList)
+    onRemove( file, fileList) {
+      this.$emit("file-list-changed",fileList)
     },
 
   },

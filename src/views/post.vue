@@ -6,10 +6,9 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-        <reply-text-area :content="content" :params="params" focus="1" />
+      <reply-text-area :params="params" focus="1" />
 
-      <my-upload :attach-url="`/attach`" :auth="auth" :fid="params.fid" :index="1" >
-      </my-upload>
+      <my-upload :attach-url="`/attach`" :auth="auth" :fid="params.fid" :index="1" @file-list-changed="fileListChanged" />
     </el-main>
     <el-footer></el-footer>
   </el-container>
@@ -22,6 +21,7 @@ import {copyObj} from "@/assets/js/utils";
 import ReplyTextArea from "@/components/reply-text-area";
 import "../assets/css/ui-color.css"
 import MyUpload from "@/components/my-upload";
+import {obj2Array} from "@/assets/js/api/nga-request";
 
 export default {
   name: "post",
@@ -32,6 +32,7 @@ export default {
       myData: {},
       content: "",
       attachUrl: "",
+      attachs:[],
       auth: "",
       params: {
         fid: 0,
@@ -46,6 +47,14 @@ export default {
     }
   },
   methods: {
+    fileListChanged(e){
+      let array = e.map(r=>r.response);
+      let params = copyObj(this.params)
+      params.attachments = array.map(r=>r.attachments).join('\t')
+      params.attachments_check = array.map(r=>r.attachments_check).join('\t')
+
+      this.params = params;
+    }
   },
   mounted() {
 
@@ -73,6 +82,7 @@ export default {
 
         this.attachUrl = res.attach_url
         this.auth = res.auth;
+        this.attachs = res.attachs?obj2Array(res.attachs):[]
 
         params.action = res.action;
         params.fid = res.fid;
