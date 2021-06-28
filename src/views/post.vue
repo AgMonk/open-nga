@@ -5,10 +5,11 @@
       <h1>:: {{ title }} ::</h1>
     </el-header>
     <!--suppress HtmlUnknownTag -->
-    <el-main>
+    <el-main height="720px">
       <reply-text-area ref="reply-text-area" :params="params" focus="1"/>
-      <attachments :data="attachs" @add-file="addFile" />
-      <my-upload :attach-url="`/attach`" :auth="auth" :fid="params.fid" :index="1"
+      <attachments :data="attachs" @add-file="addFile" @del-attach="delAttach"/>
+      <my-upload :attach-url="`/attach`"
+                 :auth="auth" :fid="params.fid" :index="1"
                  @add-file="addFile"
                  @file-list-changed="fileListChanged"
       />
@@ -51,6 +52,19 @@ export default {
     }
   },
   methods: {
+    delAttach(e){
+      // 删除正文中 引用附件的img代码
+      let regExpText = ("[img]./"+e+"[/img]")
+          .replace(/\[/g,"\\[")
+          .replace(/\./g,"\\.")
+          .replace(/\//g,"\\/")
+      ;
+
+      let regExp = new RegExp(regExpText,"g")
+
+      this.$refs["reply-text-area"].delText(regExp)
+
+    },
     addFile(file) {
       console.log(file)
       if (file.isImg) {

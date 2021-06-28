@@ -4,6 +4,12 @@ import {ElMessage} from "element-plus";
 import {ngaRequest, obj2Array} from "@/assets/js/api/nga-request";
 
 
+export const delAttach = (tid,pid,aid) =>ngaRequest.nuke({
+    func:"delattach",
+    tid,pid,aid,
+    raw:3,
+})
+
 export const userInfo = (uid) => ngaRequest.nuke({
     __lib: "ucp",
     __act: "get",
