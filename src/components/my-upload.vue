@@ -1,20 +1,59 @@
 <template>
-  <el-upload
-      :action="attachUrl"
-      :on-remove="onRemove"
-      :before-upload="beforeUpload"
-      :data="params"
-      :file-list="fileList"
-      :multiple="false"
-      :name="prefix"
-      :on-success="success"
-      accept="image/*, .zip"
-      list-type="picture"
-      with-credentials
-  >
-    <el-button size="small" type="primary">点击上传</el-button>
-
-  </el-upload>
+ <div>
+   <el-upload
+       ref="upload"
+       :action="attachUrl"
+       :before-upload="beforeUpload"
+       :data="params"
+       :file-list.sync="fileList"
+       :name="prefix"
+       :on-remove="onRemove"
+       :on-success="success"
+       accept="image/*, .zip"
+       list-type="picture-card"
+       multiple
+       with-credentials
+   >
+     <template #default>
+       <i class="el-icon-plus"></i>
+     </template>
+     <template #file="{file}">
+       <div>
+         <img :src="file.url" alt="" class="el-upload-list__item-thumbnail" />
+         <span v-if="!file.status || file.status!==`success`" class="el-upload-list__item-actions">
+            <span
+                class="el-upload-list__item-preview"
+            >
+            <i class="el-icon-loading"></i>
+          </span>
+         </span>
+         <span v-if="file.status&& file.status===`success`" class="el-upload-list__item-actions">
+          <span
+              class="el-upload-list__item-preview"
+              @click="handlePictureCardPreview(file)"
+          >
+            <i class="el-icon-zoom-in"></i>
+          </span>
+          <span
+              class="el-upload-list__item-preview"
+              @click="addFile(file)"
+          >
+            <i class="el-icon-plus"></i>
+          </span>
+          <span
+              class="el-upload-list__item-delete"
+              @click="$refs.upload.handleRemove(file)"
+          >
+            <i class="el-icon-delete"></i>
+          </span>
+        </span>
+       </div>
+     </template>
+   </el-upload>
+     <el-dialog v-model="dialogVisible">
+       <el-image :src="dialogImageUrl" />
+     </el-dialog>
+ </div>
 </template>
 
 <script>
@@ -24,8 +63,11 @@ export default {
   name: "my-upload",
   data() {
     return {
+      dialogVisible:false,
+      dialogImageUrl:"",
       prefix: "attachment_file" + this.index,
       fileList:[],
+      tempFileList:[],
       params: {
         func: "upload",
         v2: 1,
@@ -39,6 +81,13 @@ export default {
     }
   },
   methods: {
+    addFile(file){
+      this.$emit("add-file",file)
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
     beforeUpload(file) {
 
       let regExp = /[\W_]/
@@ -61,8 +110,6 @@ export default {
       this.params[this.prefix + `_url_utf8_name`] = name;
     },
     success(response, file, fileList) {
-      console.log(fileList)
-      console.log(response)
       this.$emit("file-list-changed",fileList)
     },
     onRemove( file, fileList) {

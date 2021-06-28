@@ -51,6 +51,9 @@ export default {
     }
   },
   methods: {
+    addText(text){
+      console.log(text)
+    },
     keypress(e) {
       console.log(e)
       let index = e.key;

@@ -63,7 +63,7 @@
       <!--suppress HtmlUnknownTag -->
       <el-main>
         <h3>快速回复</h3>
-        <reply-text-area :content="content" :params="replyParams"
+        <reply-text-area :params="replyParams"
                          @submitted="updateDetails"/>
       </el-main>
     </el-container>

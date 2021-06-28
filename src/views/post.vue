@@ -6,9 +6,11 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-      <reply-text-area :params="params" focus="1" />
-
-      <my-upload :attach-url="`/attach`" :auth="auth" :fid="params.fid" :index="1" @file-list-changed="fileListChanged" />
+      <reply-text-area ref="reply-text-area" :params="params" focus="1"/>
+      <my-upload :attach-url="`/attach`" :auth="auth" :fid="params.fid" :index="1"
+                 @add-file="addFile"
+                 @file-list-changed="fileListChanged"
+      />
     </el-main>
     <el-footer></el-footer>
   </el-container>
@@ -28,11 +30,11 @@ export default {
   components: {MyUpload, ReplyTextArea},
   data() {
     return {
-      title:"",
+      title: "",
       myData: {},
       content: "",
       attachUrl: "",
-      attachs:[],
+      attachs: [],
       auth: "",
       params: {
         fid: 0,
@@ -47,26 +49,39 @@ export default {
     }
   },
   methods: {
-    fileListChanged(e){
-      let array = e.map(r=>r.response);
+    addFile(file){
+      console.log(file)
+    },
+    fileListChanged(e) {
+      let array = e.map(r => r.response).filter(r=>r);
       let params = copyObj(this.params)
-      params.attachments = array.map(r=>r.attachments).join('\t')
-      params.attachments_check = array.map(r=>r.attachments_check).join('\t')
+      params.attachments = array.map(r => r.attachments).join('\t')
+      params.attachments_check = array.map(r => r.attachments_check).join('\t')
 
       this.params = params;
     }
   },
   mounted() {
 
+
+
     console.clear()
     let params = copyObj(this.$route.params);
 
     let action = this.$route.params.action;
-    switch (action){
-      case "quote":this.title = "回复/引用";break;
-      case "reply":this.title = "回复";break;
-      case "modify":this.title = "编辑";break;
-      case "new":this.title = "发布主题";break;
+    switch (action) {
+      case "quote":
+        this.title = "回复/引用";
+        break;
+      case "reply":
+        this.title = "回复";
+        break;
+      case "modify":
+        this.title = "编辑";
+        break;
+      case "new":
+        this.title = "发布主题";
+        break;
     }
 
     prePost(params).then(res => {
@@ -82,13 +97,13 @@ export default {
 
         this.attachUrl = res.attach_url
         this.auth = res.auth;
-        this.attachs = res.attachs?obj2Array(res.attachs):[]
+        this.attachs = res.attachs ? obj2Array(res.attachs) : []
 
         params.action = res.action;
         params.fid = res.fid;
         params.post_subject = res.subject;
         this.params = params
-      }else{
+      } else {
         this.$message.error(res.__MESSAGE["1"]);
         history.back();
       }
