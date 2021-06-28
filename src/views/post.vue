@@ -7,6 +7,9 @@
     <!--suppress HtmlUnknownTag -->
     <el-main>
         <reply-text-area :content="content" :params="params" focus="1" />
+
+      <my-upload :attach-url="`/attach`" :auth="auth" :fid="params.fid" :index="1" >
+      </my-upload>
     </el-main>
     <el-footer></el-footer>
   </el-container>
@@ -18,10 +21,11 @@ import {prePost} from "@/assets/js/api/postApi";
 import {copyObj} from "@/assets/js/utils";
 import ReplyTextArea from "@/components/reply-text-area";
 import "../assets/css/ui-color.css"
+import MyUpload from "@/components/my-upload";
 
 export default {
   name: "post",
-  components: {ReplyTextArea},
+  components: {MyUpload, ReplyTextArea},
   data() {
     return {
       title:"",
@@ -71,6 +75,7 @@ export default {
         this.auth = res.auth;
 
         params.action = res.action;
+        params.fid = res.fid;
         params.post_subject = res.subject;
         this.params = params
       }else{

@@ -96,7 +96,7 @@ export const requestUnity = axios.create({
 
 // 添加响应拦截器
 requestUnity.interceptors.response.use(response => response.data, (error) => Promise.reject(error));
-
+// 将对象转换为数组
 export const obj2Array = (obj) => {
     let array = [];
     Object.keys(obj).forEach(key => {
@@ -104,11 +104,11 @@ export const obj2Array = (obj) => {
     })
     return array;
 }
-
+// 将unix秒专为 日期字符串
 export const timestamp2String = (timestamp) => {
     return new Date(timestamp * 1000).format("yyyy-MM-dd hh:mm:ss")
 }
-
+// 打包返回对象
 export const packageData = (res) => {
     let data = {
         data: res.data,
@@ -118,6 +118,33 @@ export const packageData = (res) => {
     // console.log(data)
     return data;
 }
+
+export  const encodeUTF8 =  (str) =>{
+    let back = [];
+    let byteSize = 0;
+    for (let i = 0; i < str.length; i++) {
+        let code = str.charCodeAt(i);
+        if (0x00 <= code && code <= 0x7f) {
+            byteSize += 1;
+            back.push(code);
+        } else if (0x80 <= code && code <= 0x7ff) {
+            byteSize += 2;
+            back.push((192 | (31 & (code >> 6))));
+            back.push((128 | (63 & code)))
+        } else if ((0x800 <= code && code <= 0xd7ff)
+            || (0xe000 <= code && code <= 0xffff)) {
+            byteSize += 3;
+            back.push((224 | (15 & (code >> 12))));
+            back.push((128 | (63 & (code >> 6))));
+            back.push((128 | (63 & code)))
+        }
+    }
+    for (let i = 0; i < back.length; i++) {
+        back[i] &= 0xff;
+    }
+    return  back;
+}
+
 
 export const ngaRequest = {
     nuke(data) {
