@@ -11,6 +11,7 @@
       <my-upload :attach-url="`/attach`"
                  :auth="auth" :fid="params.fid" :index="1"
                  @add-file="addFile"
+                 @del-attach="delAttach"
                  @file-list-changed="fileListChanged"
       />
     </el-main>

@@ -42,7 +42,7 @@
           </span>
           <span
               class="el-upload-list__item-delete"
-              @click="$refs.upload.handleRemove(file)"
+              @click="remove(file)"
           >
             <i class="el-icon-delete"></i>
           </span>
@@ -81,6 +81,12 @@ export default {
     }
   },
   methods: {
+    remove(file){
+      if (confirm("删除附件?")){
+        this.$refs.upload.handleRemove(file)
+        this.$emit('del-attach',file.response.url)
+      }
+    },
     addFile(file){
       this.$emit("add-file",file.response)
     },
