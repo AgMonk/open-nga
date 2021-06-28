@@ -7,6 +7,7 @@
     <!--suppress HtmlUnknownTag -->
     <el-main>
       <reply-text-area ref="reply-text-area" :params="params" focus="1"/>
+      <attachments :data="attachs"/>
       <my-upload :attach-url="`/attach`" :auth="auth" :fid="params.fid" :index="1"
                  @add-file="addFile"
                  @file-list-changed="fileListChanged"
@@ -24,10 +25,11 @@ import ReplyTextArea from "@/components/reply-text-area";
 import "../assets/css/ui-color.css"
 import MyUpload from "@/components/my-upload";
 import {obj2Array} from "@/assets/js/api/nga-request";
+import Attachments from "@/components/attachments";
 
 export default {
   name: "post",
-  components: {MyUpload, ReplyTextArea},
+  components: {Attachments, MyUpload, ReplyTextArea},
   data() {
     return {
       title: "",
@@ -49,11 +51,18 @@ export default {
     }
   },
   methods: {
-    addFile(file){
+    addFile(file) {
       console.log(file)
+      let res = file.response;
+      if (res.isImg) {
+        let text = `[img]./` + res.url + `[/img]`
+        this.$refs["reply-text-area"].addText(text)
+      } else {
+        this.$message.error("文件不是图片")
+      }
     },
     fileListChanged(e) {
-      let array = e.map(r => r.response).filter(r=>r);
+      let array = e.map(r => r.response).filter(r => r);
       let params = copyObj(this.params)
       params.attachments = array.map(r => r.attachments).join('\t')
       params.attachments_check = array.map(r => r.attachments_check).join('\t')
@@ -62,7 +71,6 @@ export default {
     }
   },
   mounted() {
-
 
 
     console.clear()
@@ -97,7 +105,8 @@ export default {
 
         this.attachUrl = res.attach_url
         this.auth = res.auth;
-        this.attachs = res.attachs ? obj2Array(res.attachs) : []
+        res.attachs = res.attachs ? obj2Array(res.attachs) : []
+        this.attachs = res.attachs
 
         params.action = res.action;
         params.fid = res.fid;

@@ -51,8 +51,11 @@ export default {
     }
   },
   methods: {
-    addText(text){
-      console.log(text)
+    addText(text) {
+      let textarea = document.getElementById("textarea")
+      let t1 = this.myParams.post_content.substring(0, textarea.selectionStart);
+      let t2 = this.myParams.post_content.substring(textarea.selectionEnd);
+      this.myParams.post_content = t1 + text + t2;
     },
     keypress(e) {
       console.log(e)
