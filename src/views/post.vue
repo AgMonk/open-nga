@@ -7,7 +7,7 @@
     <!--suppress HtmlUnknownTag -->
     <el-main>
       <reply-text-area ref="reply-text-area" :params="params" focus="1"/>
-      <attachments :data="attachs"/>
+      <attachments :data="attachs" @add-file="addFile" />
       <my-upload :attach-url="`/attach`" :auth="auth" :fid="params.fid" :index="1"
                  @add-file="addFile"
                  @file-list-changed="fileListChanged"
@@ -53,9 +53,8 @@ export default {
   methods: {
     addFile(file) {
       console.log(file)
-      let res = file.response;
-      if (res.isImg) {
-        let text = `[img]./` + res.url + `[/img]`
+      if (file.isImg) {
+        let text = `[img]./` + file.url + `[/img]`
         this.$refs["reply-text-area"].addText(text)
       } else {
         this.$message.error("文件不是图片")

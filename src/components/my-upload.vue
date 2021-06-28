@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     addFile(file){
-      this.$emit("add-file",file)
+      this.$emit("add-file",file.response)
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;

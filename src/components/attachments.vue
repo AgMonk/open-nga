@@ -7,10 +7,11 @@
       <el-row>
         <el-col v-for="(img,i) in imgList" :key="i" :lg="2" :md="3" :sm="4" :xs="6">
           <el-row >
-                <el-col :span="12"><el-button size="mini" type="primary"><i class="el-icon-plus"/></el-button></el-col>
+                <el-col :span="12"><el-button size="mini" type="primary" @click="$emit(`add-file`,{isImg:true,url:img.attachUrl})"><i class="el-icon-plus"/></el-button></el-col>
                 <el-col :span="12"><el-button size="mini" type="danger"><i class="el-icon-delete"/></el-button></el-col>
           </el-row>
           <el-image
+              :hide-on-click-modal="true"
               :preview-src-list="img.srcList"
               :src="img.url"
               style="width: 100px; height: 100px">
@@ -47,6 +48,7 @@ export default {
           this.imgList.push({
             url,
             srcList: [url],
+            attachUrl:img.attachurl,
           })
         })
 

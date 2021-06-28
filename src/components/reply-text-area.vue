@@ -53,9 +53,20 @@ export default {
   methods: {
     addText(text) {
       let textarea = document.getElementById("textarea")
+      console.log(textarea.selectionStart + " " + textarea.selectionEnd)
       let t1 = this.myParams.post_content.substring(0, textarea.selectionStart);
       let t2 = this.myParams.post_content.substring(textarea.selectionEnd);
+      console.log(t1)
+      console.log(t2)
       this.myParams.post_content = t1 + text + t2;
+
+      textarea.focus()
+
+      setTimeout(()=>{
+        let index = t1.length + text.length;
+        textarea.selectionStart = index;
+        textarea.selectionEnd = index;
+      },50)
     },
     keypress(e) {
       console.log(e)
