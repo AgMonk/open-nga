@@ -28,13 +28,12 @@
 
         </el-col>
         <el-col :span="6" style="text-align: right">
-          <el-switch v-model="showCode" active-color="#13ce66" active-text="显示源代码" inactive-color="#ff4949"></el-switch>
+          <el-switch v-model="showCode" active-color="#13ce66" active-text="源代码" inactive-color="#ff4949"></el-switch>
+          <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`)"><i class="el-icon-chat-line-square"/>引用</el-tag>
+          <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`)"><i class="el-icon-chat-line-round"/>回复</el-tag>
           <el-tag v-if="myData.authorid === parseInt($store.state.navi.params.account[0])"
                   class="miniTag click-able" size="mini" @click="reply(`modify`)"><i class="el-icon-chat-line-square"/>编辑
           </el-tag>
-          <el-tag class="miniTag click-able" size="mini" @click="comment"><i class="el-icon-chat-line-square"/>评论</el-tag>
-          <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`)"><i class="el-icon-chat-line-square"/>引用</el-tag>
-          <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`)"><i class="el-icon-chat-line-round"/>回复</el-tag>
         </el-col>
 
       </el-row>

@@ -119,7 +119,8 @@ export default {
       let m = 1024 * 1024;
       console.log(file)
       // 尝试发现pixiv 或 推特图片
-      this.params[this.prefix + `_dscp`] = parseImageName(file.name).description;
+      let info = parseImageName(file.name);
+      this.params[this.prefix + `_dscp`] = info?info.description:file.name;
       this.params[this.prefix + `_watermark`] = ``;
       this.params[this.prefix + `_img`] = 1;
       this.params[this.prefix + `_auto_size`] = file.size >= 4 * m ? 1 : 0;

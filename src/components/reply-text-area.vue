@@ -23,6 +23,7 @@
       </el-dialog>
     </el-main>
     <el-footer>
+      <el-switch v-model="comment" active-text="评论" style="margin-right: 10px" @change="myParams.comment = $event?1:undefined" />
       <el-button type="success" @click="submit">提交( Ctrl+Enter )</el-button>
       <!--      <el-button type="danger" @click="reset">重置到默认</el-button>-->
     </el-footer>
@@ -44,6 +45,7 @@ export default {
   data() {
     return {
       dialogShow: false,
+      comment :false,
       callbackUrls: [],
       myParams: {
         post_content: "",

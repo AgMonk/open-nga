@@ -20,7 +20,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 # todoList
-* 使用贴条回复
-* 上传图片
-* 回复界面的bbsCode添加功能
-* 所有回复框的bbsCode快速添加功能
+* 回复界面的bbsCode添加按钮

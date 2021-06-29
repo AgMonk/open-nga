@@ -54,8 +54,8 @@ export default {
               <el-image src={imgSrc}/>
             </el-link>
           }
-          return <el-link href={children[0].children} target="_blank">
-            外链图
+          return <el-link href={url} target="_blank">
+            外链图片
           </el-link>
         },
         "url": (children, props) => {
