@@ -35,7 +35,7 @@
             <reply-user-card :data="row.userInfo" :index="i"/>
           </el-col>
           <el-col :span="18">
-            <reply-content-card :data="row"/>
+            <reply-content-card :data="row" :tid="tid"/>
           </el-col>
 
         </el-row>
@@ -89,6 +89,7 @@ export default {
       lastRefreshTime: new Date(),
       content: "",
       subject: "",
+      tid:"",
       pagination: {
         page: 1,
         size: 20,
@@ -183,7 +184,7 @@ export default {
           this.$store.dispatch("account/userInfo", uid)
         }
       })
-
+      this.tid = res.__T.tid;
       this.replies =  res.__R;
     },
     //更新主题详情

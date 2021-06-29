@@ -16,8 +16,8 @@ export default {
         getDetail({dispatch, commit, state}, {tid, page, authorid, pid}) {
             let params = pid ? {pid} : {tid, page, authorid}
             let t = state.details[JSON.stringify(params)];
-            let now = new Date().getTime()/1000;
-            if (t && (now - t.timestamp) < 3*60) {
+            let now = new Date().getTime() / 1000;
+            if (t && (now - t.timestamp) < 3 * 60) {
                 // 短时间使用缓存数据
                 return new Promise((resolve) => {
                     resolve(t.data)
@@ -59,10 +59,12 @@ export default {
                             .replace(/&gt;/g, ">")
                             .replace(/&#39;/g, "'")
                     }
-
+                    // 补充tid信息
+                    // relpy.tid = data.__T.tid
 
                     // 发布时间格式化
-                    reply.postdate = new Date(reply.postdatetimestamp * 1000).format("yyyy-MM-dd hh:mm:ss")
+                    reply.postdate = reply.postdatetimestamp ?
+                        new Date(reply.postdatetimestamp * 1000).format("yyyy-MM-dd hh:mm:ss") : reply.postdate
                     //  复制声望数据
                     let uid = reply.authorid;
                     let info = {uid}

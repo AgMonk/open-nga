@@ -13,7 +13,7 @@
               @click.right="openUrl(myData.pid===0?'https://bbs.nga.cn/read.php?tid='+myData.tid:'https://bbs.nga.cn/read.php?pid='+myData.pid)"
           >#{{ myData.lou }}
           </el-tag>
-          <approbation :pid="myData.pid" :score="myData.score" :tid="myData.tid"  />
+          <approbation :pid="myData.pid" :score="myData.score" :tid="myData.tid"/>
           <el-tag class="miniTag click-able" size="mini" @click="$router.push(`/read/`+myData.pid)">{{ myData.postdate }}</el-tag>
           <el-tag v-if="myData.lastEdit" class="miniTag" size="mini">E:{{ myData.lastEdit }}</el-tag>
           <el-tag class="miniTag click-able" size="mini" @click="readOnly">只看</el-tag>
@@ -23,7 +23,7 @@
                   @click="$router.push(`/read/`+myData.reply_to)">回复目标
           </el-tag>
           <el-tag v-if="myData.comment_to_id" class="miniTag click-able" size="mini" type="warning"
-                  @click="$router.push(`/read/`+myData.comment_to_id)">评论目标
+                  @click="jump2CommentTarget">评论目标
           </el-tag>
 
         </el-col>
@@ -53,15 +53,22 @@
       <!--热评-->
       <div v-if="myData.hotreply">
         <h4 style="color: red">热评区</h4>
-      <!--suppress JSUnresolvedVariable -->
+        <!--suppress JSUnresolvedVariable -->
         <div v-for="(comment,i) in myData.hotreply" :key="i">
           <el-card class="box-card">
             <template #header>
               <user-link :id="comment.authorid" :username="users[comment.authorid]"/>
-              <approbation :pid="comment.pid" :score="comment.score" :tid="comment.tid"  />
-              <el-tag class="miniTag click-able" size="mini" @click="$router.push(`/read/`+comment.pid)">{{ comment.postdate }}</el-tag>
-              <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`,comment.pid)"><i class="el-icon-chat-line-square"/>引用</el-tag>
-              <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`,comment.pid)"><i class="el-icon-chat-line-round"/>回复</el-tag>
+              <approbation :pid="comment.pid" :score="comment.score" :tid="comment.tid"/>
+              <el-tag class="miniTag click-able" size="mini" @click="$router.push(`/read/`+comment.pid)">{{
+                  comment.postdate
+                }}
+              </el-tag>
+              <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`,comment.pid)"><i
+                  class="el-icon-chat-line-square"/>引用
+              </el-tag>
+              <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`,comment.pid)"><i
+                  class="el-icon-chat-line-round"/>回复
+              </el-tag>
             </template>
             <content-parser :content="comment.content">{{ comment.content }}</content-parser>
           </el-card>
@@ -76,10 +83,17 @@
           <el-card class="box-card">
             <template #header>
               <user-link :id="comment.authorid" :username="users[comment.authorid]"/>
-              <approbation :pid="comment.pid" :score="comment.score" :tid="comment.tid"  />
-              <el-tag class="miniTag click-able" size="mini" @click="$router.push(`/read/`+comment.pid)">{{ comment.postdate }}</el-tag>
-              <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`,comment.pid)"><i class="el-icon-chat-line-square"/>引用</el-tag>
-              <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`,comment.pid)"><i class="el-icon-chat-line-round"/>回复</el-tag>
+              <approbation :pid="comment.pid" :score="comment.score" :tid="comment.tid"/>
+              <el-tag class="miniTag click-able" size="mini" @click="$router.push(`/read/`+comment.pid)">{{
+                  comment.postdate
+                }}
+              </el-tag>
+              <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`,comment.pid)"><i
+                  class="el-icon-chat-line-square"/>引用
+              </el-tag>
+              <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`,comment.pid)"><i
+                  class="el-icon-chat-line-round"/>回复
+              </el-tag>
             </template>
             <content-parser :content="comment.content.replace(/\[b]Reply to .+?\[\/b]/,``)">{{ comment.content }}</content-parser>
           </el-card>
@@ -124,11 +138,18 @@ export default {
     })
   },
   methods: {
-    comment(){
+    jump2CommentTarget() {
+      if (this.myData.comment_to_id > 0) {
+        this.$router.push(`/read/` + this.myData.comment_to_id)
+      } else {
+        this.$router.push(getRoute(['read', this.tid, 1]))
+      }
+    },
+    comment() {
       preComment(this.myData)
     },
-    reply(action,pid) {
-      this.$router.push(getRoute(["post", action, this.myData.fid, this.myData.tid,pid?pid: this.myData.pid, 0]))
+    reply(action, pid) {
+      this.$router.push(getRoute(["post", action, this.myData.fid, this.myData.tid, pid ? pid : this.myData.pid, 0]))
     },
     openUrl(url) {
       window.open(url)
@@ -156,6 +177,7 @@ export default {
     },
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
+      console.log(obj)
       // console.log(JSON.stringify(parseBbsCode(this.myData.content)))
 
     }
@@ -170,7 +192,7 @@ export default {
       }
     }
   },
-  props: ["data"],
+  props: ["data", "tid"],
 }
 
 </script>
