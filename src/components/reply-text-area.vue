@@ -84,7 +84,8 @@ export default {
         // console.log(tempString)
         let res = reg.exec(tempString)
         if (res) {
-          // console.log(res)
+
+          // 尝试搜索表情名称
           let emotes = searchEmotes(res[1]);
           if (emotes.length > 1) {
             /* todo 有多个备选表情项 暂不处理 */
@@ -106,6 +107,8 @@ export default {
                 + this.myParams.post_content.substring(textarea.selectionStart);
             e.returnValue = false;
           }
+
+          /* todo 尝试搜索论坛code */
 
         }
 

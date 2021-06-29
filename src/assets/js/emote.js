@@ -3,7 +3,8 @@
 import {ElMessage} from "element-plus";
 
 export const emotesLibrary = {
-    prefix: "https://img4.nga.178.com/ngabbs/post/smile/",
+    prefix: "/emote/",
+    // prefix: "https://img4.nga.178.com/ngabbs/post/smile/",
     emotes: [
         {
             name: '默认',

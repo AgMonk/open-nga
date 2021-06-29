@@ -39,7 +39,8 @@ export default {
             {this.render(children)}</el-card>
         },
         "img": (children) => {
-          let proxy = "https://images.weserv.nl/?url=img.nga.178.com/attachments"
+          // let proxy = "https://images.weserv.nl/?url=img.nga.178.com/attachments"
+          let proxy = "/img"
           let url = children[0].children;
           if (url.startsWith("./mon")) {
             //  站内图片
@@ -53,7 +54,9 @@ export default {
               <el-image src={imgSrc}/>
             </el-link>
           }
-          /* todo 外链图 */
+          return <el-link href={children[0].children} target="_blank">
+            外链图
+          </el-link>
         },
         "url": (children, props) => {
           let url = props !== '' ? props : children[0].children;
@@ -126,7 +129,6 @@ export default {
           </div>
         },
         "span": (children) => {
-          let proxy = "https://images.weserv.nl/?url="
           let regExp = /\[s:(.*?):(.+?)]/g
           let r;
           let startIndex = 0;
@@ -140,7 +142,7 @@ export default {
               let namespace = r[1];
               let key = r[2];
               let url = getEmoteUrl(namespace, key)
-              url = proxy + url.replace("https://", "")
+              url = url.replace("https://", "")
               //插入图片
               array.push(<el-image src={url}/>)
               //  更新起始位置
