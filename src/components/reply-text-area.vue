@@ -36,6 +36,7 @@ import {getRoute} from "@/assets/js/api/routerUtils";
 import MyRouterLink from "@/components/my-router-link";
 import {copyObj} from "@/assets/js/utils";
 import {searchEmotes} from "@/assets/js/emote";
+import {searchBbsCode} from "@/assets/js/bbscode";
 
 export default {
   name: "reply-text-area",
@@ -84,7 +85,7 @@ export default {
         // console.log(tempString)
         let res = reg.exec(tempString)
         if (res) {
-
+          console.log(res)
           // 尝试搜索表情名称
           let emotes = searchEmotes(res[1]);
           if (emotes.length > 1) {
@@ -109,6 +110,10 @@ export default {
           }
 
           /* todo 尝试搜索论坛code */
+
+          let bbsCodes = searchBbsCode(res[1])
+          console.log(bbsCodes)
+
 
         }
 
