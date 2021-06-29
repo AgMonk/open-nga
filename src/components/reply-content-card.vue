@@ -149,7 +149,10 @@ export default {
       preComment(this.myData)
     },
     reply(action, pid) {
-      this.$router.push(getRoute(["post", action, this.myData.fid, this.myData.tid, pid ? pid : this.myData.pid, 0]))
+      this.$router.push(getRoute(["post", action
+        , this.myData.fid ? this.myData.fid : 0
+        , this.myData.tid ? this.myData.tid : this.tid
+        , pid ? pid : this.myData.pid, 0]))
     },
     openUrl(url) {
       window.open(url)

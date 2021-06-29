@@ -1,5 +1,6 @@
 <template>
   <div>
+    <el-switch v-model="drag" active-color="#13ce66" active-text="拖拽" ></el-switch>
     <el-upload
         ref="upload"
         :action="attachUrl"
@@ -12,6 +13,7 @@
         accept="image/*, .zip"
         list-type="picture-card"
         multiple
+        :drag="drag"
         with-credentials
     >
       <template #default>
@@ -65,7 +67,7 @@ export default {
   name: "my-upload",
   data() {
     return {
-
+      drag:false,
       dialogVisible: false,
       dialogImageUrl: "",
       prefix: "attachment_file" + this.index,

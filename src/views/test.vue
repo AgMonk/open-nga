@@ -33,8 +33,4 @@ export default {
 </script>
 
 <style scoped>
-.el-upload-dragger{
-  width:100px
-
-}
 </style>
