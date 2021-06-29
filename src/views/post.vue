@@ -72,7 +72,11 @@ export default {
     addFile(file) {
       console.log(file)
       if (file.isImg) {
-        let text = `[img]./` + file.url + `[/img]`
+        let text = ``
+        if (file.info) {
+          text+=file.info.description+"\n"+file.info.url+'\n'
+        }
+        text+=`[img]./` + file.url + `[/img]`
         this.$refs["reply-text-area"].addText(text)
       } else {
         this.$message.error("文件不是图片")

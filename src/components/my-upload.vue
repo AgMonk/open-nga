@@ -93,7 +93,7 @@ export default {
     addFile(file) {
       let f = copyObj(file)
       let res={
-        description:parseImageName(f.name),
+        info:parseImageName(f.name),
         isImg:f.response.isImg,
         url:f.response.url,
       }
@@ -118,9 +118,8 @@ export default {
 
       let m = 1024 * 1024;
       console.log(file)
-      file.description = parseImageName(file.name)
       // 尝试发现pixiv 或 推特图片
-      this.params[this.prefix + `_dscp`] = file.description;
+      this.params[this.prefix + `_dscp`] = parseImageName(file.name).description;
       this.params[this.prefix + `_watermark`] = ``;
       this.params[this.prefix + `_img`] = 1;
       this.params[this.prefix + `_auto_size`] = file.size >= 4 * m ? 1 : 0;
