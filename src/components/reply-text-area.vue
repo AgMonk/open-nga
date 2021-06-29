@@ -112,7 +112,21 @@ export default {
           /* todo 尝试搜索论坛code */
 
           let bbsCodes = searchBbsCode(res[1])
-          console.log(bbsCodes)
+          if (bbsCodes.length === 1) {
+            let code = bbsCodes[0]
+            console.log(code)
+            this.myParams.post_content =
+                this.myParams.post_content.substring(0, res.index)
+                + code.start+code.end
+                + this.myParams.post_content.substring(textarea.selectionStart);
+            textarea.focus()
+            setTimeout(() => {
+              let index = res.index + code.start.length;
+              textarea.selectionStart = index;
+              textarea.selectionEnd = index;
+            }, 50)
+            e.returnValue = false;
+          }
 
 
         }

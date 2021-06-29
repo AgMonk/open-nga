@@ -16,10 +16,27 @@ export const bbsCodeLibrary = [
     },
     {
         name: {cn: "字号", en: "size"},
+        props: [
+            {cn: "100", en: "100%"},
+            {cn: "120", en: "120%"},
+            {cn: "150", en: "150%"},
+            {cn: "200", en: "200%"},
+        ],
     },
-    {
-        name: {cn: "加粗", en: "b"},
-    },
+    {name: {cn: "加粗", en: "b"},},
+    {name: {cn: "删除线", en: "del"},},
+    {name: {cn: "标题", en: "h"},},
+    {name: {cn: "列表", en: "list"},},
+    {name: {cn: "列表项", en: "*"},},
+    {name: {cn: "图片", en: "img"},},
+    {name: {cn: "链接", en: "url"},},
+    {name: {cn: "引用", en: "quote"},},
+    {name: {cn: "代码", en: "code"},},
+    {name: {cn: "表格", en: "table"},},
+    {name: {cn: "行", en: "tr"},},
+    {name: {cn: "列", en: "td"},},
+    {name: {cn: "折叠", en: "collapse"},},
+    {name: {cn: "col", en: "collapse"},},
 ]
 
 let equalsName = (nameObj, destName) => (nameObj.cn === destName || nameObj.en === destName)
@@ -31,22 +48,22 @@ export const searchBbsCode = (key) => {
     let array = []
     bbsCodeLibrary
         // 过滤 名称符合的code
-        .filter(group => equalsName(group.name,name))
-        .forEach(group=>{
+        .filter(group => equalsName(group.name, name))
+        .forEach(group => {
             name = group.name.en;
 
             let gProps = group.props
             if (gProps && props) {
                 for (let i = 0; i < gProps.length; i++) {
-                    if (equalsName(gProps[i],props)){
+                    if (equalsName(gProps[i], props)) {
                         props = gProps[i].en;
                         break;
                     }
                 }
             }
-            let start = "["+name+ (props?"="+props:"") +"]"
-            let end  = "[/"+name+"]";
-            array.push({start,end})
+            let start = "[" + name + (props ? "=" + props : "") + "]"
+            let end = name === '*' ? `` : "[/" + name + "]";
+            array.push({start, end})
         })
 
     return array;
