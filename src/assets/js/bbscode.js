@@ -35,11 +35,14 @@ export const bbsCodeLibrary = [
     {name: {cn: "表格", en: "table"},},
     {name: {cn: "行", en: "tr"},},
     {name: {cn: "列", en: "td"},},
-    {name: {cn: "折叠", en: "collapse"},},
-    {name: {cn: "col", en: "collapse"},},
+    {name: {cn: "折叠", short: ["col"], en: "collapse"},},
 ]
 
-let equalsName = (nameObj, destName) => (nameObj.cn === destName || nameObj.en === destName)
+let equalsName = (nameObj, destName) => (
+    nameObj.cn === destName
+    || nameObj.en === destName
+    || (nameObj.short && nameObj.short.includes(destName))
+)
 
 export const searchBbsCode = (key) => {
     key = key.replace(`：`, `:`);

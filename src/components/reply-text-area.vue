@@ -23,7 +23,7 @@
       </el-dialog>
     </el-main>
     <el-footer>
-      <el-switch v-model="comment" active-text="评论" style="margin-right: 10px" @change="myParams.comment = $event?1:undefined" />
+      <el-switch v-model="comment" active-text="评论" style="margin-right: 10px" @change="myParams.comment = $event?1:undefined"/>
       <el-button type="success" @click="submit">提交( Ctrl+Enter )</el-button>
       <!--      <el-button type="danger" @click="reset">重置到默认</el-button>-->
     </el-footer>
@@ -35,7 +35,7 @@
 import {doPost} from "@/assets/js/api/postApi";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import MyRouterLink from "@/components/my-router-link";
-import {copyObj} from "@/assets/js/utils";
+import {copyObj, setTextareaSelection} from "@/assets/js/utils";
 import {searchEmotes} from "@/assets/js/emote";
 import {searchBbsCode} from "@/assets/js/bbscode";
 
@@ -45,7 +45,7 @@ export default {
   data() {
     return {
       dialogShow: false,
-      comment :false,
+      comment: false,
       callbackUrls: [],
       myParams: {
         post_content: "",
@@ -67,11 +67,8 @@ export default {
 
       textarea.focus()
 
-      setTimeout(() => {
-        let index = t1.length + text.length;
-        textarea.selectionStart = index;
-        textarea.selectionEnd = index;
-      }, 50)
+      let index = t1.length + text.length;
+      setTextareaSelection(textarea, index)
     },
     keypress(e) {
       console.log(e)
@@ -119,14 +116,11 @@ export default {
             console.log(code)
             this.myParams.post_content =
                 this.myParams.post_content.substring(0, res.index)
-                + code.start+code.end
+                + code.start + code.end
                 + this.myParams.post_content.substring(textarea.selectionStart);
             textarea.focus()
-            setTimeout(() => {
-              let index = res.index + code.start.length;
-              textarea.selectionStart = index;
-              textarea.selectionEnd = index;
-            }, 50)
+            let index = res.index + code.start.length;
+            setTextareaSelection(textarea, index)
             e.returnValue = false;
           }
 

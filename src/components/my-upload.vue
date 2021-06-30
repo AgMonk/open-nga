@@ -52,6 +52,7 @@
         </div>
       </template>
     </el-upload>
+    <i style="font-size: 80%">选择文件 或 CTRL+V 粘贴截图</i>
     <el-dialog v-model="dialogVisible">
       <el-image :src="dialogImageUrl"/>
     </el-dialog>

@@ -96,3 +96,11 @@ export const unEscape = (text) => {
     temp = null;
     return output;
 }
+
+// 设置文本框的光标位置
+export const setTextareaSelection = (textarea,start,end) =>{
+    setTimeout(() => {
+        textarea.selectionStart = start;
+        textarea.selectionEnd = end?end:start;
+    }, 50)
+}

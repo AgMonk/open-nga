@@ -48,9 +48,9 @@
               <li>删除附件后会连带删除正文中引用该附件的代码</li>
             </ul>
           </el-collapse-item>
-          <el-collapse-item name="bbscode快速输入">
+          <el-collapse-item name="bbsCode快速输入">
             <template #title>
-              <h4>bbscode快速输入</h4>
+              <h4>bbsCode快速输入</h4>
             </template>
             <ul>
               <li>触发方式与"表情快速输入"相同</li>
@@ -62,6 +62,11 @@
             <el-table :data="bbsCodeLibrary">
               <el-table-column label="标签名（中)" prop="name.cn" />
               <el-table-column label="标签名（英)" prop="name.en"/>
+              <el-table-column label="别名" prop="name.en">
+                <template #default="s">
+                  {{s.row.name.short?s.row.name.short.join(" , "):`` }}
+                </template>
+              </el-table-column>
             </el-table>
             <h5>颜色名称的中英文对照</h5>
             <el-table :data="bbsCodeLibrary[0].props">
