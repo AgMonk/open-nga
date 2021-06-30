@@ -61,6 +61,7 @@ function splitCode(tagName, code) {
     let suffix = code.substring(code.lastIndexOf("[/"));
     let innerCode = code.substring(code.indexOf("]") + 1, code.lastIndexOf("[/"));
 
+    innerCode = unEscape(innerCode)
     let props = prefix
         .replace("[" + tagName, "")
         .replace("]", "")

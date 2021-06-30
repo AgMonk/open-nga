@@ -77,7 +77,7 @@ export default {
           text+=file.info.description+"\n"+file.info.url+'\n'
         }
         text+=`[img]./` + file.url + `[/img]`
-        this.$refs["reply-text-area"].addText(text)
+        this.$refs["reply-text-area"].addText({startText:text})
       } else {
         this.$message.error("文件不是图片")
       }

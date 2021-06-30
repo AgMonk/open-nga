@@ -57,12 +57,13 @@ export default {
   methods: {
     delText(text) {
       this.myParams.post_content = this.myParams.post_content.replace(text, "")
-      let textarea = document.getElementById("textarea")
-      textarea.focus()
+      document.getElementById("textarea").focus()
     },
-    addText(text) {
-      let textarea = document.getElementById("textarea")
-      insertTextToTextarea(textarea,{startText:text,endText:""})
+    addText({startText, endText, startPosition, endPosition}) {
+      let textarea = document.getElementById("textarea");
+      insertTextToTextarea(textarea
+          , {startText, endText, startPosition, endPosition})
+      this.myParams.post_content = textarea.value;
     },
     keypress(e) {
       console.log(e)
@@ -87,18 +88,16 @@ export default {
           }
           if (emotes.length === 1) {
             //  只有一个备选项 直接替换
-            let newString;
+            let startText;
             let emote = emotes[0]
             // 根据是否为官方表情 决定替换的字符串格式
             if (emote.official) {
-              newString = emote.code
+              startText = emote.code
             } else {
-              newString = "[img]" + emote.url + "[/img]"
+              startText = "[img]" + emote.url + "[/img]"
             }
-            this.myParams.post_content =
-                tempString.substring(0, res.index)
-                + newString
-                + this.myParams.post_content.substring(textarea.selectionStart);
+            let startPosition = res.index;
+            this.addText({startText, startPosition})
             e.returnValue = false;
           }
 
@@ -108,7 +107,7 @@ export default {
           if (bbsCodes.length === 1) {
             let code = bbsCodes[0]
             let startPosition = res.index;
-            insertTextToTextarea(textarea,Object.assign({},code,{startPosition}))
+            this.addText(Object.assign({}, code, {startPosition}))
 
             e.returnValue = false;
           }
@@ -121,6 +120,7 @@ export default {
         e.returnValue = false;
         this.dialogShow = false;
         this.$router.push(this.callbackUrls[index - 1].route)
+        this.callbackUrls = [];
       } else {
         console.log(index)
       }
