@@ -13,7 +13,7 @@
               @click.right="openUrl(myData.pid===0?'https://bbs.nga.cn/read.php?tid='+myData.tid:'https://bbs.nga.cn/read.php?pid='+myData.pid)"
           >#{{ myData.lou }}
           </el-tag>
-          <approbation :pid="myData.pid" :score="myData.score" :tid="myData.tid"/>
+          <approbation :pid="myData.pid" :score="myData.score" :tid="tid"/>
           <el-tag class="miniTag click-able" size="mini" @click="$router.push(`/read/`+myData.pid)">{{ myData.postdate }}</el-tag>
           <el-tag v-if="myData.lastEdit" class="miniTag" size="mini">E:{{ myData.lastEdit }}</el-tag>
           <el-tag class="miniTag click-able" size="mini" @click="readOnly">只看</el-tag>
@@ -41,7 +41,7 @@
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 10px;text-align: left">
       <div v-if="myData.subject">
-        <h3>{{ myData.subject }}</h3>
+        <h4>{{ myData.subject }}</h4>
       </div>
       <div v-show="showCode">
         {{ myData.content }}

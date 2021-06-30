@@ -79,6 +79,7 @@ import "../assets/css/ui-color.css"
 import {getRoute} from "@/assets/js/api/routerUtils";
 import ReplyTextArea from "@/components/reply-text-area";
 import Clock from "@/components/clock";
+import {mapState} from "vuex";
 
 export default {
   name: "read",
@@ -96,6 +97,8 @@ export default {
       },
       replyParams: {},
       breadcrumbs: [],
+
+      detailKey:JSON.stringify(this.$route.params),
       replies: [],
 
       // 当前楼层
@@ -106,7 +109,15 @@ export default {
         enable: this.$store.state.config.config.autoRefresh,
         interval: undefined,
       },
+
+      res:{},
+
     }
+  },
+  computed: {
+    ...mapState({
+      details: state => state.read.details,
+    })
   },
   methods: {
     autoRefreshChanged(e){
@@ -185,6 +196,7 @@ export default {
       })
       this.tid = res.__T.tid;
       this.replies =  res.__R;
+      // this.replies =  res.__R;
     },
     //更新主题详情
     updateParams() {
@@ -192,10 +204,12 @@ export default {
       if (this.$route.params.page === 'e') {
         this.updateDetails()
       } else {
-        this.$store.dispatch("read/getDetail", this.$route.params).then(res => {
-          console.log(res)
-          this.handlePageData(res)
+        this.$store.dispatch("read/getDetail", this.$route.params).then(() => {
+          this.res = this.details[JSON.stringify(this.$route.params)].data;
+          console.log(this.res)
+          this.handlePageData(this.res)
           document.body.scrollIntoView()
+
         }).catch(() => {
           history.back();
         })
@@ -277,7 +291,19 @@ export default {
           this.updateParams();
         }
       }
-    }
+    },
+details: {
+      handler: function (e) {
+        console.log(e)
+        //切换参数时重置当前位置
+        this.currentLevel = 0;
+
+        if (e.path.startsWith("/read")) {
+          this.updateParams();
+        }
+      }
+    },
+
   },
   mounted() {
     this.updateParams();

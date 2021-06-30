@@ -107,6 +107,7 @@ export default {
     },
     beforeUpload(file) {
 
+      // 把非数字、 字母的字符使用 UTF-8编码
       let regExp = /[\W_]/
       let name = file.name;
       for (let i = name.length - 1; i >= 0; i--) {
