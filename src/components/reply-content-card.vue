@@ -41,7 +41,7 @@
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 10px;text-align: left">
       <div v-if="myData.subject">
-        <h2>{{ myData.subject }}</h2>
+        <h3>{{ myData.subject }}</h3>
       </div>
       <div v-show="showCode">
         {{ myData.content }}
@@ -180,9 +180,7 @@ export default {
     },
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
-      console.log(obj)
       // console.log(JSON.stringify(parseBbsCode(this.myData.content)))
-
     }
   },
   mounted() {

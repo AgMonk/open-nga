@@ -134,9 +134,27 @@ export default {
     onRemove(file, fileList) {
       this.$emit("file-list-changed", fileList)
     },
+    onPasteUpload(e) {
+      const upload = this.$refs.upload
+      if (!upload) {
+        return
+      }
+      const items = e.clipboardData.items
+      for (const item of items) {
+        if (['image/png','image/jpg'].includes(item.type)) {
+          const file = new File([item.getAsFile()], new Date().format("yyyy-MM-dd_hh_mm_ss") + '.png')
+          upload.handleStart(file)
+        }
+      }
+      upload.submit()
+    },
 
   },
   mounted() {
+    document.addEventListener('paste', this.onPasteUpload)
+  },
+  unmounted(){
+    document.removeEventListener('paste', this.onPasteUpload)
   },
   watch: {
     "auth": {

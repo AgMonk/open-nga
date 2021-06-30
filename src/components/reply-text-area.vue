@@ -183,7 +183,6 @@ export default {
           this.myParams.post_subject = subject;
         }
 
-        console.log(e)
       }
     },
 

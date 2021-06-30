@@ -79,7 +79,6 @@ import "../assets/css/ui-color.css"
 import {getRoute} from "@/assets/js/api/routerUtils";
 import ReplyTextArea from "@/components/reply-text-area";
 import Clock from "@/components/clock";
-import {searchEmotes} from "@/assets/js/emote";
 
 export default {
   name: "read",
@@ -114,7 +113,7 @@ export default {
      this.$store.commit("config/setConfig",{key:"autoRefresh",value:e})
     },
     newReply() {
-      let tid = this.$route.params.tid;
+      let tid = this.replyParams.tid;
       this.$router.push(getRoute(["post", "reply", 0, tid, 0, 0]))
     },
     page(e) {
@@ -189,15 +188,11 @@ export default {
     },
     //更新主题详情
     updateParams() {
-      let tid = this.$route.params.tid;
-      let page = this.$route.params.page;
-      let authorid = this.$route.params.authorid;
-      let pid = this.$route.params.pid;
       //  请求详情数据
-      if (page === 'e') {
+      if (this.$route.params.page === 'e') {
         this.updateDetails()
       } else {
-        this.$store.dispatch("read/getDetail", {tid, page, authorid, pid}).then(res => {
+        this.$store.dispatch("read/getDetail", this.$route.params).then(res => {
           console.log(res)
           this.handlePageData(res)
           document.body.scrollIntoView()
@@ -285,8 +280,6 @@ export default {
     }
   },
   mounted() {
-    console.log(searchEmotes("哭笑"))
-
     this.updateParams();
     document.addEventListener('keypress', this.keypress)
     this.setAutoRefresh()
