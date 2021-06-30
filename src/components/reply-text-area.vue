@@ -1,17 +1,18 @@
 <template>
   <el-container direction="vertical">
     <!--  <el-container direction="horizontal">-->
-        <el-header>
-          <template v-for="(code,i) in bbsCodeLibrary" :key="i">
-            <el-select v-if="code.props" v-model="selection[code.name.en]" :placeholder="code.name.cn"
-                       size="mini" style="width:100px;margin-left: 2px"
-                       @change="selectionChanged(code.name.en,$event)"
-            >
-              <el-option v-for="(option,j) in code.props" :key="j" :label="option.cn" :value="option.en" />
-            </el-select>
-            <el-tag v-else size="mini" style="cursor: pointer;margin-left: 2px" @click="addTag(code.name.en)">{{code.name.cn}}</el-tag>
-          </template>
-        </el-header>
+    <el-header>
+      <template v-for="(code,i) in bbsCodeLibrary" :key="i">
+        <el-select v-if="code.props" v-model="selection[code.name.en]" :placeholder="code.name.cn"
+                   size="mini" style="width:100px;margin-left: 2px"
+                   @change="selectionChanged(code.name.en,$event)"
+        >
+          <el-option v-for="(option,j) in code.props" :key="j" :label="option.cn" :value="option.en"/>
+        </el-select>
+        <el-tag v-else size="mini" style="cursor: pointer;margin-left: 2px" @click="addTag(code.name.en)">{{ code.name.cn }}
+        </el-tag>
+      </template>
+    </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 0">
       <el-input v-model="myParams.post_subject" placeholder="标题" style="margin-bottom: 5px"/>
@@ -54,7 +55,7 @@ export default {
   components: {MyRouterLink},
   data() {
     return {
-      selection:{},
+      selection: {},
       bbsCodeLibrary,
       dialogShow: false,
       comment: false,
@@ -66,25 +67,25 @@ export default {
     }
   },
   methods: {
-    addTag(code){
-      let startText = "["+code+"]"
-      let endText =  code==='*'?'': "[/"+code+"]";
-      this.addText({startText,endText})
+    addTag(code) {
+      let startText = "[" + code + "]"
+      let endText = code === '*' ? '' : "[/" + code + "]";
+      this.addText({startText, endText})
     },
-    selectionChanged(code,e){
-      let startText = "["+code+"="+e+"]"
-      let endText =   "[/"+code+"]"
-      this.addText({startText,endText})
+    selectionChanged(code, e) {
+      let startText = "[" + code + "=" + e + "]"
+      let endText = "[/" + code + "]"
+      this.addText({startText, endText})
       this.selection[code] = undefined;
     },
     delText(text) {
       this.myParams.post_content = this.myParams.post_content.replace(text, "")
       document.getElementById("textarea").focus()
     },
-    addText({startText, endText, startPosition, endPosition}) {
+    addText({startText, endText, startPosition, endPosition,innerText}) {
       let textarea = document.getElementById("textarea");
       insertTextToTextarea(textarea
-          , {startText, endText, startPosition, endPosition})
+          , {startText, endText, startPosition, endPosition,innerText})
       this.myParams.post_content = textarea.value;
     },
     keypress(e) {
@@ -119,7 +120,7 @@ export default {
               startText = "[img]" + emote.url + "[/img]"
             }
             let startPosition = res.index;
-            this.addText({startText, startPosition})
+            this.addText({startText, startPosition,innerText:false})
             e.returnValue = false;
           }
 

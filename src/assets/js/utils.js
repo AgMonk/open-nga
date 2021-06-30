@@ -100,6 +100,7 @@ export const unEscape = (text) => {
 // 设置文本框的光标位置
 export const setTextareaSelection = (textarea, start, end) => {
     textarea.focus()
+    // console.log(start+":"+end)
     setTimeout(() => {
         textarea.selectionStart = start;
         textarea.selectionEnd = end ? end : start;
@@ -110,12 +111,15 @@ export const setTextareaSelection = (textarea, start, end) => {
 export const insertTextToTextarea = (
     textarea
     , {startText, endText = ""
-        , startPosition = textarea.selectionStart, endPosition = textarea.selectionEnd
+        , startPosition = textarea.selectionStart
+        , endPosition = textarea.selectionEnd
+        , innerText = true
     }
 ) => {
+    console.log(startPosition+":"+endPosition)
     let text = textarea.value;
     let t1 = text.substring(0, startPosition);
-    let t2 = text.substring(startPosition,endPosition);
+    let t2 = innerText?text.substring(startPosition,endPosition):"";
     let t3 = text.substring(endPosition);
     textarea.value = t1 + startText+ t2 + endText + t3
     textarea.focus();
