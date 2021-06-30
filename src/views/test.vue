@@ -1,25 +1,19 @@
 <template>
-  <el-upload
-      id="el-upload-dragger"
-      class="upload-demo"
-      drag
-      multiple>
-    <template #trigger >
-      <i class="el-icon-upload"></i>
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+  <div>
 
-    </template>
-    <div></div>
-  </el-upload>
+  </div>
 </template>
 
 <script>
+
+import {bbsCodeLibrary} from "@/assets/js/bbscode";
 
 export default {
   name: "test",
   data() {
     return {
-      myData: {}
+      myData: {},
+      bbsCodeLibrary,
     }
   },
   methods: {
