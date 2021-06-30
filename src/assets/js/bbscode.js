@@ -64,9 +64,9 @@ export const searchBbsCode = (key) => {
                     }
                 }
             }
-            let start = "[" + name + (props ? "=" + props : "") + "]"
-            let end = name === '*' ? `` : "[/" + name + "]";
-            array.push({start, end})
+            let startText = "[" + name + (props ? "=" + props : "") + "]"
+            let endText = name === '*' ? `` : "[/" + name + "]";
+            array.push({startText, endText})
         })
 
     return array;

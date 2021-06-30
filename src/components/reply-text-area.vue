@@ -35,15 +35,16 @@
 import {doPost} from "@/assets/js/api/postApi";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import MyRouterLink from "@/components/my-router-link";
-import {copyObj, setTextareaSelection} from "@/assets/js/utils";
+import {copyObj, insertTextToTextarea} from "@/assets/js/utils";
 import {searchEmotes} from "@/assets/js/emote";
-import {searchBbsCode} from "@/assets/js/bbscode";
+import {bbsCodeLibrary, searchBbsCode} from "@/assets/js/bbscode";
 
 export default {
   name: "reply-text-area",
   components: {MyRouterLink},
   data() {
     return {
+      bbsCodeLibrary,
       dialogShow: false,
       comment: false,
       callbackUrls: [],
@@ -61,14 +62,7 @@ export default {
     },
     addText(text) {
       let textarea = document.getElementById("textarea")
-      let t1 = this.myParams.post_content.substring(0, textarea.selectionStart);
-      let t2 = this.myParams.post_content.substring(textarea.selectionEnd);
-      this.myParams.post_content = t1 + text + t2;
-
-      textarea.focus()
-
-      let index = t1.length + text.length;
-      setTextareaSelection(textarea, index)
+      insertTextToTextarea(textarea,{startText:text,endText:""})
     },
     keypress(e) {
       console.log(e)
@@ -113,14 +107,9 @@ export default {
           let bbsCodes = searchBbsCode(res[1])
           if (bbsCodes.length === 1) {
             let code = bbsCodes[0]
-            console.log(code)
-            this.myParams.post_content =
-                this.myParams.post_content.substring(0, res.index)
-                + code.start + code.end
-                + this.myParams.post_content.substring(textarea.selectionStart);
-            textarea.focus()
-            let index = res.index + code.start.length;
-            setTextareaSelection(textarea, index)
+            let startPosition = res.index;
+            insertTextToTextarea(textarea,Object.assign({},code,{startPosition}))
+
             e.returnValue = false;
           }
 

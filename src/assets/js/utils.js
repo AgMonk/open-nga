@@ -98,9 +98,26 @@ export const unEscape = (text) => {
 }
 
 // 设置文本框的光标位置
-export const setTextareaSelection = (textarea,start,end) =>{
+export const setTextareaSelection = (textarea, start, end) => {
+    textarea.focus()
     setTimeout(() => {
         textarea.selectionStart = start;
-        textarea.selectionEnd = end?end:start;
+        textarea.selectionEnd = end ? end : start;
     }, 50)
+}
+
+// 在文本框光标的当前位置插入指定文本
+export const insertTextToTextarea = (
+    textarea
+    , {startText, endText = ""
+        , startPosition = textarea.selectionStart, endPosition = textarea.selectionEnd
+    }
+) => {
+    let text = textarea.value;
+    let t1 = text.substring(0, startPosition);
+    let t2 = text.substring(endPosition);
+    textarea.value = t1 + startText + endText + t2
+    textarea.focus();
+    let index = t1.length + startText.length;
+    setTextareaSelection(textarea, index);
 }
