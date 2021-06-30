@@ -20,5 +20,4 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 # todoList
-* 回复界面的bbsCode添加按钮
 * 举报

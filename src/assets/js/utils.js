@@ -115,9 +115,10 @@ export const insertTextToTextarea = (
 ) => {
     let text = textarea.value;
     let t1 = text.substring(0, startPosition);
-    let t2 = text.substring(endPosition);
-    textarea.value = t1 + startText + endText + t2
+    let t2 = text.substring(startPosition,endPosition);
+    let t3 = text.substring(endPosition);
+    textarea.value = t1 + startText+ t2 + endText + t3
     textarea.focus();
-    let index = t1.length + startText.length;
+    let index = t1.length +t2.length + startText.length;
     setTextareaSelection(textarea, index);
 }
