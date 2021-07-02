@@ -130,7 +130,7 @@ export default {
           if (bbsCodes.length === 1) {
             let code = bbsCodes[0]
             let startPosition = res.index;
-            this.addText(Object.assign({}, code, {startPosition}))
+            this.addText(Object.assign({}, code, {startPosition,innerText:false}))
 
             e.returnValue = false;
           }
