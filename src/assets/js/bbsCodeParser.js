@@ -191,6 +191,13 @@ export const parseBbsCode = (code) => {
         .replace(/\[list]\[\/li]/g, "[ul]")
         .replace(/\[\/list]/g, "[/li][/ul]")
 
+
+    let replyCodeRegExp = /\[b]Reply to \[pid=.+?\[\/b]/g
+    let res;
+    while (res = replyCodeRegExp.exec(code)){
+        code = code.replace(res[0],"[quote]"+res[0]+"[/quote]")
+    }
+
     // console.log("解析正文：" + code)
     return bbsCodeParser(code)
 }
