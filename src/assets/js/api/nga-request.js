@@ -196,6 +196,9 @@ export const ngaRequest = {
             url: "read.php",
             data
         }).then(res => {
+            if (res.error) {
+                throw res.error["0"];
+            }
             res.data.__R = obj2Array(res.data.__R);
             return res;
         })
@@ -208,7 +211,7 @@ export const ngaRequest = {
             }
         }).then(res => {
             res.data = obj2Array(res.data);
-            return data
+            return res
         })
     },
     post(data) {

@@ -89,7 +89,7 @@ export default {
       lastRefreshTime: new Date(),
       content: "",
       subject: "",
-      tid:"",
+      tid: "",
       pagination: {
         page: 1,
         size: 20,
@@ -98,7 +98,7 @@ export default {
       replyParams: {},
       breadcrumbs: [],
 
-      detailKey:JSON.stringify(this.$route.params),
+      detailKey: JSON.stringify(this.$route.params),
       replies: [],
 
       // 当前楼层
@@ -110,7 +110,7 @@ export default {
         interval: undefined,
       },
 
-      res:{},
+      res: {},
 
     }
   },
@@ -120,8 +120,8 @@ export default {
     })
   },
   methods: {
-    autoRefreshChanged(e){
-     this.$store.commit("config/setConfig",{key:"autoRefresh",value:e})
+    autoRefreshChanged(e) {
+      this.$store.commit("config/setConfig", {key: "autoRefresh", value: e})
     },
     newReply() {
       let tid = this.replyParams.tid;
@@ -133,7 +133,7 @@ export default {
       this.$router.push(this.$route)
     },
     updateDetails() {
-      this.$store.dispatch("read/updateDetail",this.$route.params).then(res => {
+      this.$store.dispatch("read/updateDetail", this.$route.params).then(res => {
         this.handlePageData(res)
         this.lastRefreshTime = new Date();
         this.removeAutoRefresh()
@@ -195,7 +195,7 @@ export default {
         }
       })
       this.tid = res.__T.tid;
-      this.replies =  res.__R;
+      this.replies = res.__R;
       // this.replies =  res.__R;
     },
     //更新主题详情
@@ -210,7 +210,8 @@ export default {
           this.handlePageData(this.res)
           document.body.scrollIntoView()
 
-        }).catch(() => {
+        }).catch((e) => {
+          console.log(e)
           history.back();
         })
       }
@@ -226,7 +227,7 @@ export default {
       element.scrollIntoView()
     },
     keypress(e) {
-      if (!['BODY',"DIV"].includes(e.path[0].nodeName)) {
+      if (!['BODY', "DIV"].includes(e.path[0].nodeName)) {
         console.log(e.path[0].nodeName)
         return;
       }
@@ -256,16 +257,16 @@ export default {
         this.scrollLevel(1)
       }
       if (e.key === 'S') {
-        this.scrollLevel(this.replies.length - this.currentLevel -1)
+        this.scrollLevel(this.replies.length - this.currentLevel - 1)
       }
       if (e.key === 'w') {
         this.scrollLevel(-1)
       }
       if (e.key === 'W') {
-        this.scrollLevel(-1*this.currentLevel)
+        this.scrollLevel(-1 * this.currentLevel)
       }
       if (e.key === 'q') {
-        this.$router.push(getRoute(['thread',this.replyParams.fid,1]))
+        this.$router.push(getRoute(['thread', this.replyParams.fid, 1]))
       }
 
     },
@@ -292,7 +293,7 @@ export default {
         }
       }
     },
-details: {
+    details: {
       handler: function (e) {
         console.log(e)
         //切换参数时重置当前位置

@@ -13,8 +13,9 @@
         size="60%"
         title="提示信息"
     >
+      <el-button type="danger" @click="clearNotice">清空信息</el-button>
       <el-collapse v-model="activeName" accordion @change="activeChanged" @click="clickInCol">
-        <el-collapse-item name="replies">
+        <el-collapse-item v-if="replies.length>0" name="replies">
           <template #title>
             <span style="margin-left: 30px">回复({{ replies.length }})
               <i v-show="gotNew.replies" class="el-icon-warning"/></span>
@@ -36,7 +37,7 @@
             </div>
           </div>
         </el-collapse-item>
-        <el-collapse-item name="pm">
+        <el-collapse-item v-if="pm.length>0" name="pm">
           <template #title>
             <span style="margin-left: 30px">短消息({{ pm.length }})
               <i v-show="gotNew.pm" class="el-icon-warning"/></span>
@@ -50,7 +51,7 @@
             </div>
           </div>
         </el-collapse-item>
-        <el-collapse-item name="approbation">
+        <el-collapse-item v-if="approbation.length>0" name="approbation">
           <template #title>
             <span style="margin-left: 30px">赞踩({{ approbation.length }})
               <i v-show="gotNew.approbation" class="el-icon-warning"/></span>
@@ -69,7 +70,6 @@
 
       </el-collapse>
 
-      <el-button type="danger" @click="clearNotice">清空信息</el-button>
     </el-drawer>
   </div>
 </template>

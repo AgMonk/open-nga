@@ -2,7 +2,8 @@
 // let debug = true;
 import {unEscape} from "@/assets/js/utils";
 
-let debug = false;
+let debug = true;
+// let debug = false;
 
 // 标签构造函数
 function BbsTag(type, props, children,raw) {

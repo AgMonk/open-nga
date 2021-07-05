@@ -3,7 +3,7 @@
     <el-col :span="['topic_misc_var']?19:24">
       <my-router-link :link-class="$store.state.config.config.uiColor+index%2"
                       :link-style="threadColor(data.titlefont||data.topic_misc)"
-                      :text="data.subject" :url="getUrl()"/>
+                      :text="unEscape(data.subject)" :url="getUrl()"/>
       <el-pagination v-if="data.replies>=20 && !data.__P"
                      :current-page="currentPage"
                      layout="pager"
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import {copyObj} from "@/assets/js/utils";
+import {copyObj, unEscape} from "@/assets/js/utils";
 import {titleStyle} from "@/assets/js/colorMap";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import MyRouterLink from "@/components/my-router-link";
@@ -56,6 +56,7 @@ export default {
   },
   methods: {
     getRoute,
+    unEscape,
     currentChange(e) {
       this.$router.push(getRoute(["read", this.data.tid, e]))
     },
