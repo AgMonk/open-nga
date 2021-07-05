@@ -180,9 +180,9 @@ export const parseBbsCode = (code) => {
     }
 
     // 删除多余换行符
-    // code = delBrTag(code, "h")
-    // code = delBrTag(code, "list")
-    // code = delBrTag(code, "quote")
+    code = delBrTag(code, "h")
+    code = delBrTag(code, "list")
+    code = delBrTag(code, "quote")
 
     //表格标签标准化
     code = code
