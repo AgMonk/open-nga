@@ -2,8 +2,8 @@
 // let debug = true;
 import {unEscape} from "@/assets/js/utils";
 
-let debug = true;
-// let debug = false;
+// let debug = true;
+let debug = false;
 
 // 标签构造函数
 function BbsTag(type, props, children,raw) {
@@ -62,7 +62,6 @@ function splitCode(tagName, code) {
     let suffix = code.substring(code.lastIndexOf("[/"));
     let innerCode = code.substring(code.indexOf("]") + 1, code.lastIndexOf("[/"));
 
-    innerCode = unEscape(innerCode)
     let props = prefix
         .replace("[" + tagName, "")
         .replace("]", "")
@@ -181,9 +180,9 @@ export const parseBbsCode = (code) => {
     }
 
     // 删除多余换行符
-    code = delBrTag(code, "h")
-    code = delBrTag(code, "list")
-    code = delBrTag(code, "quote")
+    // code = delBrTag(code, "h")
+    // code = delBrTag(code, "list")
+    // code = delBrTag(code, "quote")
 
     //表格标签标准化
     code = code
