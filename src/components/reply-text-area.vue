@@ -34,9 +34,11 @@
         </div>
       </el-dialog>
       <el-dialog v-model="visible.emotes" title="表情" width="90%">
-        <el-tabs v-model="activeTabName" @tab-click="handleClick">
-          <el-tab-pane v-for="(tab,i) in emotesLibrary.emotes" :label="tab.name" :name="tab.name">
-            {{ tab.name }}
+        <el-tabs v-model="activeTabName" >
+          <el-tab-pane v-for="(group,i) in emotesLibrary.emotes" :key="i" :label="group.name" :name="group.name">
+            <img v-for="(img,j) in group.data" :key="j" :src="getEmoteUrl(group.namespace,j)"
+                 @click="addText({startText:getBbsCode(group.namespace,j)});visible.emotes=false"
+            />
           </el-tab-pane>
         </el-tabs>
       </el-dialog>
@@ -55,7 +57,7 @@ import {doPost} from "@/assets/js/api/postApi";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import MyRouterLink from "@/components/my-router-link";
 import {copyObj, insertTextToTextarea} from "@/assets/js/utils";
-import {emotesLibrary, searchEmotes} from "@/assets/js/emote";
+import {emotesLibrary, getBbsCode, getEmoteUrl, searchEmotes} from "@/assets/js/emote";
 import {bbsCodeLibrary, searchBbsCode} from "@/assets/js/bbscode";
 
 export default {
@@ -80,6 +82,8 @@ export default {
     }
   },
   methods: {
+    getEmoteUrl,
+    getBbsCode,
     addTag(code) {
       let startText = "[" + code + "]"
       let endText = code === '*' ? '' : "[/" + code + "]";
@@ -125,11 +129,6 @@ export default {
           if (emotes.length === 1) {
             //  只有一个备选项 直接替换
             let startText = emotes[0].code
-            // 根据是否为官方表情 决定替换的字符串格式
-            // if (emote.official) {
-            // } else {
-            //   startText = "[img]" + emote.url + "[/img]"
-            // }
             let startPosition = res.index;
             this.addText({startText, startPosition, innerText: false})
             e.returnValue = false;

@@ -286,12 +286,6 @@ export const emotesLibrary = {
     ]
 }
 
-export const getEmoteUrl = (namespace, key) => {
-    let {group,emote} = validate(namespace,key)
-    let prefix = group.prefix ? group.prefix : emotesLibrary.prefix;
-    return prefix + emote;
-}
-
 export const searchEmotes = (key) => {
     let array = [];
 
@@ -317,7 +311,6 @@ export const getBbsCode = (namespace, key) => {
     return (group.prefix?group.prefix:"")+emote;
 }
 
-
 let validate =  (namespace, key) => {
     let emotes = emotesLibrary.emotes.filter(emote => emote.namespace === namespace);
     if (emotes.length !== 1) {
@@ -333,4 +326,11 @@ let validate =  (namespace, key) => {
         group:emotes[0],
         emote
     }
+}
+
+
+export const getEmoteUrl = (namespace, key) => {
+    let {group,emote} = validate(namespace,key)
+    let prefix = group.prefix ? group.prefix : emotesLibrary.prefix;
+    return prefix + emote;
 }

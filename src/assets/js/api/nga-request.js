@@ -80,8 +80,7 @@ export const requestUnity = axios.create({
                 if (error) {
                     ElMessage.error(error[0])
                     reject(error)
-                }
-               else{
+                } else{
                     let message = json.data["__MESSAGE"];
                     if (message && /[审核隐藏锁定]/.exec(message[1])) {
                         ElMessage.error(message[1])
