@@ -175,7 +175,6 @@ export default {
     },
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
-      console.log(this.myData)
       // console.log(JSON.stringify(parseBbsCode(this.myData.content)))
     }
   },

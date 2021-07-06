@@ -22,13 +22,13 @@
         <my-mini-tag :route="[`post`,`reply`, myData.fid, myData.tid,myData.pid, 0]" text="回复"/>
         <my-mini-tag v-if="``+myData.authorid===getCookie(`ngaPassportUid`)"
                      :route="[`post`,`modify`, myData.fid, myData.tid,myData.pid, 0]" text="编辑"/>
-        <my-mini-tag text="举报" @click="report.visible=true;$refs.reportInput.focus()"/>
+        <my-mini-tag text="举报" @click="report.visible=true"/>
 
 
       </div>
       <div>
         <slot/>
-        <el-dialog v-model="report.visible" append-to-body title="举报">
+        <el-dialog v-model="report.visible" append-to-body title="举报" @opened="$refs.reportInput.focus()">
           <el-form>
             <el-form-item>
               <el-input ref="reportInput" v-model="report.info" placeholder="举报理由"/>

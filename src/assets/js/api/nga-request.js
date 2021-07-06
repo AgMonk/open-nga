@@ -77,16 +77,18 @@ export const requestUnity = axios.create({
                 }
                 json = packageData(json)
                 let error = json.error;
-                let message = json.data["__MESSAGE"];
                 if (error) {
                     ElMessage.error(error[0])
                     reject(error)
                 }
-                if (message && /[审核隐藏锁定]/.exec(message[1])) {
-                    ElMessage.error(message[1])
-                    reject(message[1])
-                } else {
-                    resolve(json)
+               else{
+                    let message = json.data["__MESSAGE"];
+                    if (message && /[审核隐藏锁定]/.exec(message[1])) {
+                        ElMessage.error(message[1])
+                        reject(message[1])
+                    } else {
+                        resolve(json)
+                    }
                 }
             }
         });
@@ -112,6 +114,7 @@ export const timestamp2String = (timestamp) => {
 export const packageData = (res) => {
     let data = {
         data: res.data,
+        error: res.error,
         timestamp: res.time,
         timeString: timestamp2String(res.time)
     }
@@ -119,7 +122,7 @@ export const packageData = (res) => {
     return data;
 }
 
-export  const encodeUTF8 =  (str) =>{
+export const encodeUTF8 = (str) => {
     let back = [];
     let byteSize = 0;
     for (let i = 0; i < str.length; i++) {
@@ -142,7 +145,7 @@ export  const encodeUTF8 =  (str) =>{
     for (let i = 0; i < back.length; i++) {
         back[i] &= 0xff;
     }
-    return  back;
+    return back;
 }
 
 
@@ -167,6 +170,9 @@ export const ngaRequest = {
             data = map.stid;
         } else if (authorid) {
             data = map.authorid;
+            if (data.searchpost === "0") {
+                delete data.searchpost;
+            }
         } else if (fid) {
             data = map.fid;
         }

@@ -15,6 +15,14 @@ export const userInfo = (uid) => ngaRequest.nuke({
     __act: "get",
     uid
 })
+
+export const report = (tid,pid,info) =>ngaRequest.nuke({
+    tid,pid,info,raw:3,
+    __lib:"log_post",
+    __act:"report",
+})
+
+
 //查询收藏版面列表
 
 export const getFavForum = () => ngaRequest.nuke({
@@ -138,6 +146,7 @@ export const getNotice = () => ngaRequest.nuke({
 
     return {replies, approbation, pm}
 })
+
 
 
 export const searchForum = (key) => ngaRequest.forum(key)
