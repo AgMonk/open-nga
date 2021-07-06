@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-switch v-model="drag" active-color="#13ce66" active-text="拖拽" ></el-switch>
+    <el-switch v-model="drag" active-color="#13ce66" active-text="拖拽"></el-switch>
     <el-upload
         ref="upload"
         :action="attachUrl"
@@ -68,7 +68,7 @@ export default {
   name: "my-upload",
   data() {
     return {
-      drag:false,
+      drag: false,
       dialogVisible: false,
       dialogImageUrl: "",
       prefix: "attachment_file" + this.index,
@@ -95,10 +95,10 @@ export default {
     },
     addFile(file) {
       let f = copyObj(file)
-      let res={
-        info:parseImageName(f.name),
-        isImg:f.response.isImg,
-        url:f.response.url,
+      let res = {
+        info: parseImageName(f.name),
+        isImg: f.response.isImg,
+        url: f.response.url,
       }
       this.$emit("add-file", res)
     },
@@ -124,7 +124,7 @@ export default {
       console.log(file)
       // 尝试发现pixiv 或 推特图片
       let info = parseImageName(file.name);
-      this.params[this.prefix + `_dscp`] = info?info.description:file.name;
+      this.params[this.prefix + `_dscp`] = info ? info.description : file.name;
       this.params[this.prefix + `_watermark`] = ``;
       this.params[this.prefix + `_img`] = 1;
       this.params[this.prefix + `_auto_size`] = file.size >= 4 * m ? 1 : 0;
@@ -143,7 +143,8 @@ export default {
       }
       const items = e.clipboardData.items
       for (const item of items) {
-        if (['image/png','image/jpg'].includes(item.type)) {
+        console.log(item);
+        if (item.type.startsWith("image/")) {
           const file = new File([item.getAsFile()], new Date().format("yyyy-MM-dd_hh_mm_ss") + '.png')
           upload.handleStart(file)
         }
@@ -155,7 +156,7 @@ export default {
   mounted() {
     document.addEventListener('paste', this.onPasteUpload)
   },
-  unmounted(){
+  unmounted() {
     document.removeEventListener('paste', this.onPasteUpload)
   },
   watch: {
