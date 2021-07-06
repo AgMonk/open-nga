@@ -3,7 +3,7 @@
     <!--  <el-container direction="horizontal">-->
     <el-header height="30px" style="padding: 0 10px">
       <el-row>
-        <el-col :span="18" style="text-align: left">
+        <el-col :span="22" style="text-align: left">
           <el-tag
               v-clipboard:copy="myData.pid===0?'https://bbs.nga.cn/read.php?tid='+myData.tid:'https://bbs.nga.cn/read.php?pid='+myData.pid"
               v-clipboard:error="onError"
@@ -15,10 +15,7 @@
           </el-tag>
           <approbation :pid="myData.pid" :score="myData.score" :tid="tid"/>
           <el-tag class="miniTag click-able" size="mini" @click="$router.push(`/read/`+myData.pid)">{{ myData.postdate }}</el-tag>
-          <el-tag v-if="myData.lastEdit" class="miniTag" size="mini">E:{{ myData.lastEdit }}</el-tag>
-          <el-tag class="miniTag click-able" size="mini" @click="readOnly">只看</el-tag>
-          <el-tag class="miniTag click-able" size="mini" @click="threadOnly(0)">本版主题</el-tag>
-          <el-tag class="miniTag click-able" size="mini" @click="threadOnly(1)">本版回复</el-tag>
+          <el-tag v-if="myData.lastEdit" class="miniTag" size="mini">最后编辑:{{ myData.lastEdit }}</el-tag>
           <el-tag v-if="myData.reply_to" class="miniTag click-able" size="mini" type="warning"
                   @click="$router.push(`/read/`+myData.reply_to)">回复目标
           </el-tag>
@@ -27,13 +24,10 @@
           </el-tag>
 
         </el-col>
-        <el-col :span="6" style="text-align: right">
-          <el-switch v-model="showCode" active-color="#13ce66" active-text="源代码" inactive-color="#ff4949"></el-switch>
-          <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`)"><i class="el-icon-chat-line-square"/>引用</el-tag>
-          <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`)"><i class="el-icon-chat-line-round"/>回复</el-tag>
-          <el-tag v-if="myData.authorid === parseInt($store.state.navi.params.account[0])"
-                  class="miniTag click-able" size="mini" @click="reply(`modify`)"><i class="el-icon-chat-line-square"/>编辑
-          </el-tag>
+        <el-col :span="2" style="text-align: right">
+          <content-popover :data="myData">
+            <el-switch v-model="showCode" active-color="#13ce66" active-text="源代码" inactive-color="#ff4949"></el-switch>
+          </content-popover>
         </el-col>
 
       </el-row>
@@ -122,10 +116,11 @@ import UserLink from "@/components/user-link";
 import {mapState} from "vuex";
 import Approbation from "@/components/approbation";
 import {preComment} from "@/assets/js/api/postApi";
+import ContentPopover from "@/components/content-popover";
 
 export default {
   name: "reply-content-card",
-  components: {Approbation, UserLink, MyRouterLink, ContentParser},
+  components: {ContentPopover, Approbation, UserLink, MyRouterLink, ContentParser},
   data() {
     return {
       myData: {},
@@ -180,6 +175,7 @@ export default {
     },
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
+      console.log(this.myData)
       // console.log(JSON.stringify(parseBbsCode(this.myData.content)))
     }
   },
