@@ -116,7 +116,7 @@ export const insertTextToTextarea = (
         , innerText = true
     }
 ) => {
-    console.log(startPosition+":"+endPosition)
+    // console.log(startPosition+":"+endPosition)
     let text = textarea.value;
     let t1 = text.substring(0, startPosition);
     let t2 = innerText?text.substring(startPosition,endPosition):"";

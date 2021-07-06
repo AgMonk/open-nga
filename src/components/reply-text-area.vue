@@ -12,6 +12,7 @@
         <el-tag v-else size="mini" style="cursor: pointer;margin-left: 2px" @click="addTag(code.name.en)">{{ code.name.cn }}
         </el-tag>
       </template>
+      <el-button size="mini" type="primary" @click="visible.emotes =true">表情</el-button>
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 0">
@@ -32,6 +33,13 @@
           <br/>
         </div>
       </el-dialog>
+      <el-dialog v-model="visible.emotes" title="表情" width="90%">
+        <el-tabs v-model="activeTabName" @tab-click="handleClick">
+          <el-tab-pane v-for="(tab,i) in emotesLibrary.emotes" :label="tab.name" :name="tab.name">
+            {{ tab.name }}
+          </el-tab-pane>
+        </el-tabs>
+      </el-dialog>
     </el-main>
     <el-footer>
       <el-switch v-model="comment" active-text="评论" style="margin-right: 10px" @change="myParams.comment = $event?1:undefined"/>
@@ -47,7 +55,7 @@ import {doPost} from "@/assets/js/api/postApi";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import MyRouterLink from "@/components/my-router-link";
 import {copyObj, insertTextToTextarea} from "@/assets/js/utils";
-import {searchEmotes} from "@/assets/js/emote";
+import {emotesLibrary, searchEmotes} from "@/assets/js/emote";
 import {bbsCodeLibrary, searchBbsCode} from "@/assets/js/bbscode";
 
 export default {
@@ -55,6 +63,11 @@ export default {
   components: {MyRouterLink},
   data() {
     return {
+      visible: {
+        emotes: false,
+      },
+      emotesLibrary,
+      activeTabName: emotesLibrary.emotes[0].name,
       selection: {},
       bbsCodeLibrary,
       dialogShow: false,
@@ -82,10 +95,10 @@ export default {
       this.myParams.post_content = this.myParams.post_content.replace(text, "")
       document.getElementById("textarea").focus()
     },
-    addText({startText, endText, startPosition, endPosition,innerText}) {
+    addText({startText, endText, startPosition, endPosition, innerText}) {
       let textarea = document.getElementById("textarea");
       insertTextToTextarea(textarea
-          , {startText, endText, startPosition, endPosition,innerText})
+          , {startText, endText, startPosition, endPosition, innerText})
       this.myParams.post_content = textarea.value;
     },
     keypress(e) {
@@ -111,16 +124,14 @@ export default {
           }
           if (emotes.length === 1) {
             //  只有一个备选项 直接替换
-            let startText;
-            let emote = emotes[0]
+            let startText = emotes[0].code
             // 根据是否为官方表情 决定替换的字符串格式
-            if (emote.official) {
-              startText = emote.code
-            } else {
-              startText = "[img]" + emote.url + "[/img]"
-            }
+            // if (emote.official) {
+            // } else {
+            //   startText = "[img]" + emote.url + "[/img]"
+            // }
             let startPosition = res.index;
-            this.addText({startText, startPosition,innerText:false})
+            this.addText({startText, startPosition, innerText: false})
             e.returnValue = false;
           }
 
@@ -130,7 +141,7 @@ export default {
           if (bbsCodes.length === 1) {
             let code = bbsCodes[0]
             let startPosition = res.index;
-            this.addText(Object.assign({}, code, {startPosition,innerText:false}))
+            this.addText(Object.assign({}, code, {startPosition, innerText: false}))
 
             e.returnValue = false;
           }

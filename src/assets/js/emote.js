@@ -9,7 +9,7 @@ export const emotesLibrary = {
         {
             name: '默认',
             namespace: '',
-            official:true,
+            official: true,
             data: {
                 1: 'smile.gif',
                 2: 'mrgreen.gif',
@@ -43,7 +43,7 @@ export const emotesLibrary = {
         {
             name: 'AC娘(v1)',
             namespace: 'ac',
-            official:true,
+            official: true,
             data: {
                 "blink": "ac0.png",
                 "goodjob": "ac1.png",
@@ -99,7 +99,7 @@ export const emotesLibrary = {
         {
             name: 'AC娘(v2)',
             namespace: 'a2',
-            official:true,
+            official: true,
             data: {
                 "goodjob": "a2_02.png",
                 "诶嘿": "a2_05.png",
@@ -152,7 +152,7 @@ export const emotesLibrary = {
         {
             name: '潘斯特',
             namespace: 'pst',
-            official:true,
+            official: true,
             data: {
                 "举手": "pt00.png",
                 "亲": "pt01.png",
@@ -224,7 +224,7 @@ export const emotesLibrary = {
         {
             name: '外域三人组',
             namespace: 'dt',
-            official:true,
+            official: true,
             data: {
                 "ROLL": "dt01.png",
                 "上": "dt02.png",
@@ -264,7 +264,7 @@ export const emotesLibrary = {
         {
             name: '企鹅',
             namespace: 'pg',
-            official:true,
+            official: true,
             data: {
                 "战斗力": "pg01.png",
                 "哈啤": "pg02.png",
@@ -287,34 +287,50 @@ export const emotesLibrary = {
 }
 
 export const getEmoteUrl = (namespace, key) => {
-    let emotes = emotesLibrary.emotes.filter(emote => emote.namespace === namespace);
-    if (emotes.length !== 1) {
-        ElMessage.warning("命名空间错误: " + namespace);
-        return;
-    }
-    let e = emotes[0].data[key]
-    if (!e) {
-        ElMessage.warning("找不到表情: " + namespace + " " + key)
-        return;
-    }
-    let prefix = emotes[0].prefix ? emotes[0].prefix : emotesLibrary.prefix;
-    return prefix + e;
+    let {group,emote} = validate(namespace,key)
+    let prefix = group.prefix ? group.prefix : emotesLibrary.prefix;
+    return prefix + emote;
 }
 
 export const searchEmotes = (key) => {
     let array = [];
 
-    emotesLibrary.emotes.forEach(group=>{
+    emotesLibrary.emotes.forEach(group => {
         if (group.data[key]) {
-            let url = getEmoteUrl(group.namespace,key);
+            let url = getEmoteUrl(group.namespace, key);
             let name = group.name;
             array.push({
                 name,
-                official:group.official,
-                code:"[s:"+group.namespace+":"+key+"]",
-                url:url,
+                code:getBbsCode(group.namespace,key),
+                url: url,
             })
         }
     })
     return array;
+}
+
+export const getBbsCode = (namespace, key) => {
+    let {group,emote} = validate(namespace,key)
+    if (group.official) {
+        return "[s:" + group.namespace + ":" + key + "]"
+    }
+    return (group.prefix?group.prefix:"")+emote;
+}
+
+
+let validate =  (namespace, key) => {
+    let emotes = emotesLibrary.emotes.filter(emote => emote.namespace === namespace);
+    if (emotes.length !== 1) {
+        ElMessage.warning("命名空间错误: " + namespace);
+        return;
+    }
+    let emote = emotes[0].data[key]
+    if (!emote) {
+        ElMessage.warning("找不到表情: " + namespace + " " + key)
+        return;
+    }
+    return {
+        group:emotes[0],
+        emote
+    }
 }
