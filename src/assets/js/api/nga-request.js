@@ -77,7 +77,7 @@ export const requestUnity = axios.create({
                 }
                 json = packageData(json)
                 let error = json.error;
-                if (error) {
+                if (error && !error[0].includes("发帖完毕")) {
                     ElMessage.error(error[0])
                     reject(error)
                 } else{
