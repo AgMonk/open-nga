@@ -35,9 +35,12 @@
       </el-dialog>
       <el-dialog v-model="visible.emotes" title="表情" width="90%">
         <el-tabs v-model="activeTabName" >
-          <el-tab-pane v-for="(group,i) in emotesLibrary.emotes" :key="i" :label="group.name" :name="group.name">
+          <el-tab-pane v-for="(group,i) in emotesLibrary.emotes" :key="i" :label="group.name" :name="group.name"
+            style="text-align: left"
+          >
             <img v-for="(img,j) in group.data" :key="j" :src="getEmoteUrl(group.namespace,j)"
                  @click="addText({startText:getBbsCode(group.namespace,j)});visible.emotes=false"
+                 style="margin-left: 3px;cursor: pointer"
             />
           </el-tab-pane>
         </el-tabs>
@@ -59,6 +62,7 @@ import MyRouterLink from "@/components/my-router-link";
 import {copyObj, insertTextToTextarea} from "@/assets/js/utils";
 import {emotesLibrary, getBbsCode, getEmoteUrl, searchEmotes} from "@/assets/js/emote";
 import {bbsCodeLibrary, searchBbsCode} from "@/assets/js/bbscode";
+import "@/assets/js/emote_customize"
 
 export default {
   name: "reply-text-area",

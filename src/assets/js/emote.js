@@ -286,6 +286,10 @@ export const emotesLibrary = {
     ]
 }
 
+export const addEmoteGroups = (groups)=>{
+    groups.forEach(group=>emotesLibrary.emotes.push(group))
+}
+
 export const searchEmotes = (key) => {
     let array = [];
 
@@ -302,15 +306,7 @@ export const searchEmotes = (key) => {
     })
     return array;
 }
-
-export const getBbsCode = (namespace, key) => {
-    let {group,emote} = validate(namespace,key)
-    if (group.official) {
-        return "[s:" + group.namespace + ":" + key + "]"
-    }
-    return (group.prefix?group.prefix:"")+emote;
-}
-
+// 获取论坛标签
 let validate =  (namespace, key) => {
     let emotes = emotesLibrary.emotes.filter(emote => emote.namespace === namespace);
     if (emotes.length !== 1) {
@@ -328,7 +324,15 @@ let validate =  (namespace, key) => {
     }
 }
 
+export const getBbsCode = (namespace, key) => {
+    let {group,emote} = validate(namespace,key)
+    if (group.official) {
+        return "[s:" + group.namespace + ":" + key + "]"
+    }
+    return "[img]"+emote+"[/img]";
+}
 
+// 获取表情地址
 export const getEmoteUrl = (namespace, key) => {
     let {group,emote} = validate(namespace,key)
     let prefix = group.prefix ? group.prefix : emotesLibrary.prefix;
