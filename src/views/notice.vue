@@ -59,7 +59,9 @@
           <div class="noticeOuterDiv">
             <div v-for="(item,i) in approbation" :key="i" class="noticeItem">
               主题
-              <my-thread-link :text="item.threadSubject.substring(0,Math.min(item.threadSubject.length,20))" :tid="item.tid"/>
+              <my-thread-link :text="item.threadSubject.substring(0,Math.min(item.threadSubject.length,20))"
+                              :tid="item.quote_from>0?item.quote_from:item.tid"
+              />
               的
               <my-reply-link :pid="item.pid" text="[回复]"/>
               赞踩数更新了

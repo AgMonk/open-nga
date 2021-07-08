@@ -3,7 +3,7 @@
     <!--  <el-container direction="horizontal">-->
     <el-header height="30px" style="padding: 0 10px">
       <el-row>
-        <el-col :span="22" style="text-align: left">
+        <el-col :span="18" style="text-align: left">
           <el-tag
               v-clipboard:copy="myData.pid===0?'https://bbs.nga.cn/read.php?tid='+myData.tid:'https://bbs.nga.cn/read.php?pid='+myData.pid"
               v-clipboard:error="onError"
@@ -24,7 +24,9 @@
           </el-tag>
 
         </el-col>
-        <el-col :span="2" style="text-align: right">
+        <el-col :span="6" style="text-align: right">
+          <my-mini-tag :route="[`post`,`quote`, myData.fid, myData.tid,myData.pid, 0]" text="引用"/>
+          <my-mini-tag :route="[`post`,`reply`, myData.fid, myData.tid,myData.pid, 0]" text="回复"/>
           <content-popover :data="myData">
             <el-switch v-model="showCode" active-color="#13ce66" active-text="源代码" inactive-color="#ff4949"></el-switch>
           </content-popover>
@@ -117,10 +119,11 @@ import {mapState} from "vuex";
 import Approbation from "@/components/approbation";
 import {preComment} from "@/assets/js/api/postApi";
 import ContentPopover from "@/components/content-popover";
+import MyMiniTag from "@/components/my-mini-tag";
 
 export default {
   name: "reply-content-card",
-  components: {ContentPopover, Approbation, UserLink, MyRouterLink, ContentParser},
+  components: {MyMiniTag, ContentPopover, Approbation, UserLink, MyRouterLink, ContentParser},
   data() {
     return {
       myData: {},

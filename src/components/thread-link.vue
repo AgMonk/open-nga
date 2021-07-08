@@ -74,6 +74,9 @@ export default {
         //  合集
         return getRoute(["thread", this.$route.params.fid, 1, this.data.tid])
       }
+      if (this.data.quote_from>0){
+        return getRoute(["read", this.data.quote_from, 1])
+      }
       if (this.data.tid) {
         return getRoute(["read", this.data.tid, 1])
       }
