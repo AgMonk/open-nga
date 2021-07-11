@@ -20,4 +20,8 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 
 
 # todoList
-* 举报
+* 版头
+* 子版面
+* 主题排序方式切换
+* 楼层跳转
+
