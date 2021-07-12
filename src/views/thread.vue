@@ -159,6 +159,25 @@ export default {
       //  刷新主题列表
         this.updateThreads();
       }
+
+
+      if (e.key === 'a') {
+        //  上一页
+        if (this.pagination.page === 1) {
+          this.$message.error("已达到首页")
+        } else {
+          this.page(this.pagination.page - 1)
+        }
+      }
+      if (e.key === 'd') {
+        let maxPage = Math.floor(this.pagination.total / this.pagination.size + 1)
+        //  下一页
+        if (this.pagination.page === maxPage) {
+          this.$message.error("已达到尾页 / 请尝试刷新(r)")
+        } else {
+          this.page(this.pagination.page - (-1))
+        }
+      }
     },
   },
   watch: {
