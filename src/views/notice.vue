@@ -4,7 +4,8 @@
   <div>
     <el-button style="position: fixed; bottom: 0; left: 0;" @click="showDrawer=true;getNotice()">
       <i class="el-icon-message-solid"/>
-      <i v-show="gotNew.replies || gotNew.pm||gotNew.approbation" class="el-icon-warning"/>
+<!--      <i v-show="gotNew.replies || gotNew.pm||gotNew.approbation" class="el-icon-warning"/>-->
+      <span v-show="gotNew.replies || gotNew.pm||gotNew.approbation" style="color:red"><b>●</b></span>
     </el-button>
     <el-drawer
         :before-close="handleClose"
