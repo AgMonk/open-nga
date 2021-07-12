@@ -24,4 +24,9 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 * 子版面
 * 主题排序方式切换
 * 楼层跳转
+* 后退功能快捷键
+* 主题按发布时间排序
+* 上方导航按钮快捷键
+* 主题列表快捷键翻页
+* 提示信息红点
 

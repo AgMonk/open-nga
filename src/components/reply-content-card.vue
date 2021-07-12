@@ -43,7 +43,7 @@
         {{ myData.content }}
       </div>
       <div v-show="!showCode">
-        <content-parser :content="myData.content">{{ myData.content }}</content-parser>
+        <content-render :content="myData.content">{{ myData.content }}</content-render>
       </div>
       <!--suppress JSUnresolvedVariable -->
       <!--热评-->
@@ -66,7 +66,7 @@
                   class="el-icon-chat-line-round"/>回复
               </el-tag>
             </template>
-            <content-parser :content="comment.content">{{ comment.content }}</content-parser>
+            <content-render :content="comment.content">{{ comment.content }}</content-render>
           </el-card>
         </div>
       </div>
@@ -91,7 +91,7 @@
                   class="el-icon-chat-line-round"/>回复
               </el-tag>
             </template>
-            <content-parser :content="comment.content.replace(/\[b]Reply to .+?\[\/b]/,``)">{{ comment.content }}</content-parser>
+            <content-render :content="comment.content.replace(/\[b]Reply to .+?\[\/b]/,``)">{{ comment.content }}</content-render>
           </el-card>
         </div>
       </div>
@@ -112,7 +112,7 @@
 import {copyObj} from "@/assets/js/utils";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import {topicRecommend} from "@/assets/js/api/api";
-import ContentParser from "@/components/content-render";
+import ContentRender from "@/components/content-render";
 import MyRouterLink from "@/components/my-router-link";
 import UserLink from "@/components/user-link";
 import {mapState} from "vuex";
@@ -123,7 +123,7 @@ import MyMiniTag from "@/components/my-mini-tag";
 
 export default {
   name: "reply-content-card",
-  components: {MyMiniTag, ContentPopover, Approbation, UserLink, MyRouterLink, ContentParser},
+  components: {MyMiniTag, ContentPopover, Approbation, UserLink, MyRouterLink,  ContentRender},
   data() {
     return {
       myData: {},

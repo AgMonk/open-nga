@@ -16,7 +16,19 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main style="padding: 0">
+      <el-switch v-model="preview" active-text="预览" style="margin-right: 10px"/>
+      <el-switch v-model="comment" active-text="评论" style="margin-right: 10px" @change="myParams.comment = ($event?1:undefined)"/>
+      <br>
+      <br>
       <el-input v-model="myParams.post_subject" placeholder="标题" style="margin-bottom: 5px"/>
+
+
+      <el-card v-if="myParams.post_content&&preview" class="box-card" shadow="always" >
+        <div style="text-align: left">
+          <content-render :content="myParams.post_content.replace(/\n/g,`<br/>`)"/>
+        </div>
+      </el-card>
+
       <el-input id="textarea"
                 ref="reply-text-area"
                 v-model="myParams.post_content"
@@ -34,9 +46,9 @@
         </div>
       </el-dialog>
       <el-dialog v-model="visible.emotes" title="表情" width="90%">
-        <el-tabs v-model="activeTabName" >
+        <el-tabs v-model="activeTabName">
           <el-tab-pane v-for="(group,i) in emotesLibrary.emotes" :key="i" :label="group.name" :name="group.name"
-            style="text-align: left"
+                       style="text-align: left"
           >
             <img v-for="(img,j) in group.data" :key="j" :src="getEmoteUrl(group.namespace,j)"
                  @click="addText({startText:getBbsCode(group.namespace,j)});visible.emotes=false"
@@ -47,7 +59,7 @@
       </el-dialog>
     </el-main>
     <el-footer>
-      <el-switch v-model="comment" active-text="评论" style="margin-right: 10px" @change="myParams.comment = $event?1:undefined"/>
+
       <el-button type="success" @click="submit">提交( Ctrl+Enter )</el-button>
       <!--      <el-button type="danger" @click="reset">重置到默认</el-button>-->
     </el-footer>
@@ -63,10 +75,11 @@ import {copyObj, insertTextToTextarea} from "@/assets/js/utils";
 import {emotesLibrary, getBbsCode, getEmoteUrl, searchEmotes} from "@/assets/js/emote";
 import {bbsCodeLibrary, searchBbsCode} from "@/assets/js/bbscode";
 import "@/assets/js/emote_customize"
+import ContentRender from "@/components/content-render";
 
 export default {
   name: "reply-text-area",
-  components: {MyRouterLink},
+  components: {ContentRender, MyRouterLink},
   data() {
     return {
       visible: {
@@ -78,6 +91,7 @@ export default {
       bbsCodeLibrary,
       dialogShow: false,
       comment: false,
+      preview: false,
       callbackUrls: [],
       myParams: {
         post_content: "",
@@ -193,8 +207,8 @@ export default {
       handler: function (e) {
         let content = this.myParams.post_content;
         let subject = this.myParams.post_subject;
-
         this.myParams = copyObj(e)
+          console.log(content)
 
         if (content && content.length > 0) {
           this.myParams.post_content = content;
