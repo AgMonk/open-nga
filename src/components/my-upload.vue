@@ -142,9 +142,10 @@ export default {
         return
       }
       const items = e.clipboardData.items
+      console.log(Object.assign({},items))
       for (const item of items) {
-        console.log(item);
         if (item.type.startsWith("image/")) {
+        console.log(item);
           const file = new File([item.getAsFile()], new Date().format("yyyy-MM-dd_hh_mm_ss") + '.png')
           upload.handleStart(file)
         }

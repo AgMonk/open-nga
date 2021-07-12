@@ -25,7 +25,7 @@
 
       <el-card v-if="myParams.post_content&&preview" class="box-card" shadow="always" >
         <div style="text-align: left">
-          <content-render :content="myParams.post_content.replace(/\n/g,`<br/>`)"/>
+          <content-render :content="myParams.post_content"/>
         </div>
       </el-card>
 

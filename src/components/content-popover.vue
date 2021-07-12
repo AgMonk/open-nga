@@ -1,7 +1,7 @@
 <!--正文弹出框-->
 <template>
   <el-popover
-      :width="200"
+      :width="400"
       placement="bottom"
       trigger="hover"
   >
@@ -14,6 +14,8 @@
         <my-mini-tag :route="[`read`, myData.tid, 1, myData. authorid]" text="只看TA"/>
         <my-mini-tag :route="[`thread`, myData.fid, 1, myData.authorid, 0]" text="本版主题"/>
         <my-mini-tag :route="[`thread`, myData.fid, 1, myData.authorid, 1]" text="本版回复"/>
+        <my-mini-tag :route="[`thread`, 0, 1, myData.authorid, 0]" text="用户主题"/>
+        <my-mini-tag :route="[`thread`, 0, 1, myData.authorid, 1]" text="用户回复"/>
       </div>
 
       <div>
@@ -69,7 +71,7 @@ export default {
           this.$message.success(res.data["0"])
         }
         this.report.visible = false
-      }).catch(()=>{
+      }).catch(() => {
         this.report.visible = false
       })
     },

@@ -180,7 +180,7 @@ export default {
   watch: {
     "content": {
       handler: function (e) {
-        this.myData = parseBbsCode(e)
+        this.myData = parseBbsCode(e.replace(/\n/g,`<br/>`))
         // console.log(this.myData)
       }
     }

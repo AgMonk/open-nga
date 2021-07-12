@@ -21,7 +21,7 @@
         <br/>
         <br/>
         <div>
-          {{data.__P.content}}
+          <content-render :content="data.__P.content" />
         </div>
       </div>
     </el-col>
@@ -44,10 +44,11 @@ import {titleStyle} from "@/assets/js/colorMap";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import MyRouterLink from "@/components/my-router-link";
 import Datetime from "@/components/datetime";
+import ContentRender from "@/components/content-render";
 
 export default {
   name: "thread-link",
-  components: {Datetime, MyRouterLink},
+  components: {ContentRender, Datetime, MyRouterLink},
   data() {
     return {
       currentPage: 1,
