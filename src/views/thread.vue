@@ -89,7 +89,7 @@ export default {
         total: 35,
       },
       threads: [],
-      orderByPostDateDesc:false,
+      orderByPostDateDesc:this.$store.state.thread.orderByPostDateDesc,
     }
   },
   methods: {
