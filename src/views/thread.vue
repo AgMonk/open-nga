@@ -5,6 +5,8 @@
       <div>
         <el-button type="primary" @click="updateThreads">刷新(r)</el-button>
         <el-button type="primary" @click="newThread">发帖</el-button>
+        <el-switch v-model="orderByPostDateDesc" active-text="按发布时间排序" style="margin-left: 10px"
+                   @click="$store.state.thread.orderByPostDateDesc=$event;updateThreads()" />
       </div>
       <el-pagination
           :current-page.sync="pagination.page"
@@ -87,6 +89,7 @@ export default {
         total: 35,
       },
       threads: [],
+      orderByPostDateDesc:false,
     }
   },
   methods: {

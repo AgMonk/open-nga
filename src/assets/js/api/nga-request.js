@@ -156,7 +156,7 @@ export const ngaRequest = {
             data,
         })
     },
-    thread({stid, fid, page, authorid, searchpost, favor}) {
+    thread({stid, fid, page, authorid, searchpost, favor,order_by}) {
         let map = {
             favor: {favor: 1},
             stid: {fid, page, stid},
@@ -176,6 +176,11 @@ export const ngaRequest = {
         } else if (fid) {
             data = map.fid;
         }
+
+        if (order_by) {
+            data.order_by="postdatedesc";
+        }
+
         return requestUnity({
             url: "thread.php",
             data

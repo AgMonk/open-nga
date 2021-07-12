@@ -7,6 +7,7 @@ export default {
     namespaced: true,
     state: {
         threads: {},
+        orderByPostDateDesc:false,
     },
     mutations: {},
     actions: {
@@ -14,6 +15,10 @@ export default {
 
         },
         getThreads({dispatch, commit, state}, params) {
+            if (state.orderByPostDateDesc) {
+                params.order_by=true;
+            }
+
             let cache = state.threads[JSON.stringify(params)];
             let now = new Date().getTime() / 1000;
             if (cache && (now - cache.timestamp) < 3 * 60) {
@@ -24,6 +29,10 @@ export default {
             return dispatch("updateThreads", params)
         },
         updateThreads({dispatch, commit, state}, params) {
+            if (state.orderByPostDateDesc) {
+                params.order_by=true;
+            }
+
             return ngaRequest.thread(params).then(res => {
                 state.threads[JSON.stringify(params)] = res;
                 return res.data;
