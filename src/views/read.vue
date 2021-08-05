@@ -11,6 +11,7 @@
         </el-breadcrumb>
         <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新(r)</el-button>
         <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
+        <jump-floors :tid="tid" :total="pagination.total"/>
         <el-switch v-model="autoRefresh.enable" active-color="green" active-text="自动刷新(/3min)" inactive-color="red"
                    @change="autoRefreshChanged"
                    style="margin-left: 5px"/>
@@ -27,7 +28,7 @@
       <el-main style="padding: 0;border: black solid">
         <el-row
             v-for="(row,i) in replies"
-            :id="'#'+row.lou"
+            :id="'L'+row.lou"
             :key="i"
             :class="$store.state.config.config.uiColor+i%2"
         >
@@ -51,6 +52,7 @@
         </el-pagination>
         <el-button style="margin-top: 5px" type="primary" @click="updateDetails">刷新(r)</el-button>
         <el-button style="margin-top: 5px" type="primary" @click="newReply">新回复</el-button>
+        <jump-floors :tid="tid" :total="pagination.total"/>
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 20px">
           <el-breadcrumb-item v-for="(item,i) in breadcrumbs" :key="i">
             <my-router-link :params="item.params" :router="item.router" :text="item.text"/>
@@ -80,10 +82,11 @@ import {getRoute} from "@/assets/js/api/routerUtils";
 import ReplyTextArea from "@/components/reply-text-area";
 import Clock from "@/components/clock";
 import {mapState} from "vuex";
+import JumpFloors from "@/components/jump-floors";
 
 export default {
   name: "read",
-  components: {Clock, ReplyTextArea, ReplyContentCard, ReplyUserCard, MyRouterLink},
+  components: {JumpFloors, Clock, ReplyTextArea, ReplyContentCard, ReplyUserCard, MyRouterLink},
   data() {
     return {
       lastRefreshTime: new Date(),
@@ -208,8 +211,19 @@ export default {
           this.res = this.details[JSON.stringify(this.$route.params)].data;
           console.log(this.res)
           this.handlePageData(this.res)
-          document.body.scrollIntoView()
 
+          this.$nextTick(()=>{
+            let hash = window.location.hash;
+            if (hash) {
+            //  有楼层号
+              let elementById = document.getElementById(hash.replace("#",""));
+              console.log(elementById)
+              elementById.scrollIntoView()
+            }else{
+              document.body.scrollIntoView()
+
+            }
+          })
         }).catch((e) => {
           console.log(e)
           history.back();
@@ -223,7 +237,7 @@ export default {
       }
       this.currentLevel += c;
       let level = this.replies[this.currentLevel].lou;
-      let element = document.getElementById("#" + level);
+      let element = document.getElementById("L" + level);
       element.scrollIntoView()
     },
     keypress(e) {
@@ -243,6 +257,15 @@ export default {
           this.page(this.pagination.page - 1)
         }
       }
+      if (e.key === 'z') {
+      //  后腿
+        history.back();
+      }
+      if (e.key === 'c') {
+      //  前进
+        history.forward()
+      }
+
       if (e.key === 'd') {
         let maxPage = Math.floor(this.pagination.total / this.pagination.size + 1)
         //  下一页
@@ -251,7 +274,6 @@ export default {
         } else {
           this.page(this.pagination.page - (-1))
         }
-
       }
       if (e.key === 's') {
         this.scrollLevel(1)

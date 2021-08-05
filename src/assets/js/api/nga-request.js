@@ -81,7 +81,7 @@ export const requestUnity = axios.create({
                     console.log(error)
                     ElMessage.error(error[0])
                     reject(error)
-                } else{
+                } else {
                     let message = json.data["__MESSAGE"];
                     if (message && /[审核隐藏锁定]/.exec(message[1])) {
                         ElMessage.error(message[1])
@@ -156,10 +156,10 @@ export const ngaRequest = {
             data,
         })
     },
-    thread({stid, fid, page, authorid, searchpost, favor,order_by}) {
+    thread({stid, fid, page, authorid, searchpost, favor, order_by}) {
         let map = {
             favor: {favor: 1},
-            stid: {fid, page, stid},
+            stid: {page, stid},
             authorid: {fid, page, authorid, searchpost},
             fid: {fid, page},
         }
@@ -178,7 +178,7 @@ export const ngaRequest = {
         }
 
         if (order_by) {
-            data.order_by="postdatedesc";
+            data.order_by = "postdatedesc";
         }
 
         return requestUnity({
@@ -186,6 +186,22 @@ export const ngaRequest = {
             data
         }).then(res => {
             res.data.__T = obj2Array(res.data.__T);
+
+            let subForums = res.data.__F.sub_forums;
+            if (subForums) {
+                let sf = [];
+                res.data.__F.subForums = sf;
+                Object.keys(subForums).forEach(key => {
+                    if (key.startsWith("t")) {
+                    //   主题合集
+                        sf.push({type:"合集",name:subForums[key]["1"],stid:subForums[key]["0"]})
+                    }
+                    if (!isNaN(key)) {
+                    //   子版面
+                        sf.push({type:"版面",name:subForums[key]["1"],fid:subForums[key]["0"]})
+                    }
+                })
+            }
             return res;
         })
     },

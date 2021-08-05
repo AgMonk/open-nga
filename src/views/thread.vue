@@ -6,7 +6,7 @@
         <el-button type="primary" @click="updateThreads">刷新(r)</el-button>
         <el-button type="primary" @click="newThread">发帖</el-button>
         <el-switch v-model="orderByPostDateDesc" active-text="按发布时间排序" style="margin-left: 10px"
-                   @click="$store.state.thread.orderByPostDateDesc=orderByPostDateDesc;updateThreads()" />
+                   @click="$store.state.thread.orderByPostDateDesc=orderByPostDateDesc;updateThreads()"/>
       </div>
       <el-pagination
           :current-page.sync="pagination.page"
@@ -18,7 +18,15 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-      <el-table :cell-class-name="cellClassName" :data="threads"  :header-cell-class-name="$store.state.config.config.uiColor+'1'">
+      <h2>{{forumName}}</h2>
+
+      <topped-topic :tid="toppedTopicTid"/>
+
+      <div>
+        <sub-forum v-for="(item,i) in subForums" :key="i" :data="item"/>
+      </div>
+
+      <el-table :cell-class-name="cellClassName" :data="threads" :header-cell-class-name="$store.state.config.config.uiColor+'1'">
         <el-table-column label="#" width="40px">
           <template #default="s">
             {{ s.$index + 1 }}
@@ -34,7 +42,7 @@
         </el-table-column>
         <el-table-column label="主题">
           <template #default="s">
-            <thread-link :data="s.row" :index="s.$index" />
+            <thread-link :data="s.row" :index="s.$index"/>
           </template>
         </el-table-column>
         <el-table-column label="作者/发布时间" width="170px">
@@ -77,10 +85,12 @@ import ThreadLink from "@/components/thread-link";
 import UserLink from "@/components/user-link";
 import {getRoute} from "@/assets/js/api/routerUtils";
 import "../assets/css/ui-color.css"
+import ToppedTopic from "@/components/topped-topic";
+import SubForum from "@/components/sub-forum";
 
 export default {
   name: "thread",
-  components: {UserLink, ThreadLink, Datetime},
+  components: {SubForum, ToppedTopic, UserLink, ThreadLink, Datetime},
   data() {
     return {
       pagination: {
@@ -89,23 +99,26 @@ export default {
         total: 35,
       },
       threads: [],
-      orderByPostDateDesc:this.$store.state.thread.orderByPostDateDesc,
+      orderByPostDateDesc: this.$store.state.thread.orderByPostDateDesc,
+      toppedTopicTid: undefined,
+      subForums: [],
+      forumName: "",
     }
   },
   methods: {
-    cellClassName({row, column, rowIndex, columnIndex}){
-      return this.$store.state.config.config.uiColor+rowIndex%2
+    cellClassName({row, column, rowIndex, columnIndex}) {
+      return this.$store.state.config.config.uiColor + rowIndex % 2
     },
-    newThread(){
+    newThread() {
       let fid = this.$route.params.fid;
-      this.$router.push(getRoute(["post","new",fid,0,0,0]))
+      this.$router.push(getRoute(["post", "new", fid, 0, 0, 0]))
     },
     unFollow(id) {
       if (!confirm("取消关注？")) {
         return
       }
       let fid = this.$route.params.fid;
-      unFollow(id,fid).then(res => {
+      unFollow(id, fid).then(res => {
         if (res.data) {
           this.$message(res.data[0])
           this.updateThreads()
@@ -119,7 +132,7 @@ export default {
       })
     },
     page(e) {
-      this.$route.params.page = e?e:1;
+      this.$route.params.page = e ? e : 1;
       this.$router.push(this.$route)
     },
     //处理分页数据
@@ -127,7 +140,7 @@ export default {
       // 分页参数
       // noinspection JSCheckFunctionSignatures
       this.pagination.page = parseInt(this.$route.params.page)
-      this.pagination.total = data["__ROWS"]!==''?data["__ROWS"]:9999999;
+      this.pagination.total = data["__ROWS"] !== '' ? data["__ROWS"] : 9999999;
       this.pagination.size = data["__T__ROWS_PAGE"]
 
       //主题列表
@@ -149,7 +162,11 @@ export default {
         }
       })
 
-      // console.log(data)
+      this.toppedTopicTid = data.__F.topped_topic
+      this.subForums = data.__F.subForums;
+      this.forumName = data.__F.name;
+
+      console.log(data)
     },
     //更新主题列表
     getThreads() {
@@ -158,8 +175,17 @@ export default {
       })
     },
     keypress(e) {
-      if (e.key === 'r' && e.path[0].nodeName==='BODY') {
-      //  刷新主题列表
+      if (e.key === 'z') {
+        //  后腿
+        history.back();
+      }
+      if (e.key === 'c') {
+        //  前进
+        history.forward()
+      }
+
+      if (e.key === 'r' && e.path[0].nodeName === 'BODY') {
+        //  刷新主题列表
         this.updateThreads();
       }
 

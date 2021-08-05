@@ -4,7 +4,7 @@
   <div>
     <el-button style="position: fixed; bottom: 0; left: 0;" @click="showDrawer=true;getNotice()">
       <i class="el-icon-message-solid"/>
-<!--      <i v-show="gotNew.replies || gotNew.pm||gotNew.approbation" class="el-icon-warning"/>-->
+      <!--      <i v-show="gotNew.replies || gotNew.pm||gotNew.approbation" class="el-icon-warning"/>-->
       <span v-show="gotNew.replies || gotNew.pm||gotNew.approbation" style="color:red"><b>●</b></span>
     </el-button>
     <el-drawer
@@ -110,6 +110,9 @@ export default {
     clearNotice() {
       this.$store.dispatch("notice/clearNotice").then(() => {
         this.showDrawer = false;
+        this.gotNew.approbation = false;
+        this.gotNew.replies = false;
+        this.gotNew.pm = false;
       })
     },
     noHint(tid, pid) {
