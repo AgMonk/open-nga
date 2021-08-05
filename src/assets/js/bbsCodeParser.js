@@ -199,7 +199,9 @@ export const parseBbsCode = (code) => {
     }
 
     // console.log("解析正文：" + code)
-    return bbsCodeParser(code)
+    let obj = bbsCodeParser(code);
+    console.log(obj)
+    return obj
 }
 
 

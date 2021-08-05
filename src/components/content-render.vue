@@ -111,12 +111,12 @@ export default {
         "i": (children) => <i>{this.render(children)}</i>,
         "li": (children) => <li>{this.render(children)}</li>,
         "del": (children) => <del>{this.render(children)}</del>,
-        "uid": (children, props) => <my-router-link router="account" params={[props]}
-                                                    text={"[" + children[0].children + "]"}/>,
-        "pid": (children, props) => <my-router-link router="read" params={[props.split(',')[0]]}
-                                                    text={"[" + children[0].children + "]"}/>,
-        "tid": (children, props) => <my-router-link router="read" params={[props, 1]}
-                                                    text={"[" + children[0].children + "]"}/>,
+        "table": (children) => <table style="border: 1px solid black;border-collapse: collapse;">{this.render(children).filter(item=>item.type==='tr')}</table>,
+        "tr": (children) => <tr style="border: 1px solid black;">{this.render(children).filter(item=>item.type==='td')}</tr>,
+        "td": (children) => <td style="border: 1px solid black;">{this.render(children)}</td>,
+        "uid": (children, props) => <my-router-link router="account" params={[props]}>{this.render(children)}</my-router-link>,
+        "pid": (children, props) => <my-router-link router="read" params={[props.split(',')[0]]} >{this.render(children)}</my-router-link>,
+        "tid": (children, props) => <my-router-link router="read" params={[props, 1]}>{this.render(children)}</my-router-link>,
         "color": (children, props) => <span style={'color: ' + props}>{this.render(children)}</span>,
         "size": (children, props) => <span style={"font-size:" + props}>{this.render(children)}</span>,
         "align": (children, props) => <span style={"text-align:" + props}>{this.render(children)}</span>,
