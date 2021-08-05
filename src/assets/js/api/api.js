@@ -109,20 +109,43 @@ export const getNotice = () => ngaRequest.nuke({
     time_limit: 1,
 }).then(res => {
     // 回复提醒
+    console.log(res.data)
+
+
     let replies = res.data["0"]["0"];
-    replies = !replies ? undefined : replies.map(reply => ({
-        authorId: reply["1"],
-        authorName: reply["2"],
-        repliedId: reply["3"],
-        repliedName: reply["4"],
-        threadSubject: reply["5"],
-        tid: reply["6"],
-        replyPid: reply["7"],
-        repliedPid: reply["8"],
-        timestamp: reply["9"],
-        page: reply["10"],
-        timeString: new Date(reply["9"] * 1000).format("yyyy-MM-dd hh:mm:ss")
-    })).reverse();
+    replies = !replies ? undefined : replies.map(reply => {
+        if (reply["0"] === 1 || reply["0"] === 2) {
+           return  {
+               type:reply["0"] === 1?`对主题`:`对回复`,
+               authorId: reply["1"],
+               authorName: reply["2"],
+               repliedId: reply["3"],
+               repliedName: reply["4"],
+               threadSubject: reply["5"],
+               tid: reply["6"],
+               replyPid: reply["7"],
+               repliedPid: reply["8"],
+               timestamp: reply["9"],
+               page: reply["10"],
+               timeString: new Date(reply["9"] * 1000).format("yyyy-MM-dd hh:mm:ss")
+           }
+        }
+        if (reply["0"] === 15 ) {
+            return  {
+                type:`送礼物`,
+                authorId: reply["1"],
+                authorName: reply["2"],
+                repliedId: reply["3"],
+                threadSubject: reply["5"],
+                tid: reply["6"],
+                repliedPid: reply["7"],
+                timestamp: reply["9"],
+                page: reply["10"],
+                timeString: new Date(reply["9"] * 1000).format("yyyy-MM-dd hh:mm:ss")
+            }
+        }
+
+    }).reverse();
 
     // 短消息提醒
     let pm = res.data["0"]["1"];

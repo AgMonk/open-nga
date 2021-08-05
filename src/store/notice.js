@@ -32,6 +32,7 @@ export default {
         getNotice({state}) {
             getNotice().then(res => {
                 //检查是否有新消息
+
                 let checkNew = (key)=>{
                     if (res[key]){
                         if (state[key].length !== res[key].length) {

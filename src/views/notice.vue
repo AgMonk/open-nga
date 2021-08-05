@@ -25,16 +25,28 @@
             <div v-for="(item,i) in replies" :key="i" class="noticeItem">
               {{ item.timeString.substring(5) }}
               <user-link :id="item.authorId" :username="item.authorName"/>
-              &nbsp;
-              <my-reply-link :pid="item.replyPid" text="[回复]"/>
-              了你
-              <span v-if="item.repliedPid">在</span>
-              <span v-if="!item.repliedPid">的</span>
+
+              <span v-if="item.type===`送礼物`">
+                对你在
+                <my-thread-link :page="item.page" :text="item.threadSubject.substring(0,Math.min(item.threadSubject.length,20))"
+                                :tid="item.tid"/>
+                的
+                <my-reply-link v-if="item.repliedPid" :pid="item.repliedPid" text="[回复]"/>
+                赠送了礼物
+              </span>
+              <span v-if="item.type===`对主题`">
+                              <my-reply-link :pid="item.replyPid" text="[回复]"/>
+              了你的主题 <my-thread-link :page="item.page" :text="item.threadSubject.substring(0,Math.min(item.threadSubject.length,20))"
+                      :tid="item.tid"/>
+              </span>
+              <span v-if="item.type===`对回复`">
+                <my-reply-link :pid="item.replyPid" text="[回复]"/>
+              了你在
               <my-thread-link :page="item.page" :text="item.threadSubject.substring(0,Math.min(item.threadSubject.length,20))"
                               :tid="item.tid"/>
               <span v-if="item.repliedPid">的</span>
               <my-reply-link v-if="item.repliedPid" :pid="item.repliedPid" text="[回复]"/>
-
+              </span>
             </div>
           </div>
         </el-collapse-item>
