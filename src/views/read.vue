@@ -212,16 +212,19 @@ export default {
           console.log(this.res)
           this.handlePageData(this.res)
 
-          this.$nextTick(()=>{
+          this.$nextTick(() => {
             let hash = window.location.hash;
-            if (hash) {
-            //  有楼层号
-              let elementById = document.getElementById(hash.replace("#",""));
+            let floor = hash.replace("#", "");
+            let elementById = document.getElementById(floor);
+            if (hash && elementById) {
+              //  有楼层号
               console.log(elementById)
               elementById.scrollIntoView()
-            }else{
+              this.currentLevel = parseInt(floor.replace("L",""))%20
+              document.focus()
+            } else {
               document.body.scrollIntoView()
-
+              window.location.hash=``
             }
           })
         }).catch((e) => {
@@ -258,11 +261,11 @@ export default {
         }
       }
       if (e.key === 'z') {
-      //  后腿
+        //  后腿
         history.back();
       }
       if (e.key === 'c') {
-      //  前进
+        //  前进
         history.forward()
       }
 
