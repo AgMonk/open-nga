@@ -8,6 +8,7 @@ export default {
     state: {
         threads: {},
         orderByPostDateDesc: false,
+        showToppedTopic:true,
     },
     mutations: {},
     actions: {

@@ -1,25 +1,28 @@
 <template>
-  <el-container direction="vertical">
-    <!--  <el-container direction="horizontal">-->
-    <el-header>
-      <h1>:: {{ title }} ::</h1>
-    </el-header>
-    <!--suppress HtmlUnknownTag -->
-    <el-main height="720px">
-      <reply-text-area ref="reply-text-area" :params="params" focus="1"/>
-      <attachments :data="attachs"
+  <div>
+    <el-button size="mini" type="warning" @click="history.back()" >后退</el-button>
+    <el-container direction="vertical">
+      <!--  <el-container direction="horizontal">-->
+      <el-header>
+        <h1>:: {{ title }} ::</h1>
+      </el-header>
+      <!--suppress HtmlUnknownTag -->
+      <el-main height="720px">
+        <reply-text-area ref="reply-text-area" :params="params" focus="1"/>
+        <attachments :data="attachs"
+                     @add-file="addFile"
+                     @del-attach="delAttach"
+        />
+        <my-upload :attach-url="`/attach`"
+                   :auth="auth" :fid="params.fid" :index="1"
+                   @file-list-changed="fileListChanged"
                    @add-file="addFile"
                    @del-attach="delAttach"
-      />
-      <my-upload :attach-url="`/attach`"
-                 :auth="auth" :fid="params.fid" :index="1"
-                 @file-list-changed="fileListChanged"
-                 @add-file="addFile"
-                 @del-attach="delAttach"
-      />
-    </el-main>
-    <el-footer></el-footer>
-  </el-container>
+        />
+      </el-main>
+      <el-footer></el-footer>
+    </el-container>
+  </div>
 
 </template>
 
@@ -37,6 +40,7 @@ export default {
   components: {Attachments, MyUpload, ReplyTextArea},
   data() {
     return {
+      history,
       title: "",
       myData: {},
       content: "",

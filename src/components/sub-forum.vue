@@ -1,8 +1,13 @@
 <template>
   <span style="margin-left: 10px">
-    <el-tag>{{data.type}}</el-tag>
-    <my-router-link v-if="data.type===`合集`" :params="[1,1,data.stid]" :text="data.name" router="thread" />
-    <my-router-link v-if="data.type===`版面`"  :params="[data.fid,1]" :text="data.name" router="thread" />
+    <my-router-link v-if="data.type===`合集`" :params="[1,1,data.stid]" router="thread">
+          <el-tag size="mini" type="success">{{ data.type }}</el-tag>
+          {{ data.name }}
+    </my-router-link>
+    <my-router-link v-if="data.type===`版面`" :params="[data.fid,1]" router="thread">
+      <el-tag size="mini" type="success">{{ data.type }}</el-tag>
+          {{ data.name }}
+    </my-router-link>
   </span>
 </template>
 
@@ -21,7 +26,7 @@ export default {
   },
   watch: {},
   props: {
-    data:{required:true}
+    data: {required: true}
   },
 }
 

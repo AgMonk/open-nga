@@ -1,4 +1,8 @@
 <template>
+<div>
+  <h2>{{forumName}}</h2>
+  <el-switch v-model="$store.state.thread.showToppedTopic" active-text="显示版头" />
+  <topped-topic v-show="$store.state.thread.showToppedTopic" :tid="toppedTopicTid"/>
   <el-container ref="threadList" direction="vertical">
     <!--  <el-container direction="horizontal">-->
     <el-header>
@@ -18,11 +22,9 @@
     </el-header>
     <!--suppress HtmlUnknownTag -->
     <el-main>
-      <h2>{{forumName}}</h2>
 
-      <topped-topic :tid="toppedTopicTid"/>
 
-      <div>
+      <div >
         <sub-forum v-for="(item,i) in subForums" :key="i" :data="item"/>
       </div>
 
@@ -75,7 +77,7 @@
       </el-pagination>
     </el-footer>
   </el-container>
-
+</div>
 </template>
 
 <script>
@@ -101,6 +103,7 @@ export default {
       threads: [],
       orderByPostDateDesc: this.$store.state.thread.orderByPostDateDesc,
       toppedTopicTid: undefined,
+      showToppedTopic: undefined,
       subForums: [],
       forumName: "",
     }
