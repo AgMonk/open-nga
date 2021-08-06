@@ -200,7 +200,7 @@ export const parseBbsCode = (code) => {
 
     // console.log("解析正文：" + code)
     let obj = bbsCodeParser(code);
-    console.log(obj)
+    debugLog(obj)
     return obj
 }
 

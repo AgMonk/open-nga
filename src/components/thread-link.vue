@@ -64,7 +64,6 @@ export default {
     threadColor: titleStyle,
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
-      console.log(this.myData)
     },
     getUrl() {
       let parent = this.data.parent;

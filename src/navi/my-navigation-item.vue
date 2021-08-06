@@ -19,8 +19,6 @@ export default {
   },
   methods: {},
   mounted() {
-    console.log(this.route)
-    console.log(this.parentPath)
     let path = this.route.path;
     if (path && !path.startsWith(`/`)) {
       this.path += `/`
