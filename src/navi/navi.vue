@@ -8,12 +8,16 @@
         class="el-menu-demo"
         mode="horizontal"
         text-color="#fff" @select="$router.push">
-      <el-menu-item v-for="(navi,key) in $store.state.navi.navigators" :key="key" :index="navi.path">{{
-          navi.title
-        }}
-      </el-menu-item>
-      <!--    <el-menu-item v-for="(item,i) in navi" :key="i" :index="item.path">{{ item.title }}</el-menu-item>-->
-
+<!--      <el-menu-item v-for="(navi,key) in $store.state.navi.navigators" :key="key" :index="navi.path">{{-->
+<!--          navi.title-->
+<!--        }}-->
+<!--      </el-menu-item>-->
+<!--      &lt;!&ndash;    <el-menu-item v-for="(item,i) in navi" :key="i" :index="item.path">{{ item.title }}</el-menu-item>&ndash;&gt;-->
+<!--      <el-submenu>-->
+<!--        <template #title>我的</template>-->
+<!--        <el-menu-item index="/thread/favor/1" >收藏</el-menu-item>-->
+<!--      </el-submenu>-->
+      <my-navigation-item v-for="(navi,key) in $store.state.navi.navigators" :key="key" :index="navi.path" :parent-path="navi.path" :route="navi" />
     </el-menu>
     <h4 style="margin-top: 10px;margin-bottom: 10px">{{$route.name}}</h4>
 
@@ -22,9 +26,11 @@
 
 <script>
 import {getCookie} from "@/assets/js/cookieUtils";
+import MyNavigationItem from "@/navi/my-navigation-item";
 
 export default {
   name: "navi",
+  components: {MyNavigationItem},
   data() {
     return {}
   },

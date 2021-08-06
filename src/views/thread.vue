@@ -1,3 +1,4 @@
+<!--suppress HtmlUnknownAttribute -->
 <template>
 <div>
   <h2>{{forumName}}</h2>
@@ -36,10 +37,10 @@
         </el-table-column>
         <el-table-column label="回复" prop="replies" sortable width="80px">
           <template #default="s">
-            <span v-if="!s.row['topic_misc_var']||!s.row['topic_misc_var']['1']">{{ s.row.replies }}</span>
-            <span v-if="s.row['topic_misc_var']&&s.row['topic_misc_var']['1']" @click="unFollow(s.row.tid)">
+            <span v-if="s.row['topic_misc_var']&&s.row['topic_misc_var']['1']===33" @click="unFollow(s.row.tid)">
               <i class="el-icon-close"/>
             </span>
+            <span v-else>{{ s.row.replies }}</span>
           </template>
         </el-table-column>
         <el-table-column label="主题">
@@ -109,7 +110,7 @@ export default {
     }
   },
   methods: {
-    cellClassName({row, column, rowIndex, columnIndex}) {
+    cellClassName({rowIndex}) {
       return this.$store.state.config.config.uiColor + rowIndex % 2
     },
     newThread() {
@@ -173,7 +174,9 @@ export default {
     },
     //更新主题列表
     getThreads() {
-      this.$store.dispatch("thread/getThreads", this.$route.params).then(res => {
+      this.$store.dispatch("thread/getThreads", {
+        favor:(this.$route.path.includes("favor")?1:undefined),
+        ...this.$route.params}).then(res => {
         this.handlePageData(res)
       })
     },
@@ -223,7 +226,7 @@ export default {
   },
   mounted() {
     this.getThreads();
-
+    console.log(this.$route)
     document.addEventListener('keypress', this.keypress)
   },
   unmounted() {

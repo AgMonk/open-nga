@@ -1,6 +1,6 @@
 <!--版头-->
 <template>
-  <el-container direction="vertical">
+  <el-container v-if="toppedTopicTid" direction="vertical">
     <!--  <el-container direction="horizontal">-->
     <!--    <el-header></el-header>-->
 

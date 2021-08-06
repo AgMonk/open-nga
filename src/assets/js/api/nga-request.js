@@ -158,7 +158,7 @@ export const ngaRequest = {
     },
     thread({stid, fid, page, authorid, searchpost, favor, order_by}) {
         let map = {
-            favor: {favor: 1},
+            favor: {favor: 1,page},
             stid: {page, stid},
             authorid: {fid, page, authorid, searchpost},
             fid: {fid, page},

@@ -1,6 +1,6 @@
 <template>
   <el-row>
-    <el-col :span="['topic_misc_var']?19:24">
+    <el-col :span="data['topic_misc_var']?19:24">
       <my-router-link :link-class="$store.state.config.config.uiColor+index%2"
                       :link-style="threadColor(data.titlefont||data.topic_misc)"
                       :text="unEscape(data.subject)" :url="getUrl()"/>
@@ -64,6 +64,7 @@ export default {
     threadColor: titleStyle,
     copy(obj) {
       this.myData = obj ? copyObj(obj) : [];
+      console.log(this.myData)
     },
     getUrl() {
       let parent = this.data.parent;
@@ -71,8 +72,8 @@ export default {
         return getRoute(["thread", this.data["topic_misc_var"]["3"], 1])
       }
       let stid = this.data["topic_misc_var"]
-      if (stid && stid["1"]) {
-        //  合集
+      if (stid && stid["1"]===33) {
+        //  合集入口
         return getRoute(["thread", this.$route.params.fid, 1, this.data.tid])
       }
       if (this.data.quote_from>0){

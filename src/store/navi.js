@@ -5,11 +5,16 @@ export default {
     state: {
         show: true,
         navigators: {
-            "forum": {path: "/forum", title: "收藏版面"},
             "thread": {path: "/thread", title: "主题列表"},
             "read": {path: "/read", title: "主题详情"},
             "account": {path: "/account", title: "用户中心"},
-            "config": {path: "/config", title: "配置"},
+            "my": {
+                path: "", title: `我的`, children: [
+                    {path: "/forum", title: "收藏版面"},
+                    {path: "/thread/favor/1", title: "收藏主题"},
+                    {path: "/config", title: "配置"},
+                ]
+            }
         },
         params: {
             "thread": [],
@@ -25,12 +30,16 @@ export default {
             let keys = Object.keys(state.navigators);
             keys.forEach(key => {
                 let navi = state.navigators[key]
-                let param = state.params[key]?state.params[key]:[];
+                if (navi.children) {
+                    return;
+                }
+                let param = state.params[key] ? state.params[key] : [];
                 let a = [key, ...param]
+                console.log(a)
                 navi.path = "/" + a.join("/");
             })
         },
-        setParams(state, {key,params}) {
+        setParams(state, {key, params}) {
             state.params[key] = params;
         },
     },
