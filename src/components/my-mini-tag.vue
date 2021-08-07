@@ -14,6 +14,7 @@ import {getRoute} from "@/assets/js/api/routerUtils";
 
 export default {
   name: "my-mini-tag",
+  emits: ["click"],
   methods:{
     onClick(e){
       if (this.route) {

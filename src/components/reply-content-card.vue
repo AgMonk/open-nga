@@ -25,6 +25,7 @@
 
         </el-col>
         <el-col :span="6" style="text-align: right">
+          <my-mini-tag v-if="``+myData.authorid===getCookie(`ngaPassportUid`)" text="查审核" @click="checkStatus"/>
           <my-mini-tag :route="[`post`,`quote`, myData.fid, myData.tid,myData.pid, 0]" text="引用"/>
           <my-mini-tag :route="[`post`,`reply`, myData.fid, myData.tid,myData.pid, 0]" text="回复"/>
           <content-popover :data="myData">
@@ -84,7 +85,7 @@
                   comment.postdate
                 }}
               </el-tag>
-              <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`,comment.pid)"><i
+               <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`,comment.pid)"><i
                   class="el-icon-chat-line-square"/>引用
               </el-tag>
               <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`,comment.pid)"><i
@@ -117,9 +118,10 @@ import MyRouterLink from "@/components/my-router-link";
 import UserLink from "@/components/user-link";
 import {mapState} from "vuex";
 import Approbation from "@/components/approbation";
-import {preComment} from "@/assets/js/api/postApi";
+import {preComment, prePost} from "@/assets/js/api/postApi";
 import ContentPopover from "@/components/content-popover";
 import MyMiniTag from "@/components/my-mini-tag";
+import {getCookie} from "@/assets/js/cookieUtils";
 
 export default {
   name: "reply-content-card",
@@ -136,6 +138,7 @@ export default {
     })
   },
   methods: {
+    getCookie,
     jump2CommentTarget() {
       if (this.myData.comment_to_id > 0) {
         this.$router.push(`/read/` + this.myData.comment_to_id)
@@ -145,6 +148,17 @@ export default {
     },
     comment() {
       preComment(this.myData)
+    },
+    checkStatus(){
+      const {fid,pid,tid} = this.myData
+      prePost({fid,pid,tid,action:"quote"}).then(res=>{
+        const content = res.content;
+        if (content.includes(`[quote]`)) {
+          this.$message.success(`该回复已过审`)
+        }else{
+          this.$message.error(`该回复未过审或仍在审核中...`)
+        }
+      })
     },
     reply(action, pid) {
       this.$router.push(getRoute(["post", action
