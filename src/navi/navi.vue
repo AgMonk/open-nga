@@ -39,7 +39,6 @@ export default {
     handleSelect(e) {
       if (e === "/thread") {
       }
-      console.log(e)
     },
     refreshNavi() {
       this.$store.commit("navi/updatePath")

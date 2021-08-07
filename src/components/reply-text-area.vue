@@ -208,7 +208,7 @@ export default {
         let content = this.myParams.post_content;
         let subject = this.myParams.post_subject;
         this.myParams = copyObj(e)
-          console.log(content)
+          // console.log(content)
 
         if (content && content.length > 0) {
           this.myParams.post_content = content;

@@ -92,7 +92,7 @@ export default {
       lastRefreshTime: new Date(),
       content: "",
       subject: "",
-      tid: "",
+      tid: 0,
       pagination: {
         page: 1,
         size: 20,

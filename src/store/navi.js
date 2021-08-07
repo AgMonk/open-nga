@@ -35,7 +35,6 @@ export default {
                 }
                 let param = state.params[key] ? state.params[key] : [];
                 let a = [key, ...param]
-                console.log(a)
                 navi.path = "/" + a.join("/");
             })
         },

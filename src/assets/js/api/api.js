@@ -109,7 +109,7 @@ export const getNotice = () => ngaRequest.nuke({
     time_limit: 1,
 }).then(res => {
     // 回复提醒
-    console.log(res.data)
+    // console.log(res.data)
 
 
     let replies = res.data["0"]["0"];
