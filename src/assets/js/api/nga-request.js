@@ -230,6 +230,12 @@ export const ngaRequest = {
                 throw res.error["0"];
             }
             res.data.__R = obj2Array(res.data.__R);
+            res.data.__R.forEach(reply=>{
+                if (reply.attachs) {
+                    reply.attachs = obj2Array(reply.attachs);
+                }
+            })
+            console.log(res)
             return res;
         })
     },

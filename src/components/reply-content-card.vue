@@ -85,7 +85,7 @@
                   comment.postdate
                 }}
               </el-tag>
-               <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`,comment.pid)"><i
+              <el-tag class="miniTag click-able" size="mini" @click="reply(`quote`,comment.pid)"><i
                   class="el-icon-chat-line-square"/>引用
               </el-tag>
               <el-tag class="miniTag click-able" size="mini" @click="reply(`reply`,comment.pid)"><i
@@ -95,6 +95,20 @@
             <content-render :content="comment.content.replace(/\[b]Reply to .+?\[\/b]/,``)">{{ comment.content }}</content-render>
           </el-card>
         </div>
+      </div>
+      <div v-if="myData.attachs">
+        <h4>附件</h4>
+        <template v-for="(item,i) in myData.attachs" :key="i">
+          <span v-if="item.type===`img`">
+            <my-mini-tag text="图片"/>
+            <el-link :href="`/img/`+item.attachurl" target="_blank">{{ decodeURI(item.url_utf8_org_name) }}</el-link>
+          </span>
+          <span v-else-if="item.type===`zip`">
+            <my-mini-tag text="压缩包"/>
+            <el-link :href="`/img/${item.attachurl}`" target="_blank">{{ decodeURI(item.url_utf8_org_name) }}</el-link>
+          </span>
+          <span v-else>{{ item }}</span>
+        </template>
       </div>
     </el-main>
     <el-footer style="padding: 0 10px">
@@ -125,7 +139,7 @@ import {getCookie} from "@/assets/js/cookieUtils";
 
 export default {
   name: "reply-content-card",
-  components: {MyMiniTag, ContentPopover, Approbation, UserLink, MyRouterLink,  ContentRender},
+  components: {MyMiniTag, ContentPopover, Approbation, UserLink, MyRouterLink, ContentRender},
   data() {
     return {
       myData: {},
@@ -149,13 +163,13 @@ export default {
     comment() {
       preComment(this.myData)
     },
-    checkStatus(){
-      const {fid,pid,tid} = this.myData
-      prePost({fid,pid,tid,action:"quote"}).then(res=>{
+    checkStatus() {
+      const {fid, pid, tid} = this.myData
+      prePost({fid, pid, tid, action: "quote"}).then(res => {
         const content = res.content;
         if (content.includes(`[quote]`)) {
           this.$message.success(`该回复已过审`)
-        }else{
+        } else {
           this.$message.error(`该回复未过审或仍在审核中...`)
         }
       })
