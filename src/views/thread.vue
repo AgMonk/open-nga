@@ -1,84 +1,86 @@
 <!--suppress HtmlUnknownAttribute -->
 <template>
-<div>
-  <h2>{{forumName}}</h2>
-  <el-switch v-model="$store.state.thread.showToppedTopic" active-text="显示版头" />
-  <topped-topic v-show="$store.state.thread.showToppedTopic" :tid="toppedTopicTid"/>
-  <el-container ref="threadList" direction="vertical">
-    <!--  <el-container direction="horizontal">-->
-    <el-header>
-      <div>
-        <el-button type="primary" @click="updateThreads">刷新(r)</el-button>
-        <el-button type="primary" @click="newThread">发帖</el-button>
-        <el-switch v-model="orderByPostDateDesc" active-text="按发布时间排序" style="margin-left: 10px"
-                   @click="$store.state.thread.orderByPostDateDesc=orderByPostDateDesc;updateThreads()"/>
-      </div>
-      <el-pagination
-          :current-page.sync="pagination.page"
-          :page-size.sync="pagination.size"
-          :total="pagination.total"
-          layout="prev, pager, next, jumper"
-          @current-change="page">
-      </el-pagination>
-    </el-header>
-    <!--suppress HtmlUnknownTag -->
-    <el-main>
+  <div>
+    <h2><my-router-link :params="[fid,1]" router="thread" >{{forumName}}</my-router-link> </h2>
+    <el-switch v-if="!$route.path.includes(`recommend`)" v-model="$store.state.thread.showToppedTopic" active-text="显示版头"/>
+    <topped-topic v-if="$store.state.thread.showToppedTopic && !$route.path.includes(`recommend`)" :tid="toppedTopicTid"/>
+    <el-container ref="threadList" direction="vertical">
+      <!--  <el-container direction="horizontal">-->
+      <el-header>
+        <div>
+          <el-button type="primary" @click="updateThreads">刷新(r)</el-button>
+          <el-button type="primary" @click="newThread">发帖</el-button>
+          <el-switch v-model="orderByPostDateDesc" active-text="按发布时间排序" style="margin-left: 10px"
+                     @click="$store.state.thread.orderByPostDateDesc=orderByPostDateDesc;updateThreads()"/>
+        </div>
+        <el-pagination
+            :current-page.sync="pagination.page"
+            :page-size.sync="pagination.size"
+            :total="pagination.total"
+            layout="prev, pager, next, jumper"
+            @current-change="page">
+        </el-pagination>
+      </el-header>
+      <!--suppress HtmlUnknownTag -->
+      <el-main>
 
 
-      <div >
-        <sub-forum v-for="(item,i) in subForums" :key="i" :data="item"/>
-      </div>
+        <div>
+          <sub-forum v-for="(item,i) in subForums" :key="i" :data="item"/>
+          <my-router-link v-if="!$route.path.includes(`recommend`)"  :params="[`recommend`,fid,1]" router="thread" style="margin-left: 30px" >精华区</my-router-link>
 
-      <el-table :cell-class-name="cellClassName" :data="threads" :header-cell-class-name="$store.state.config.config.uiColor+'1'">
-        <el-table-column label="#" width="40px">
-          <template #default="s">
-            {{ s.$index + 1 }}
-          </template>
-        </el-table-column>
-        <el-table-column label="回复" prop="replies" sortable width="80px">
-          <template #default="s">
+        </div>
+
+        <el-table :cell-class-name="cellClassName" :data="threads" :header-cell-class-name="$store.state.config.config.uiColor+'1'">
+          <el-table-column label="#" width="40px">
+            <template #default="s">
+              {{ s.$index + 1 }}
+            </template>
+          </el-table-column>
+          <el-table-column label="回复" prop="replies" sortable width="80px">
+            <template #default="s">
             <span v-if="s.row['topic_misc_var']&&s.row['topic_misc_var']['1']===33" @click="unFollow(s.row.tid)">
               <i class="el-icon-close"/>
             </span>
-            <span v-else>{{ s.row.replies }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column label="主题">
-          <template #default="s">
-            <thread-link :data="s.row" :index="s.$index"/>
-          </template>
-        </el-table-column>
-        <el-table-column label="作者/发布时间" width="170px">
-          <template #default="s">
-            <div>
-              <user-link :id="s.row.authorid" :username="s.row.author"/>
-            </div>
-            <datetime :data="s.row.postdate"/>
-          </template>
-        </el-table-column>
-        <el-table-column label="最后回复" width="160px">
-          <template #default="s">
-            <div>
-              <datetime :data="s.row.lastpost"/>
-            </div>
-            {{ s.row.lastposter }}
-          </template>
-        </el-table-column>
+              <span v-else>{{ s.row.replies }}</span>
+            </template>
+          </el-table-column>
+          <el-table-column label="主题">
+            <template #default="s">
+              <thread-link :data="s.row" :index="s.$index"/>
+            </template>
+          </el-table-column>
+          <el-table-column label="作者/发布时间" width="170px">
+            <template #default="s">
+              <div>
+                <user-link :id="s.row.authorid" :username="s.row.author"/>
+              </div>
+              <datetime :data="s.row.postdate"/>
+            </template>
+          </el-table-column>
+          <el-table-column label="最后回复" width="160px">
+            <template #default="s">
+              <div>
+                <datetime :data="s.row.lastpost"/>
+              </div>
+              {{ s.row.lastposter }}
+            </template>
+          </el-table-column>
 
 
-      </el-table>
-    </el-main>
-    <el-footer>
-      <el-pagination
-          :current-page.sync="pagination.page"
-          :page-size.sync="pagination.size"
-          :total="pagination.total"
-          layout="prev, pager, next, jumper"
-          @current-change="page">
-      </el-pagination>
-    </el-footer>
-  </el-container>
-</div>
+        </el-table>
+      </el-main>
+      <el-footer>
+        <el-pagination
+            :current-page.sync="pagination.page"
+            :page-size.sync="pagination.size"
+            :total="pagination.total"
+            layout="prev, pager, next, jumper"
+            @current-change="page">
+        </el-pagination>
+      </el-footer>
+    </el-container>
+  </div>
 </template>
 
 <script>
@@ -90,10 +92,11 @@ import {getRoute} from "@/assets/js/api/routerUtils";
 import "../assets/css/ui-color.css"
 import ToppedTopic from "@/components/topped-topic";
 import SubForum from "@/components/sub-forum";
+import MyRouterLink from "@/components/my-router-link";
 
 export default {
   name: "thread",
-  components: {SubForum, ToppedTopic, UserLink, ThreadLink, Datetime},
+  components: {MyRouterLink, SubForum, ToppedTopic, UserLink, ThreadLink, Datetime},
   data() {
     return {
       pagination: {
@@ -107,6 +110,7 @@ export default {
       showToppedTopic: undefined,
       subForums: [],
       forumName: "",
+      fid:0,
     }
   },
   methods: {
@@ -130,7 +134,7 @@ export default {
       })
     },
     updateThreads() {
-      this.$store.dispatch("thread/updateThreads", this.$route.params).then(res => {
+      this.$store.dispatch("thread/updateThreads", this.getParams()).then(res => {
         this.handlePageData(res)
         this.$message.success("刷新成功")
       })
@@ -169,16 +173,22 @@ export default {
       this.toppedTopicTid = data.__F.topped_topic
       this.subForums = data.__F.subForums;
       this.forumName = data.__F.name;
+      this.fid = data.__F.fid;
 
       console.log(data)
     },
     //更新主题列表
     getThreads() {
-      this.$store.dispatch("thread/getThreads", {
-        favor:(this.$route.path.includes("favor")?1:undefined),
-        ...this.$route.params}).then(res => {
+      this.$store.dispatch("thread/getThreads",this.getParams()).then(res => {
         this.handlePageData(res)
       })
+    },
+    getParams(){
+      return {
+        favor: (this.$route.path.includes("favor") ? 1 : undefined),
+        recommend: (this.$route.path.includes("recommend") ? 1 : undefined),
+        ...this.$route.params
+      }
     },
     keypress(e) {
       if (e.key === 'z') {

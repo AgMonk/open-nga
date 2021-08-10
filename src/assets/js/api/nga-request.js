@@ -156,16 +156,19 @@ export const ngaRequest = {
             data,
         })
     },
-    thread({stid, fid, page, authorid, searchpost, favor, order_by}) {
+    thread({stid, fid, page, authorid, searchpost, favor, order_by,recommend}) {
         let map = {
             favor: {favor: 1,page},
             stid: {page, stid},
             authorid: {fid, page, authorid, searchpost},
             fid: {fid, page},
+            recommend:{fid,page,recommend:1},
         }
         let data;
         if (favor) {
             data = map.favor;
+        } else if (recommend) {
+            data = map.recommend;
         } else if (stid) {
             data = map.stid;
         } else if (authorid) {

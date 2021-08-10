@@ -8,6 +8,7 @@ const routes = [
   {path: "/config",name:"配置",component:()=>import("../views/config"),},
 
   {path: "/thread/favor/:page",name:"收藏主题",component:()=>import("../views/thread"),props:{title:`收藏主题`}},
+  {path: "/thread/recommend/:fid/:page/",name:"精华区",component:()=>import("../views/thread"),},
   {path: "/thread/:fid/:page",name:"版面主题",component:()=>import("../views/thread"),},
   {path: "/thread/:fid/:page/:stid",name:"合集主题",component:()=>import("../views/thread"),},
   {path: "/thread/:fid/:page/:authorid/:searchpost",name:"指定用户的主题或回复",component:()=>import("../views/thread"),},
