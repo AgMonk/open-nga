@@ -101,11 +101,11 @@
         <template v-for="(item,i) in myData.attachs" :key="i">
           <span v-if="item.type===`img`">
             <my-mini-tag text="图片"/>
-            <el-link :href="`/img/`+item.attachurl" target="_blank">{{ decodeURI(item.url_utf8_org_name) }}</el-link>
+            <el-link :href="`/img/`+item.attachurl" target="_blank">{{ item.url_utf8_org_name?decodeURI(item.url_utf8_org_name):item.name }}</el-link>
           </span>
           <span v-else-if="item.type===`zip`">
             <my-mini-tag text="压缩包"/>
-            <el-link :href="`/img/${item.attachurl}`" target="_blank">{{ decodeURI(item.url_utf8_org_name) }}</el-link>
+            <el-link :href="`/img/${item.attachurl}`" target="_blank">{{ item.url_utf8_org_name?decodeURI(item.url_utf8_org_name):item.name }}</el-link>
           </span>
           <span v-else>{{ item }}</span>
         </template>
