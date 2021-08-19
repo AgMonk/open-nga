@@ -4,6 +4,11 @@
       <my-router-link :link-class="$store.state.config.config.uiColor+index%2"
                       :link-style="threadColor(data.titlefont||data.topic_misc)"
                       :text="unEscape(data.subject)" :url="getUrl()"/>
+      <my-mini-tag v-if="data.typeOfThread && data.typeOfThread.locked" text="锁定" type="danger"/>
+      <my-mini-tag v-if="data.typeOfThread && data.typeOfThread.selfReply" text="自回复" type="danger"/>
+      <my-mini-tag v-if="data.typeOfThread && data.typeOfThread.hidden" text="隐藏" type="danger"/>
+      <my-mini-tag v-if="data.typeOfThread && data.typeOfThread.freeEdit"  text="编辑"/>
+
       <el-pagination v-if="data.replies>=20 && !data.__P"
                      :current-page="currentPage"
                      layout="pager"
@@ -21,7 +26,7 @@
         <br/>
         <br/>
         <div>
-          <content-render :content="data.__P.content" />
+          <content-render :content="data.__P.content"/>
         </div>
       </div>
     </el-col>
@@ -45,10 +50,11 @@ import {getRoute} from "@/assets/js/api/routerUtils";
 import MyRouterLink from "@/components/my-router-link";
 import Datetime from "@/components/datetime";
 import ContentRender from "@/components/content-render";
+import MyMiniTag from "@/components/my-mini-tag";
 
 export default {
   name: "thread-link",
-  components: {ContentRender, Datetime, MyRouterLink},
+  components: {MyMiniTag, ContentRender, Datetime, MyRouterLink},
   data() {
     return {
       currentPage: 1,
@@ -71,11 +77,11 @@ export default {
         return getRoute(["thread", this.data["topic_misc_var"]["3"], 1])
       }
       let stid = this.data["topic_misc_var"]
-      if (stid && stid["1"]===33) {
+      if (stid && stid["1"] === 33) {
         //  合集入口
         return getRoute(["thread", this.$route.params.fid, 1, this.data.tid])
       }
-      if (this.data.quote_from>0){
+      if (this.data.quote_from > 0) {
         return getRoute(["read", this.data.quote_from, 1])
       }
       if (this.data.tid) {
@@ -94,7 +100,7 @@ export default {
       }
     }
   },
-  props: ["data","index"],
+  props: ["data", "index"],
 }
 
 </script>

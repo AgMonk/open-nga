@@ -2,6 +2,7 @@
 
 import axios from "axios";
 import {ElMessage} from "element-plus";
+import {parseThreadTypeBit} from "@/assets/js/api/bitUtils";
 
 export const requestUnity = axios.create({
     baseURL: "/api/",
@@ -189,6 +190,9 @@ export const ngaRequest = {
             data
         }).then(res => {
             res.data.__T = obj2Array(res.data.__T);
+            res.data.__T.forEach(thread => {
+                thread.typeOfThread = parseThreadTypeBit(thread.type)
+            })
 
             let subForums = res.data.__F.sub_forums;
             if (subForums) {

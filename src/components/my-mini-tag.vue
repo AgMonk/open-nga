@@ -2,7 +2,7 @@
   <el-tag
       size="mini"
       style="margin-left: 3px;cursor:pointer"
-      type="type?type:'primary'"
+      :type="type?type:'primary'"
       @click="onClick"
   >
     {{ text }}
