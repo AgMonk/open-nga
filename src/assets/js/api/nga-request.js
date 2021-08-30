@@ -157,13 +157,13 @@ export const ngaRequest = {
             data,
         })
     },
-    thread({stid, fid, page, authorid, searchpost, favor, order_by,recommend}) {
+    thread({stid, fid, page, authorid, searchpost, favor, order_by, recommend}) {
         let map = {
-            favor: {favor: 1,page},
+            favor: {favor: 1, page},
             stid: {page, stid},
             authorid: {fid, page, authorid, searchpost},
             fid: {fid, page},
-            recommend:{fid,page,recommend:1},
+            recommend: {fid, page, recommend: 1},
         }
         let data;
         if (favor) {
@@ -200,12 +200,12 @@ export const ngaRequest = {
                 res.data.__F.subForums = sf;
                 Object.keys(subForums).forEach(key => {
                     if (key.startsWith("t")) {
-                    //   主题合集
-                        sf.push({type:"合集",name:subForums[key]["1"],stid:subForums[key]["0"]})
+                        //   主题合集
+                        sf.push({type: "合集", name: subForums[key]["1"], stid: subForums[key]["0"]})
                     }
                     if (!isNaN(key)) {
-                    //   子版面
-                        sf.push({type:"版面",name:subForums[key]["1"],fid:subForums[key]["0"]})
+                        //   子版面
+                        sf.push({type: "版面", name: subForums[key]["1"], fid: subForums[key]["0"]})
                     }
                 })
             }
@@ -234,10 +234,11 @@ export const ngaRequest = {
                 throw res.error["0"];
             }
             res.data.__R = obj2Array(res.data.__R);
-            res.data.__R.forEach(reply=>{
+            res.data.__R.forEach(reply => {
                 if (reply.attachs) {
                     reply.attachs = obj2Array(reply.attachs);
                 }
+                reply.typeOfReply = parseThreadTypeBit(reply.type)
             })
             console.log(res)
             return res;

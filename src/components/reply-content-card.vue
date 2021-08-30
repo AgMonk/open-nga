@@ -19,6 +19,11 @@
           <el-tag v-if="myData.reply_to" class="miniTag click-able" size="mini" type="warning"
                   @click="$router.push(`/read/`+myData.reply_to)">回复目标
           </el-tag>
+          <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.freeEdit" text="可编辑"/>
+<!--          <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.hasUpload" text="有附件"/>-->
+          <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.hidden" text="隐藏" type="danger"/>
+          <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.locked" text="锁定" type="danger"/>
+          <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.notVerified" text="尚未过审" type="danger"/>
           <el-tag v-if="myData.comment_to_id" class="miniTag click-able" size="mini" type="warning"
                   @click="jump2CommentTarget">评论目标
           </el-tag>
@@ -101,11 +106,11 @@
         <template v-for="(item,i) in myData.attachs" :key="i">
           <span v-if="item.type===`img`">
             <my-mini-tag text="图片"/>
-            <el-link :href="`/img/`+item.attachurl" target="_blank">{{ item.url_utf8_org_name?decodeURI(item.url_utf8_org_name):item.name }}</el-link>
+            <el-link :href="`/img/`+item.attachurl" target="_blank">{{ item.url_utf8_org_name ? decodeURI(item.url_utf8_org_name) : item.name }}</el-link>
           </span>
           <span v-else-if="item.type===`zip`">
             <my-mini-tag text="压缩包"/>
-            <el-link :href="`/img/${item.attachurl}`" target="_blank">{{ item.url_utf8_org_name?decodeURI(item.url_utf8_org_name):item.name }}</el-link>
+            <el-link :href="`/img/${item.attachurl}`" target="_blank">{{ item.url_utf8_org_name ? decodeURI(item.url_utf8_org_name) : item.name }}</el-link>
           </span>
           <span v-else>{{ item }}</span>
         </template>
