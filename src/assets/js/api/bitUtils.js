@@ -3,7 +3,7 @@
 // https://bbs.nga.cn/read.php?tid=6406100&authorid=58
 
 export const parseThreadTypeBit = (num) => {
-    if (num === 0) {
+    if (!num || num === 0) {
         return {};
     }
     let binaryString = num.toString(2).split('').reverse().join('');
