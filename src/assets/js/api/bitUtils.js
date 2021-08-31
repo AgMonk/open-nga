@@ -7,10 +7,10 @@ export const parseThreadTypeBit = (num) => {
         return {};
     }
     let binaryString = num.toString(2).split('').reverse().join('');
-    const [isComment,hidden,hasComment,,extraUserInfo,,noHint,freeEdit,selfReply,,locked,,hasAutoTranslate,hasUpload] = binaryString
+    const [isComment,hidden,hasComment,,extraUserInfo,,noHint,freeEdit,selfReply,verifying,locked,,hasAutoTranslate,hasUpload] = binaryString
     const notVerified = binaryString[26];
     const obj = {
-        hasUpload,hasAutoTranslate,locked,selfReply,freeEdit,noHint,extraUserInfo,hasComment,hidden,isComment,notVerified
+        hasUpload,hasAutoTranslate,locked,selfReply,verifying,freeEdit,noHint,extraUserInfo,hasComment,hidden,isComment,notVerified
     }
     console.log(binaryString)
     Object.keys(obj).forEach(key => {

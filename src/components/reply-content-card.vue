@@ -23,7 +23,8 @@
 <!--          <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.hasUpload" text="有附件"/>-->
           <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.hidden" text="隐藏" type="danger"/>
           <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.locked" text="锁定" type="danger"/>
-          <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.notVerified" text="尚未过审" type="danger"/>
+          <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.notVerified" text="审核不通过" type="danger"/>
+          <my-mini-tag v-if="myData.typeOfReply&&myData.typeOfReply.verifying" text="审核中.." type="danger"/>
           <el-tag v-if="myData.comment_to_id" class="miniTag click-able" size="mini" type="warning"
                   @click="jump2CommentTarget">评论目标
           </el-tag>
