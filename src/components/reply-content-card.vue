@@ -120,7 +120,7 @@
     <el-footer style="padding: 0 10px">
       <div v-if="myData.operationLog">
         <el-tag v-for="(item,i) in myData.operationLog" :key="i" :type="item.type==='禁言'?'danger':'primary'">
-          {{ item.type }}{{ item.type === '禁言' ? item.days + '天' : '' }} 声望{{ item.reputation }} 威望{{ item.rvrc }}
+          {{item.fid?`在版面${item.fid} `:``}}{{ item.type }}{{ item.type === '禁言' ? item.days + '天' : '' }} 声望{{ item.reputation }} 威望{{ item.rvrc }}
           {{ item.reason }}
         </el-tag>
       </div>
