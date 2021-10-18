@@ -64,16 +64,10 @@ export default {
                 state.users[info.uid] = {}
             }
             Object.keys(info).forEach(key => {
-                // console.log("更新 uid = "+info.uid+" 字段 "+key+" = "+ info[key])
                 if (info[key]) {
                     state.users[info.uid][key] = info[key];
                 }
             })
-            // console.log(state.users[info.uid])
-            // let userInfo = Object.assign({}, state.users[info.uid], info);
-            // state.users[info.uid] = userInfo;
-
-            // console.log(state.users[info.uid])
         },
     },
     actions: {
@@ -81,7 +75,7 @@ export default {
 
         },
         loginWithCookie({dispatch, commit, state}, cookie) {
-            setCookies(cookie)
+            setCookies(cookie,30)
             console.log(getCookieMap());
             return dispatch("getLoginStatus").then(res => {
                 ElMessage.success("[" + res.username + "] 登陆成功")

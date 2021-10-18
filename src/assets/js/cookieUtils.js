@@ -15,6 +15,7 @@ export const setCookie = (key,value,expires)=>{
     let date = new Date();
     date.setTime(date.getTime()+expires*day);
     e = "expires="+date.toUTCString();
+    console.log(e)
   }
   document.cookie = key +'='+value+";path=/"+"; "+e;
 }

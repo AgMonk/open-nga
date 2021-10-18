@@ -30,12 +30,13 @@
 </template>
 
 <script>
-import {getCookie, setCookies} from "@/assets/js/cookieUtils";
+import {getCookie} from "@/assets/js/cookieUtils";
 import Money from "@/components/money";
 import UserInfo from "@/components/user-info";
 import {delCache, getCacheByPrefix} from "@/assets/js/storageUtils";
 import account from "@/store/account";
 import "../assets/css/ui-color.css"
+import {mapActions} from "vuex";
 
 export default {
   name: "account",
@@ -50,6 +51,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(`account`,[`loginWithCookie`]),
     getUid() {
       return getCookie("ngaPassportUid");
     },
@@ -61,7 +63,7 @@ export default {
     },
     changeAccount(key) {
       let cookie = this.accounts[key];
-      this.$store.dispatch("account/loginWithCookie", cookie).then(res => {
+      this.loginWithCookie(cookie).then(res => {
         this.$router.push("/account/" + this.getUid());
         this.$store.dispatch("forum/getFavForum")
 
@@ -71,8 +73,7 @@ export default {
       this.selected = undefined
     },
     login() {
-      setCookies(this.cookie)
-      this.$store.dispatch("account/loginWithCookie", this.cookie).then(res => {
+      this.loginWithCookie(this.cookie).then(res => {
         this.$router.push("/account/" + this.getUid());
       })
     }
