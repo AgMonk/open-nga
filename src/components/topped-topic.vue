@@ -30,7 +30,7 @@ export default {
         return;
       }
       this.$store.dispatch("read/getDetail", {tid: this.toppedTopicTid, page: 1}).then(res => {
-        console.log(res.__R[0])
+        // console.log(res.__R[0])
         this.content = res.__R[0].content;
       })
 

@@ -144,6 +144,20 @@ export const getNotice = () => ngaRequest.nuke({
                 timeString: new Date(reply["9"] * 1000).format("yyyy-MM-dd hh:mm:ss")
             }
         }
+        if (reply["0"] === 8) {
+            return {
+                type: `@你`,
+                authorId: reply["1"],
+                authorName: reply["2"],
+                repliedId: reply["3"],
+                threadSubject: reply["5"],
+                tid: reply["6"],
+                repliedPid: reply["7"],
+                timestamp: reply["9"],
+                page: reply["10"],
+                timeString: new Date(reply["9"] * 1000).format("yyyy-MM-dd hh:mm:ss")
+            }
+        }
 
     }).reverse();
 
@@ -166,7 +180,7 @@ export const getNotice = () => ngaRequest.nuke({
         timestamp: r["9"],
         timeString: new Date(r["9"] * 1000).format("yyyy-MM-dd hh:mm:ss")
     })).reverse();
-
+    // console.log({replies, approbation, pm})
     return {replies, approbation, pm}
 })
 

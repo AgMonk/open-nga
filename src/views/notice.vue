@@ -34,10 +34,19 @@
                 <my-reply-link v-if="item.repliedPid" :pid="item.repliedPid" text="[回复]"/>
                 赠送了礼物
               </span>
+              <span v-if="item.type===`@你`">
+                在
+                <my-thread-link :page="item.page" :text="item.threadSubject.substring(0,Math.min(item.threadSubject.length,20))"
+                                :tid="item.tid"/>
+                的
+                                <my-reply-link v-if="item.repliedPid" :pid="item.repliedPid" text="[回复]"/>
+
+                @了你
+              </span>
               <span v-if="item.type===`对主题`">
                               <my-reply-link :pid="item.replyPid" text="[回复]"/>
               了你的主题 <my-thread-link :page="item.page" :text="item.threadSubject.substring(0,Math.min(item.threadSubject.length,20))"
-                      :tid="item.tid"/>
+                                    :tid="item.tid"/>
               </span>
               <span v-if="item.type===`对回复`">
                 <my-reply-link :pid="item.replyPid" text="[回复]"/>

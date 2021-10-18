@@ -12,7 +12,6 @@ export const parseThreadTypeBit = (num) => {
     const obj = {
         hasUpload,hasAutoTranslate,locked,selfReply,verifying,freeEdit,noHint,extraUserInfo,hasComment,hidden,isComment,notVerified
     }
-    console.log(binaryString)
     Object.keys(obj).forEach(key => {
         obj[key] = obj[key]==="1"
     })
