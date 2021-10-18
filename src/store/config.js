@@ -15,8 +15,9 @@ export default {
             ]
         },
         defaultConfig:{
-            uiColor:"green",
-            autoRefresh:false,
+            uiColor: "green",
+            autoRefresh: false,
+            showToppedTopic: true,
         }
     },
     mutations: {

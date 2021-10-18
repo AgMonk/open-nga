@@ -1,9 +1,11 @@
 <!--suppress HtmlUnknownAttribute -->
 <template>
   <div>
-    <h2><my-router-link :params="[fid,1]" router="thread" >{{forumName}}</my-router-link> </h2>
-    <el-switch v-if="!$route.path.includes(`recommend`)" v-model="$store.state.thread.showToppedTopic" active-text="显示版头"/>
-    <topped-topic v-if="$store.state.thread.showToppedTopic && !$route.path.includes(`recommend`)" :tid="toppedTopicTid"/>
+    <h2>
+      <my-router-link :params="[fid,1]" router="thread">{{ forumName }}</my-router-link>
+    </h2>
+    <el-switch v-if="!$route.path.includes(`recommend`)" v-model="showToppedTopic" active-text="显示版头" @change="showToppedTopicChanged"/>
+    <topped-topic v-if="config.showToppedTopic && !$route.path.includes(`recommend`)" :tid="toppedTopicTid"/>
     <el-container ref="threadList" direction="vertical">
       <!--  <el-container direction="horizontal">-->
       <el-header>
@@ -93,6 +95,7 @@ import "../assets/css/ui-color.css"
 import ToppedTopic from "@/components/topped-topic";
 import SubForum from "@/components/sub-forum";
 import MyRouterLink from "@/components/my-router-link";
+import {mapMutations, mapState} from "vuex";
 
 export default {
   name: "thread",
@@ -107,13 +110,21 @@ export default {
       threads: [],
       orderByPostDateDesc: this.$store.state.thread.orderByPostDateDesc,
       toppedTopicTid: undefined,
-      showToppedTopic: undefined,
+      showToppedTopic: false,
       subForums: [],
       forumName: "",
-      fid:0,
+      fid: 0,
     }
   },
+  computed: {
+    ...mapState("config", [`config`]),
+  },
   methods: {
+    ...mapMutations("config", [`setConfig`]),
+    showToppedTopicChanged(e) {
+      //切换“显示版头”开关
+      this.setConfig({key: "showToppedTopic", value: e});
+    },
     cellClassName({rowIndex}) {
       return this.$store.state.config.config.uiColor + rowIndex % 2
     },
@@ -238,6 +249,8 @@ export default {
     this.getThreads();
     console.log(this.$route)
     document.addEventListener('keypress', this.keypress)
+
+    this.showToppedTopic = this.config.showToppedTopic;
   },
   unmounted() {
     document.removeEventListener('keypress', this.keypress)
