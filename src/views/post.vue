@@ -80,8 +80,8 @@ export default {
         if (file.info) {
           text+=file.info.description+"\n"+file.info.url+'\n'
         }
-        text+=`[img]./` + file.url + `[/img]`
-        this.$refs["reply-text-area"].addText({startText:text})
+        text += `[img]./${file.url}[/img] \n htt[size=100%]ps://im[/size]g.nga.178.com/attachments/${file.url}`
+        this.$refs["reply-text-area"].addText({startText: text})
       } else {
         this.$message.error("文件不是图片")
       }
