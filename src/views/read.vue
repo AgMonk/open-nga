@@ -83,6 +83,7 @@ import ReplyTextArea from "@/components/reply-text-area";
 import Clock from "@/components/clock";
 import {mapState} from "vuex";
 import JumpFloors from "@/components/jump-floors";
+import {setTitle} from "@/assets/js/projectUtils";
 
 export default {
   name: "read",
@@ -210,6 +211,7 @@ export default {
         this.$store.dispatch("read/getDetail", this.$route.params).then(() => {
           this.res = this.details[JSON.stringify(this.$route.params)].data;
           console.log(this.res)
+          setTitle(this.res.__T.subject)
           this.handlePageData(this.res)
 
           this.$nextTick(() => {
