@@ -101,6 +101,7 @@
 import {mapState} from "vuex";
 import "../assets/css/ui-color.css"
 import {bbsCodeLibrary} from "@/assets/js/bbscode";
+import {setTitle} from "@/assets/js/projectUtils";
 
 export default {
   name: "config",
@@ -119,6 +120,7 @@ export default {
     })
   },
   mounted() {
+    setTitle("配置")
   },
   watch: {},
   props: ["data"],

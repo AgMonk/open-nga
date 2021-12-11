@@ -96,6 +96,7 @@ import ToppedTopic from "@/components/topped-topic";
 import SubForum from "@/components/sub-forum";
 import MyRouterLink from "@/components/my-router-link";
 import {mapMutations, mapState} from "vuex";
+import {setTitle} from "@/assets/js/projectUtils";
 
 export default {
   name: "thread",
@@ -187,6 +188,7 @@ export default {
       this.fid = data.__F.fid;
 
       console.log(data)
+      setTitle(this.forumName)
     },
     //更新主题列表
     getThreads() {

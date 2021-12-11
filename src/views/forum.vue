@@ -31,6 +31,7 @@
 import SearchForum from "@/components/search-forum";
 import "../assets/css/ui-color.css"
 import {mapState} from "vuex";
+import {setTitle} from "@/assets/js/projectUtils";
 
 export default {
   name: "forum",
@@ -75,6 +76,7 @@ export default {
     }
   },
   mounted() {
+    setTitle("收藏的版面")
     this.$store.dispatch("forum/getFavForum")
   },
 }

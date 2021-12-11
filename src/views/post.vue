@@ -78,9 +78,9 @@ export default {
       if (file.isImg) {
         let text = ``
         if (file.info) {
-          text+=file.info.description+"\n"+file.info.url+'\n'
+          text += file.info.description + "\n" + file.info.url.replace('twitter.com', 'twi[size=100%]tter.c[/size]om') + '\n'
         }
-        text += `[img]./${file.url}[/img] \n htt[size=100%]ps://im[/size]g.nga.178.com/attachments/${file.url}`
+        text += `[img]./${file.url}[/img] \n htt[size=100%]ps://im[/size]g.nga.178.com/atta[size=100%]chmen[/size]ts/${file.url}`
         this.$refs["reply-text-area"].addText({startText: text})
       } else {
         this.$message.error("文件不是图片")
